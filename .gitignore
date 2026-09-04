@@ -1,0 +1,12 @@
+node_modules/
+.next/
+coverage/
+playwright-report/
+test-results/
+.env
+.env.local
+.env.*.local
+npm-debug.log*
+public/sw.js.map
+*.tsbuildinfo
+.tmp/

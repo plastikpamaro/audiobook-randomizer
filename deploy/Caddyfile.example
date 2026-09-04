@@ -1,0 +1,8 @@
+# Diesen Block in den bestehenden Caddyfile aufnehmen.
+# Der Caddy-Container muss mit demselben externen Docker-Netz verbunden sein,
+# das in CADDY_NETWORK konfiguriert wurde.
+
+{$AUDIOBOOK_DOMAIN} {
+  encode gzip
+  reverse_proxy audiobook-randomizer:3000
+}

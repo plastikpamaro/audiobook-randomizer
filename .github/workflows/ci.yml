@@ -1,0 +1,66 @@
+name: Qualität
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:18.6-alpine
+        env:
+          POSTGRES_DB: hoerspiel
+          POSTGRES_USER: hoerspiel
+          POSTGRES_PASSWORD: test-password
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U hoerspiel -d hoerspiel"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 20
+    env:
+      DATABASE_URL: postgresql://hoerspiel:test-password@127.0.0.1:5432/hoerspiel
+      TEST_DATABASE_URL: postgresql://hoerspiel:test-password@127.0.0.1:5432/hoerspiel_test
+      APP_ORIGIN: http://127.0.0.1:3000
+      SESSION_SECRET: ci-session-secret-longer-than-thirty-two-bytes
+      SETUP_TOKEN: ci-setup-token-with-at-least-32-bytes
+      TZ: Europe/Berlin
+      E2E_EMAIL: owner@example.test
+      E2E_PASSWORD: a-very-long-ci-password
+      PLAYWRIGHT_BASE_URL: http://127.0.0.1:3000
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm test
+      - name: Testdatenbank anlegen
+        run: PGPASSWORD=test-password psql -h 127.0.0.1 -U hoerspiel -d hoerspiel -c "CREATE DATABASE hoerspiel_test"
+      - run: npm run test:integration
+      - run: npm run db:migrate
+      - run: npm run build
+      - name: Anwendung starten
+        run: |
+          npm start > /tmp/hoerspielbeutel.log 2>&1 &
+          for attempt in $(seq 1 30); do
+            curl -fsS http://127.0.0.1:3000/api/health && exit 0
+            sleep 1
+          done
+          cat /tmp/hoerspielbeutel.log
+          exit 1
+      - name: Eigentümer für E2E anlegen
+        run: >-
+          curl -fsS -X POST http://127.0.0.1:3000/api/setup
+          -H 'Origin: http://127.0.0.1:3000'
+          -H 'Content-Type: application/json'
+          --data '{"email":"owner@example.test","password":"a-very-long-ci-password","setupToken":"ci-setup-token-with-at-least-32-bytes"}'
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
