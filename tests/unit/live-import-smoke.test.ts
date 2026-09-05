@@ -7,5 +7,8 @@ describe.skipIf(process.env.LIVE_IMPORT_TEST !== "1")("optionaler Live-Smoke-Tes
     expect(result.feed?.issues).toEqual([]);
     expect(result.feed?.episodes.length).toBeGreaterThan(100);
     expect(new Set(result.feed?.episodes.map((episode) => episode.externalId)).size).toBe(result.feed?.episodes.length);
+    if (kind === "tkkg") {
+      expect(result.feed?.episodes.filter((episode) => episode.externalId.startsWith("itunes:collection:"))).toHaveLength(96);
+    }
   }, 120_000);
 });

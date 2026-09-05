@@ -565,6 +565,14 @@ function unsafeQuantity(previous: number | null, current: number, newCount: numb
   return null;
 }
 
+function isTkkgRetroEpisode(source: SourceRow, episode: NormalizedImportEpisode): boolean {
+  return source.kind === "tkkg"
+    && episode.externalId.startsWith("itunes:collection:")
+    && episode.sortOrder !== null
+    && episode.sortOrder >= 1
+    && episode.sortOrder <= 99;
+}
+
 export async function syncImportSource(
   sourceId: string,
   triggerType: "manual" | "scheduled" = "manual",
@@ -603,7 +611,10 @@ export async function syncImportSource(
         const mappingByExternal = new Map(mappings.rows.map((item) => [item.external_id, item]));
         const catalog = await loadCatalogEpisodes(client, source.series_id);
         const newEpisodes = feed.episodes.filter((episode) => !mappingByExternal.has(episode.externalId));
-        const quantityError = feed.issues.length ? "Die Quelle enthält ungültige oder doppelte Einträge." : unsafeQuantity(source.last_item_count, feed.episodes.length, newEpisodes.length);
+        const untrustedNewCount = newEpisodes.filter((episode) => !isTkkgRetroEpisode(source, episode)).length;
+        const quantityError = feed.issues.length
+          ? "Die Quelle enthält ungültige oder doppelte Einträge."
+          : unsafeQuantity(source.last_item_count, feed.episodes.length, untrustedNewCount);
         let added = 0;
         let changed = 0;
         for (const episode of feed.episodes) {

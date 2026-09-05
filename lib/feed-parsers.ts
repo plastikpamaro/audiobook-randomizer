@@ -129,6 +129,49 @@ export function parseTkkgPage(html: string, pageUrl: string): ParsedImportFeed {
   return { episodes, issues, warnings: [] };
 }
 
+export function parseTkkgRetroCatalog(input: string): ParsedImportFeed {
+  let document: unknown;
+  try {
+    document = JSON.parse(input);
+  } catch {
+    return { episodes: [], issues: [{ item: "Retro-Archiv", message: "Ungültiges JSON." }], warnings: [] };
+  }
+  if (!document || typeof document !== "object" || !Array.isArray((document as Record<string, unknown>).results)) {
+    return { episodes: [], issues: [{ item: "Retro-Archiv", message: "Die Albumliste fehlt." }], warnings: [] };
+  }
+
+  const episodes: NormalizedImportEpisode[] = [];
+  const issues: ParsedImportFeed["issues"] = [];
+  for (const raw of (document as { results: unknown[] }).results) {
+    if (!raw || typeof raw !== "object") continue;
+    const item = raw as Record<string, unknown>;
+    if (item.wrapperType !== "collection") continue;
+    const collectionName = typeof item.collectionName === "string" ? text(item.collectionName) : "";
+    const match = collectionName.match(/^(?:Folge\s+)?0*(\d{1,2})\s*(?::|\/)\s*(.+)$/i);
+    const number = match ? positiveInteger(match[1]) : null;
+    const collectionId = positiveInteger(item.collectionId);
+    const canonicalUrl = safeHttpUrl(item.collectionViewUrl);
+    if (!match || !number || number > 99 || !collectionId || !canonicalUrl) {
+      issues.push({ item: collectionName || "Album", message: "Folgenummer, Titel oder stabile Album-ID fehlt." });
+      continue;
+    }
+    const releaseDate = typeof item.releaseDate === "string" ? validDate(item.releaseDate.slice(0, 10)) : null;
+    episodes.push({
+      externalId: `itunes:collection:${collectionId}`,
+      title: text(match[2]),
+      numberLabel: String(number),
+      sortOrder: number,
+      releaseDate,
+      durationMinutes: null,
+      priorityOnRelease: false,
+      links: [{ label: "Apple Music", url: canonicalUrl }],
+      canonicalUrl,
+    });
+  }
+  episodes.sort((left, right) => (left.sortOrder || 0) - (right.sortOrder || 0));
+  return { episodes, issues, warnings: [] };
+}
+
 function parsedJsonEpisode(value: unknown, index: number): { episode?: NormalizedImportEpisode; issue?: string } {
   if (!value || typeof value !== "object") return { issue: `Episode ${index + 1} ist kein Objekt.` };
   const item = value as Record<string, unknown>;

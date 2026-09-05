@@ -60,6 +60,16 @@ docker compose up -d --build
 
 Neue SQL-Migrationen werden vor dem Start der neuen App-Version angewendet. Bereits angewendete Migrationen dürfen nicht nachträglich verändert werden.
 
+Nach einem erfolgreichen Qualitätslauf für einen Push auf `main` kann die GitHub Action **Deployment** diese Aktualisierung automatisch auf der VPS ausführen. Dafür werden folgende Repository-Secrets benötigt:
+
+- `DEPLOY_HOST`: Hostname der VPS
+- `DEPLOY_USER`: SSH-Benutzer mit Zugriff auf Docker und das Repository
+- `DEPLOY_SSH_KEY`: privater SSH-Schlüssel für diesen Benutzer
+- `DEPLOY_KNOWN_HOSTS`: mit `ssh-keyscan -H <hostname>` geprüfter Host-Schlüssel
+- `DEPLOY_PATH`: absoluter Pfad des Repositorys auf der VPS
+
+Fehlt eines dieser Secrets, wird das Deployment mit einem Hinweis übersprungen. Die Action verwendet ausschließlich Fast-Forward-Updates und bricht bei lokalen Änderungen auf der VPS ab.
+
 ## CSV-Import
 
 Eine Beispieldatei liegt unter `examples/episodes.csv`. Pflichtspalten:
@@ -82,7 +92,7 @@ number_label,sort_order,release_date,duration_minutes,priority_on_release,link_l
 
 ## Online-Quellen
 
-Unter **Bibliothek → Online-Quellen** lassen sich die offiziellen Kataloge von Die drei ??? und TKKG oder eine öffentliche Feed-URL hinzufügen. Der Erstimport ist immer eine Vorschau: Neue Folgen, mögliche Treffer und Konflikte müssen bestätigt oder ignoriert werden. Erst danach wird die tägliche Synchronisierung aktiviert.
+Unter **Bibliothek → Online-Quellen** lassen sich die offiziellen Kataloge von Die drei ??? und TKKG oder eine öffentliche Feed-URL hinzufügen. Die TKKG-Quelle umfasst auch die 96 offiziell wiederveröffentlichten Folgen des Retro-Archivs; die drei nicht neu veröffentlichten Folgen 19, 20 und 37 fehlen entsprechend auch hier. Der Erstimport ist immer eine Vorschau: Neue Folgen, mögliche Treffer und Konflikte müssen bestätigt oder ignoriert werden. Erst danach wird die tägliche Synchronisierung aktiviert.
 
 Der interne Worker prüft minütlich, ob der tägliche Lauf fällig ist. Standardmäßig synchronisiert er um `04:15` Uhr in der mit `TZ` konfigurierten Zeitzone und holt einen nach einem Neustart verpassten Lauf nach:
 

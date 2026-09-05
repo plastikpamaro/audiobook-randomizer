@@ -6,6 +6,7 @@ import {
   parseJsonFeed,
   parseRssFeed,
   parseTkkgPage,
+  parseTkkgRetroCatalog,
 } from "@/lib/feed-parsers";
 import { localDate } from "@/lib/dates";
 import { AppError } from "@/lib/app-error";
@@ -16,6 +17,8 @@ const BUILTIN_URLS: Record<"drei_fragezeichen" | "tkkg", string> = {
   drei_fragezeichen: "https://www.dreifragezeichen.de/produktwelt/hoerspiele",
   tkkg: "https://www.tkkg.de/produkte/hoerspiele",
 };
+
+const TKKG_RETRO_CATALOG_URL = "https://itunes.apple.com/lookup?id=1442197513&entity=album&limit=200&country=DE";
 
 export interface FetchedImportFeed {
   feed: ParsedImportFeed | null;
@@ -57,6 +60,11 @@ async function fetchOfficial(
     for (const result of batch) {
       if (result.body) feeds.push(parsePage(result.body, result.url));
     }
+  }
+  if (kind === "tkkg") {
+    const retro = await safeFetchText(TKKG_RETRO_CATALOG_URL);
+    if (!retro.body) throw new AppError("Das TKKG Retro-Archiv ist leer.", 502, "IMPORT_EMPTY_RESPONSE");
+    feeds.push(parseTkkgRetroCatalog(retro.body));
   }
   return {
     feed: mergeFeeds(feeds),

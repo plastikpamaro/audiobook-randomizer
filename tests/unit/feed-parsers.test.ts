@@ -3,7 +3,7 @@ import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
   deduplicateFeed, maxPaginationPage, parseCsvFeed, parseDreiFragezeichenPage,
-  parseJsonFeed, parseRssFeed, parseTkkgPage, stableEpisodeKey,
+  parseJsonFeed, parseRssFeed, parseTkkgPage, parseTkkgRetroCatalog, stableEpisodeKey,
 } from "@/lib/feed-parsers";
 
 describe("Online-Import-Parser", () => {
@@ -26,6 +26,19 @@ describe("Online-Import-Parser", () => {
     expect(new Set(feed.episodes.map((episode) => episode.externalId)).size).toBe(2);
     expect(feed.episodes[0].links[0].label).toBe("Anhören");
     expect(maxPaginationPage(html, "https://www.tkkg.de/produkte/hoerspiele")).toBe(8);
+  });
+
+  it("liest das TKKG Retro-Archiv als Folgen statt einzelner Tracks", () => {
+    const feed = parseTkkgRetroCatalog(JSON.stringify({ results: [
+      { wrapperType: "artist", artistId: 1442197513, artistName: "TKKG Retro-Archiv" },
+      { wrapperType: "collection", collectionId: 1442197511, collectionName: "Folge 1: Die Jagd nach den Millionendieben", releaseDate: "1981-01-01T08:00:00Z", collectionViewUrl: "https://music.apple.com/de/album/folge-1/1442197511?uo=4" },
+      { wrapperType: "collection", collectionId: 1442202244, collectionName: "002/Der blinde Hellseher", releaseDate: "1981-04-01T08:00:00Z", collectionViewUrl: "https://music.apple.com/de/album/folge-2/1442202244?uo=4" },
+    ] }));
+    expect(feed.issues).toEqual([]);
+    expect(feed.episodes).toHaveLength(2);
+    expect(feed.episodes[0]).toMatchObject({ externalId: "itunes:collection:1442197511", title: "Die Jagd nach den Millionendieben", numberLabel: "1", sortOrder: 1, releaseDate: "1981-01-01" });
+    expect(feed.episodes[1]).toMatchObject({ externalId: "itunes:collection:1442202244", title: "Der blinde Hellseher", numberLabel: "2", sortOrder: 2 });
+    expect(feed.episodes[0].links).toEqual([{ label: "Apple Music", url: "https://music.apple.com/de/album/folge-1/1442197511?uo=4" }]);
   });
 
   it("liest das versionierte JSON-Format und meldet ungültige Termine", () => {
