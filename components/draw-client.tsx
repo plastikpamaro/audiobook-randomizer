@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   Check, ExternalLink, Heart, LoaderCircle, Plus, RotateCcw, Shuffle, SkipForward,
-  Sparkles, Trash2,
+  Sparkles, Star, Trash2, X,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -47,6 +47,8 @@ export function DrawClient({
   const [presetName, setPresetName] = useState("");
   const [showPresetForm, setShowPresetForm] = useState(false);
   const [note, setNote] = useState(initialDraw?.episode.note || "");
+  const [ratingTarget, setRatingTarget] = useState<{ id: string; title: string; seriesName: string } | null>(null);
+  const [ratingScore, setRatingScore] = useState<number | null>(null);
 
   const remaining = useMemo(
     () => availableSeries.filter((item) => selected.includes(item.id)).reduce((sum, item) => sum + item.remainingCount, 0),
@@ -98,13 +100,27 @@ export function DrawClient({
     if (!draw) return;
     setBusy(true); setMessage("");
     try {
-      await api(`/api/draws/${draw.id}/${outcome}`, { method: "POST" });
+      const result = await api<{ draw: ActiveDraw }>(`/api/draws/${draw.id}/${outcome}`, { method: "POST" });
+      if (outcome === "heard" && result.draw.ratingEditable) {
+        setRatingTarget({ id: draw.id, title: draw.episode.title, seriesName: draw.episode.seriesName });
+        setRatingScore(null);
+      }
       setDraw(null); setNote("");
       router.refresh();
     } catch (caught) {
       setMessage(caught instanceof Error ? caught.message : "Aktion fehlgeschlagen.");
       await refreshCurrent();
     } finally { setBusy(false); }
+  }
+
+  async function saveRating() {
+    if (!ratingTarget || ratingScore == null) return;
+    setBusy(true); setMessage("");
+    try {
+      await api(`/api/draws/${ratingTarget.id}/rating`, { method: "PUT", body: JSON.stringify({ score: ratingScore }) });
+      setRatingTarget(null); setMessage("Bewertung gespeichert."); router.refresh();
+    } catch (caught) { setMessage(caught instanceof Error ? caught.message : "Bewertung fehlgeschlagen."); }
+    finally { setBusy(false); }
   }
 
   async function updatePreference(input: { favorite?: boolean; note?: string }) {
@@ -212,6 +228,7 @@ export function DrawClient({
   }
 
   return (
+    <>
     <div className="draw-grid">
       <Card className="picker-card card-accent">
         <div className="row space-between picker-heading">
@@ -268,5 +285,24 @@ export function DrawClient({
         <Card className="card-subtle"><p className="eyebrow">Neu schlägt alt</p><h3>Veröffentlichungen zuerst.</h3><p className="muted">Fällige Neuerscheinungen erhalten einmal Vorrang. Danach mischen sie sich fair unter alle übrigen Folgen.</p></Card>
       </aside>
     </div>
+    {ratingTarget && (
+      <div className="modal-backdrop">
+        <section className="modal modal-small rating-dialog" role="dialog" aria-modal="true" aria-labelledby="rating-title">
+          <div className="modal-header"><div><p className="eyebrow">Gerade gehört</p><h2 id="rating-title">Wie war die Folge?</h2></div><Button variant="ghost" onClick={() => setRatingTarget(null)} aria-label="Später bewerten"><X size={20} /></Button></div>
+          <p><strong>{ratingTarget.title}</strong><br /><span className="muted">{ratingTarget.seriesName}</span></p>
+          <div className="rating-scale" role="radiogroup" aria-label="Bewertung von 1 bis 10">
+            {Array.from({ length: 10 }, (_, index) => index + 1).map((score) => (
+              <button key={score} type="button" className={ratingScore === score ? "selected" : ""} onClick={() => setRatingScore(score)} role="radio" aria-checked={ratingScore === score}>
+                <Star size={15} fill={ratingScore === score ? "currentColor" : "none"} /><span>{score}</span>
+              </button>
+            ))}
+          </div>
+          <p className="muted rating-hint">1 bedeutet schwach, 10 bedeutet großartig. Die Bewertung verändert die Ziehung nicht.</p>
+          {message && <p className="form-error">{message}</p>}
+          <div className="modal-actions"><Button variant="ghost" onClick={() => setRatingTarget(null)}>Später</Button><Button onClick={saveRating} disabled={busy || ratingScore == null}>Bewertung speichern</Button></div>
+        </section>
+      </div>
+    )}
+    </>
   );
 }

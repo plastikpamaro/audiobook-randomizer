@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "series": {
+    "key": "nachtarchiv",
+    "name": "Das Nachtarchiv"
+  },
+  "episodes": [
+    {
+      "external_id": "nachtarchiv-42",
+      "title": "Das Flüstern im Turm",
+      "number_label": "42",
+      "sort_order": 42,
+      "release_date": "2030-10-18",
+      "duration_minutes": 64,
+      "priority_on_release": true,
+      "canonical_url": "https://example.org/folgen/42",
+      "links": [
+        { "label": "Anhören", "url": "https://example.org/hoeren/42" }
+      ]
+    }
+  ]
+}

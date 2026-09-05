@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd">
+  <channel>
+    <title>Das Nachtarchiv</title>
+    <item>
+      <guid isPermaLink="false">nachtarchiv-42</guid>
+      <title>Folge 42: Das Flüstern im Turm</title>
+      <pubDate>Fri, 18 Oct 2030 05:00:00 GMT</pubDate>
+      <link>https://example.org/folgen/42</link>
+      <enclosure url="https://example.org/audio/42.mp3" type="audio/mpeg" />
+      <itunes:duration>01:04:00</itunes:duration>
+    </item>
+  </channel>
+</rss>

@@ -29,6 +29,8 @@ export interface EpisodeSummary {
   archived: boolean;
   favorite: boolean;
   note: string;
+  ratingAverage: number | null;
+  ratingCount: number;
   status: "available" | "heard" | "future" | "archived";
   roundNumber: number;
   links: EpisodeLink[];
@@ -65,6 +67,8 @@ export interface ActiveDraw {
   presetId: string | null;
   selectionSeriesIds: string[];
   wasPriority: boolean;
+  rating: number | null;
+  ratingEditable: boolean;
   episode: EpisodeSummary;
 }
 
@@ -89,5 +93,10 @@ export interface AnalyticsData {
   longestStreak: number;
   activity: ActivityPoint[];
   topSeries: Array<{ name: string; heard: number; minutes: number }>;
+  ratingAverage: number | null;
+  ratedCount: number;
+  ratingDistribution: Array<{ score: number; count: number }>;
+  topRatedEpisodes: Array<{ title: string; seriesName: string; average: number; count: number }>;
+  topRatedSeries: Array<{ name: string; average: number; count: number }>;
   progress: SeriesOverview[];
 }

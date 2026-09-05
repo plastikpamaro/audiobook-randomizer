@@ -37,6 +37,11 @@ interface DrawRow extends QueryResultRow {
   note: string | null;
   current_round_number: number;
   completion_id: string | null;
+  rating_average?: number | string | null;
+  rating_count?: number | string;
+  draw_rating: number | null;
+  draw_completion_id: string | null;
+  draw_completion_reversed_at: Date | string | null;
   links: unknown;
   can_restore?: boolean;
   was_priority: boolean;
@@ -51,6 +56,9 @@ const drawSelect = `
          e.priority_on_release, e.archived, pref.favorite, pref.note,
          COALESCE(usr.round_number, 1) AS current_round_number,
          current_completion.id AS completion_id,
+         ratings.rating_average, COALESCE(ratings.rating_count, 0) AS rating_count,
+         draw_completion.id AS draw_completion_id, draw_completion.rating AS draw_rating,
+         draw_completion.reversed_at AS draw_completion_reversed_at,
          COALESCE((
            SELECT json_agg(json_build_object(
              'id', el.id, 'label', el.label, 'url', el.url, 'sortOrder', el.sort_order
@@ -74,6 +82,15 @@ const drawSelect = `
    AND current_completion.episode_id=e.id
    AND current_completion.round_number=COALESCE(usr.round_number, 1)
    AND current_completion.reversed_at IS NULL
+  LEFT JOIN episode_completions draw_completion ON draw_completion.draw_id=d.id
+  LEFT JOIN LATERAL (
+    SELECT round(avg(rating_completion.rating)::numeric, 1) AS rating_average,
+           count(rating_completion.rating) AS rating_count
+    FROM episode_completions rating_completion
+    WHERE rating_completion.user_id=d.user_id AND rating_completion.episode_id=e.id
+      AND rating_completion.source_type='random' AND rating_completion.reversed_at IS NULL
+      AND rating_completion.rating IS NOT NULL
+  ) ratings ON true
 `;
 
 function mapDraw(row: DrawRow): ActiveDraw {
@@ -88,6 +105,8 @@ function mapDraw(row: DrawRow): ActiveDraw {
     presetId: row.preset_id,
     selectionSeriesIds: row.selection_series_ids,
     wasPriority: Boolean(row.was_priority),
+    rating: row.draw_rating == null ? null : Number(row.draw_rating),
+    ratingEditable: row.status === "heard" && row.source_type === "random" && Boolean(row.draw_completion_id) && !row.draw_completion_reversed_at,
     episode: mapEpisode({
       id: row.episode_id,
       episode_key: row.episode_key,
@@ -107,6 +126,8 @@ function mapDraw(row: DrawRow): ActiveDraw {
       note: row.note,
       round_number: row.current_round_number,
       completion_id: row.completion_id,
+      rating_average: row.rating_average,
+      rating_count: row.rating_count,
       links: row.links as never,
     }),
   };
@@ -335,5 +356,28 @@ export async function restoreHeardDraw(userId: string, drawId: string): Promise<
       return;
     }
     await client.query("UPDATE draws SET corrected_at=now() WHERE id=$1", [drawId]);
+  });
+}
+
+export async function setDrawRating(userId: string, drawId: string, score: number | null): Promise<void> {
+  await transaction(async (client) => {
+    await lockUser(client, userId);
+    const completion = await client.query<{ id: string; rating: number | null; reversed_at: Date | null }>(
+      `SELECT c.id, c.rating, c.reversed_at
+       FROM episode_completions c JOIN draws d ON d.id=c.draw_id
+       WHERE c.draw_id=$1 AND c.user_id=$2 AND c.source_type='random' AND d.status='heard'
+       FOR UPDATE OF c`,
+      [drawId, userId],
+    );
+    if (!completion.rowCount) throw new AppError("Dieser Hördurchlauf kann nicht bewertet werden.", 404, "RATING_NOT_AVAILABLE");
+    if (completion.rows[0].reversed_at) throw new AppError("Korrigierte Hördurchläufe können nicht mehr bewertet werden.", 409, "RATING_LOCKED");
+    if (completion.rows[0].rating === score) return;
+    await client.query(
+      `UPDATE episode_completions SET rating=$2,
+         rated_at=CASE WHEN $2::smallint IS NOT NULL AND rated_at IS NULL THEN now() ELSE rated_at END,
+         rating_updated_at=now()
+       WHERE id=$1`,
+      [completion.rows[0].id, score],
+    );
   });
 }

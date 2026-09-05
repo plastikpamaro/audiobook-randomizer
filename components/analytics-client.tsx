@@ -5,7 +5,7 @@ import {
   Area, AreaChart, Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer,
   Tooltip, XAxis, YAxis,
 } from "recharts";
-import { CalendarDays, Check, Clock3, Flame, Headphones, SkipForward } from "lucide-react";
+import { CalendarDays, Check, Clock3, Flame, Headphones, SkipForward, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { clientApi } from "@/components/client-api";
@@ -87,6 +87,13 @@ export function AnalyticsClient({ initialData }: { initialData: AnalyticsData })
         <Metric icon={<Flame />} label="Aktueller Streak" value={`${data.currentStreak} Tage`} />
         <Metric icon={<Flame />} label="Längster Streak" value={`${data.longestStreak} Tage`} />
         <Metric icon={<Headphones />} label="Aktive Serien" value={data.progress.filter((item) => item.totalCount > 0).length.toLocaleString("de-DE")} />
+        <Metric icon={<Star />} label="Ø Bewertung" value={data.ratingAverage == null ? "–" : `${data.ratingAverage.toLocaleString("de-DE")} / 10`} />
+        <Metric icon={<Star />} label="Bewertete Durchläufe" value={data.ratedCount.toLocaleString("de-DE")} />
+      </div>
+
+      <div className="grid grid-2 analytics-charts">
+        <Card><div className="chart-heading"><div><p className="eyebrow">Bewertungen</p><h2>Verteilung von 1 bis 10</h2></div></div><div className="chart-box">{data.ratedCount ? <ResponsiveContainer width="100%" height="100%"><BarChart data={data.ratingDistribution} margin={{ left: -18, right: 8, top: 10, bottom: 0 }}><CartesianGrid stroke="rgba(255,255,255,.06)" vertical={false}/><XAxis dataKey="score" stroke="#777984" fontSize={11} tickLine={false}/><YAxis allowDecimals={false} stroke="#777984" fontSize={11} tickLine={false}/><Tooltip contentStyle={{ background: "#171920", border: "1px solid rgba(255,255,255,.1)", borderRadius: 12 }} /><Bar dataKey="count" name="Bewertungen" fill="#f0a35b" radius={[5,5,0,0]}/></BarChart></ResponsiveContainer> : <ChartEmpty />}</div></Card>
+        <Card><p className="eyebrow">Am besten bewertet</p><h2>Folgen</h2><div className="ranking-list">{data.topRatedEpisodes.length ? data.topRatedEpisodes.map((item, index) => <div key={`${item.seriesName}/${item.title}`} className="ranking-row"><span>{index + 1}</span><strong className="grow">{item.title}<small>{item.seriesName}</small></strong><small><Star size={12} fill="currentColor" /> {item.average.toLocaleString("de-DE")} · {item.count}×</small></div>) : <p className="muted">In diesem Zeitraum gibt es noch keine Bewertungen.</p>}</div></Card>
       </div>
 
       <div className="grid grid-2 analytics-charts">
@@ -98,6 +105,7 @@ export function AnalyticsClient({ initialData }: { initialData: AnalyticsData })
         <Card><p className="eyebrow">Favoriten der Statistik</p><h2>Meistgehörte Serien</h2><div className="ranking-list">{data.topSeries.length ? data.topSeries.map((item, index) => <div key={item.name} className="ranking-row"><span>{index + 1}</span><strong className="grow">{item.name}</strong><small>{item.heard} gehört · {Math.floor(item.minutes / 60)}:{String(item.minutes % 60).padStart(2,"0")} Std.</small></div>) : <p className="muted">In diesem Zeitraum gibt es noch keine gehörten Folgen.</p>}</div></Card>
         <Card><p className="eyebrow">Aktuelle Runden</p><h2>Serienfortschritt</h2><div className="progress-list">{data.progress.filter((item) => item.totalCount > 0).map((item) => { const percent = Math.round((item.heardCount / item.totalCount) * 100); return <div key={item.id} className="progress-row"><div className="row space-between"><strong>{item.name}</strong><small>{percent} % · Runde {item.roundNumber}</small></div><div className="progress-track"><div className="progress-fill" style={{ width: `${percent}%`, background: item.accentColor }} /></div></div>; })}</div></Card>
       </div>
+      <Card><p className="eyebrow">Serienwertung</p><h2>Bestbewertete Serien</h2><div className="ranking-list">{data.topRatedSeries.length ? data.topRatedSeries.map((item, index) => <div key={item.name} className="ranking-row"><span>{index + 1}</span><strong className="grow">{item.name}</strong><small><Star size={12} fill="currentColor" /> {item.average.toLocaleString("de-DE")} · {item.count} Bewertungen</small></div>) : <p className="muted">Noch keine bewerteten Hördurchläufe.</p>}</div></Card>
     </div>
   );
 }

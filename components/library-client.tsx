@@ -4,7 +4,7 @@ import { useMemo, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import {
   Archive, BookPlus, CalendarClock, Check, FileUp, Heart,
-  Pencil, Plus, RotateCcw, Search, X,
+  Pencil, Plus, RotateCcw, Search, Star, X,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -223,7 +223,7 @@ export function LibraryClient({ initialSeries, initialEpisodes }: { initialSerie
         {message && <p className={message.includes("fehl") || message.includes("nicht") ? "form-error" : "form-success"} role="status">{message}</p>}
         <div className="episode-table-wrap">
           <table className="episode-table">
-            <thead><tr><th><span className="sr-only">Auswahl</span></th><th>Folge</th><th>Serie</th><th>Status</th><th>Termin</th><th><span className="sr-only">Bearbeiten</span></th></tr></thead>
+            <thead><tr><th><span className="sr-only">Auswahl</span></th><th>Folge</th><th>Serie</th><th>Status</th><th>Bewertung</th><th>Termin</th><th><span className="sr-only">Bearbeiten</span></th></tr></thead>
             <tbody>
               {filtered.map((episode) => (
                 <tr key={episode.id}>
@@ -231,6 +231,7 @@ export function LibraryClient({ initialSeries, initialEpisodes }: { initialSerie
                   <td><div className="episode-title-cell"><span className="series-dot" style={{ background: episode.accentColor }} /><span><strong>{episode.numberLabel ? `${episode.numberLabel} · ` : ""}{episode.title}</strong><small>{episode.durationMinutes ? `${episode.durationMinutes} Min.` : "Keine Laufzeit"}{episode.links.length ? ` · ${episode.links.length} Link${episode.links.length > 1 ? "s" : ""}` : ""}</small></span>{episode.favorite && <Heart size={14} fill="currentColor" />}</div></td>
                   <td>{episode.seriesName}</td>
                   <td><Badge tone={episode.status === "available" ? "good" : episode.status === "future" ? "warn" : "neutral"}>{statusLabels[episode.status]}</Badge></td>
+                  <td>{episode.ratingAverage == null ? <span className="muted">–</span> : <span className="episode-rating"><Star size={13} fill="currentColor" />{episode.ratingAverage.toLocaleString("de-DE")} <small>({episode.ratingCount})</small></span>}</td>
                   <td>{episode.releaseDate || "–"}</td>
                   <td><Button variant="ghost" size="sm" onClick={() => setEpisodeEditor(episodeDraft(episode, episode.seriesId))} aria-label={`${episode.title} bearbeiten`}><Pencil size={16} /></Button></td>
                 </tr>

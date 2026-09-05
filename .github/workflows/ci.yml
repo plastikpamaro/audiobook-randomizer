@@ -42,6 +42,7 @@ jobs:
       - run: npm run typecheck
       - run: npm run lint
       - run: npm test
+      - run: npm audit --omit=dev
       - name: Testdatenbank anlegen
         run: PGPASSWORD=test-password psql -h 127.0.0.1 -U hoerspiel -d hoerspiel -c "CREATE DATABASE hoerspiel_test"
       - run: npm run test:integration

@@ -95,6 +95,8 @@ interface EpisodeRow {
   note: string | null;
   round_number: number | string;
   completion_id: string | null;
+  rating_average?: number | string | null;
+  rating_count?: number | string;
   links: EpisodeLink[] | string | null;
 }
 
@@ -122,6 +124,8 @@ export function mapEpisode(row: EpisodeRow, today = localDate()): EpisodeSummary
     archived: row.archived,
     favorite: row.favorite ?? false,
     note: row.note || "",
+    ratingAverage: row.rating_average == null ? null : Number(row.rating_average),
+    ratingCount: Number(row.rating_count || 0),
     status,
     roundNumber: Number(row.round_number),
     links: (links || []).map((link: Record<string, unknown>) => ({
@@ -141,6 +145,7 @@ export async function getEpisodes(userId: string): Promise<EpisodeSummary[]> {
             e.archived, uep.favorite, uep.note,
             COALESCE(usr.round_number, 1) AS round_number,
             ec.id AS completion_id,
+            ratings.rating_average, COALESCE(ratings.rating_count, 0) AS rating_count,
             COALESCE((
               SELECT json_agg(json_build_object(
                 'id', el.id, 'label', el.label, 'url', el.url, 'sortOrder', el.sort_order
@@ -156,6 +161,12 @@ export async function getEpisodes(userId: string): Promise<EpisodeSummary[]> {
       AND ec.round_number = COALESCE(usr.round_number, 1)
       AND ec.reversed_at IS NULL
      LEFT JOIN user_episode_preferences uep ON uep.user_id = $1 AND uep.episode_id = e.id
+     LEFT JOIN LATERAL (
+       SELECT round(avg(c.rating)::numeric, 1) AS rating_average, count(c.rating) AS rating_count
+       FROM episode_completions c
+       WHERE c.user_id=$1 AND c.episode_id=e.id AND c.source_type='random'
+         AND c.reversed_at IS NULL AND c.rating IS NOT NULL
+     ) ratings ON true
      ORDER BY lower(s.name), e.sort_order NULLS LAST, e.release_date NULLS LAST,
               e.number_label NULLS LAST, lower(e.title)`,
     [userId],

@@ -6,6 +6,7 @@ x-app-environment: &app-environment
   SESSION_SECRET: ${SESSION_SECRET}
   SETUP_TOKEN: ${SETUP_TOKEN}
   TZ: ${TZ:-Europe/Berlin}
+  IMPORT_SYNC_TIME: ${IMPORT_SYNC_TIME:-04:15}
 
 services:
   postgres:
@@ -61,6 +62,29 @@ services:
     tmpfs:
       - /tmp
       - /app/.next/cache:uid=10001,gid=10001,mode=0750
+    security_opt:
+      - no-new-privileges:true
+
+  import-worker:
+    build:
+      context: .
+      target: runner
+    command: ["node", "dist/import-worker.mjs"]
+    restart: unless-stopped
+    init: true
+    environment:
+      <<: *app-environment
+      DB_POOL_SIZE: 3
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    networks:
+      - internal
+    read_only: true
+    tmpfs:
+      - /tmp
+    healthcheck:
+      disable: true
     security_opt:
       - no-new-privileges:true
 

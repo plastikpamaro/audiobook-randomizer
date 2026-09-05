@@ -12,8 +12,8 @@ if [ -f ./.env ]; then
   set +a
 fi
 
-docker compose stop audiobook-randomizer
-trap 'docker compose start audiobook-randomizer >/dev/null 2>&1 || true' EXIT
+docker compose stop audiobook-randomizer import-worker
+trap 'docker compose start audiobook-randomizer import-worker >/dev/null 2>&1 || true' EXIT
 
 docker compose exec -T postgres pg_restore \
   --username "$POSTGRES_USER" \
@@ -24,6 +24,6 @@ docker compose exec -T postgres pg_restore \
   --no-owner < "$1"
 
 docker compose run --rm migrate
-docker compose start audiobook-randomizer
+docker compose start audiobook-randomizer import-worker
 trap - EXIT
 echo "Backup wiederhergestellt."
