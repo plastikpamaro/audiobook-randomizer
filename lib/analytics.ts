@@ -2,7 +2,7 @@ import "server-only";
 
 import { getSeriesOverview } from "@/lib/catalog";
 import { query } from "@/lib/db";
-import { isoDate, localDate } from "@/lib/dates";
+import { localDate } from "@/lib/dates";
 import { getAppTimezone } from "@/lib/env";
 import { AppError } from "@/lib/http";
 import { computeStreaks, fillActivityDays } from "@/lib/stats";
@@ -43,7 +43,9 @@ export async function getAnalytics(userId: string, from: string, to: string): Pr
             AND timezone($4, c.completed_at)::date BETWEEN $2::date AND $3::date)::text AS rated_count`,
       [userId, from, to, timeZone],
     ),
-    query<{ bucket: string | Date; heard: string; skipped: string; minutes: string }>(
+    // DATE must cross the driver boundary as text: pg otherwise creates local
+    // midnight, whose UTC serialization can move the bucket to the prior day.
+    query<{ bucket: string; heard: string; skipped: string; minutes: string }>(
       `WITH events AS (
          SELECT timezone($4, c.completed_at)::date AS bucket, 1 AS heard, 0 AS skipped,
                 COALESCE(c.duration_minutes_snapshot, e.duration_minutes, 0) AS minutes
@@ -56,7 +58,7 @@ export async function getAnalytics(userId: string, from: string, to: string): Pr
          WHERE d.user_id=$1 AND d.source_type='random' AND d.status='skipped'
            AND timezone($4, d.resolved_at)::date BETWEEN $2::date AND $3::date
        )
-       SELECT bucket, sum(heard)::text AS heard, sum(skipped)::text AS skipped,
+       SELECT to_char(bucket, 'YYYY-MM-DD') AS bucket, sum(heard)::text AS heard, sum(skipped)::text AS skipped,
               sum(minutes)::text AS minutes
        FROM events GROUP BY bucket ORDER BY bucket`,
       [userId, from, to, timeZone],
@@ -71,8 +73,8 @@ export async function getAnalytics(userId: string, from: string, to: string): Pr
        GROUP BY s.id ORDER BY count(*) DESC, lower(s.name) LIMIT 10`,
       [userId, from, to, timeZone],
     ),
-    query<{ day: string | Date }>(
-      `SELECT DISTINCT timezone($2, completed_at)::date AS day
+    query<{ day: string }>(
+      `SELECT DISTINCT to_char(timezone($2, completed_at)::date, 'YYYY-MM-DD') AS day
        FROM episode_completions
        WHERE user_id=$1 AND source_type='random' AND reversed_at IS NULL
        ORDER BY day`,
@@ -110,10 +112,10 @@ export async function getAnalytics(userId: string, from: string, to: string): Pr
   const totals = totalsRows[0] || { heard: "0", skipped: "0", minutes: "0", rating_average: null, rated_count: "0" };
   const heard = Number(totals.heard);
   const skipped = Number(totals.skipped);
-  const streakDays = streakRows.map((row) => isoDate(row.day)!);
+  const streakDays = streakRows.map((row) => row.day);
   const streaks = computeStreaks(streakDays, localDate());
   const activity: ActivityPoint[] = activityRows.map((row) => ({
-    bucket: isoDate(row.bucket)!,
+    bucket: row.bucket,
     heard: Number(row.heard),
     skipped: Number(row.skipped),
     minutes: Number(row.minutes),

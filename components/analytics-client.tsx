@@ -20,7 +20,7 @@ function subtractDays(date: string, count: number): string {
 }
 
 function shortDate(value: string): string {
-  return new Intl.DateTimeFormat("de-DE", { day: "2-digit", month: "2-digit" }).format(new Date(`${value}T12:00:00Z`));
+  return new Intl.DateTimeFormat("de-DE", { day: "2-digit", month: "2-digit", timeZone: "UTC" }).format(new Date(`${value}T12:00:00Z`));
 }
 
 function activityBucket(value: string, grouping: ActivityGrouping): string {
@@ -36,7 +36,7 @@ function activityBucket(value: string, grouping: ActivityGrouping): string {
 
 function activityLabel(value: string, grouping: ActivityGrouping): string {
   if (grouping === "month") {
-    return new Intl.DateTimeFormat("de-DE", { month: "short", year: "2-digit" }).format(new Date(`${value}-01T12:00:00Z`));
+    return new Intl.DateTimeFormat("de-DE", { month: "short", year: "2-digit", timeZone: "UTC" }).format(new Date(`${value}-01T12:00:00Z`));
   }
   return `${grouping === "week" ? "KW · " : ""}${shortDate(value)}`;
 }

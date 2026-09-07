@@ -57,4 +57,20 @@ describe.skipIf(!process.env.TEST_DATABASE_URL)("Nachgetragene Laufzeiten in alt
     expect((await getAnalytics(userId, "2026-09-06", "2026-09-06")).minutes).toBe(45);
     expect((await pool.query("SELECT duration_minutes_snapshot FROM episode_completions WHERE user_id=$1 AND episode_id=$2 AND round_number=3", [userId, episodeId])).rows[0].duration_minutes_snapshot).toBe(45);
   });
+
+  it("ordnet drei Abschlüsse und einen Skip dem 07.09. in Berlin zu, auch vor UTC-Mitternacht", async () => {
+    const { getAnalytics } = await import("@/lib/analytics");
+    const timestamps = ["2026-09-06T22:15:00Z", "2026-09-07T08:00:00Z", "2026-09-07T14:00:00Z", "2026-09-06T22:30:00Z"];
+    for (const [index, timestamp] of timestamps.entries()) {
+      const status = index === 3 ? "skipped" : "heard";
+      const draw = (await pool.query("INSERT INTO draws(user_id,episode_id,round_number,status,selection_series_ids,resolved_at) VALUES ($1,$2,$3,$4,ARRAY[$5::uuid],$6::timestamptz) RETURNING id", [userId, episodeId, index + 10, status, seriesId, timestamp])).rows[0];
+      if (status === "heard") await pool.query("INSERT INTO episode_completions(user_id,episode_id,round_number,draw_id,source_type,completed_at) VALUES ($1,$2,$3,$4,'random',$5::timestamptz)", [userId, episodeId, index + 10, draw.id, timestamp]);
+    }
+    const analytics = await getAnalytics(userId, "2026-09-07", "2026-09-07");
+    expect(analytics.heard).toBe(3);
+    expect(analytics.skipped).toBe(1);
+    expect(analytics.activity).toEqual([{ bucket: "2026-09-07", heard: 3, skipped: 1, minutes: 180 }]);
+    expect(analytics.longestStreak).toBe(2);
+    expect((await getAnalytics(userId, "2026-09-06", "2026-09-06")).heard).toBe(2);
+  });
 });
