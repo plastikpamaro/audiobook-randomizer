@@ -1,6 +1,6 @@
 import "server-only";
 
-import { createHash } from "node:crypto";
+import { hashImportEpisode as hashPayload, importFieldChanges } from "@/lib/import-changes";
 import type { PoolClient, QueryResultRow } from "pg";
 import { AppError } from "@/lib/app-error";
 import { db, query, transaction } from "@/lib/db";
@@ -136,10 +136,6 @@ function mapProposal(row: ProposalRow): ImportProposalSummary {
   };
 }
 
-function hashPayload(episode: NormalizedImportEpisode): string {
-  return createHash("sha256").update(JSON.stringify(episode)).digest("hex");
-}
-
 function displayError(error: unknown): string {
   return error instanceof Error ? error.message.slice(0, 2_000) : "Unbekannter Importfehler";
 }
@@ -150,17 +146,12 @@ function importedPriority(episode: NormalizedImportEpisode, firstImportedAt: str
   return episode.releaseDate >= localDate(new Date(firstImportedAt));
 }
 
-function fieldChanges(episode: NormalizedImportEpisode, catalog: CatalogEpisodeRow): Record<string, { from: unknown; to: unknown }> {
-  const result: Record<string, { from: unknown; to: unknown }> = {};
-  const fields: Array<[string, unknown, unknown]> = [
-    ["title", catalog.title, episode.title],
-    ["numberLabel", catalog.number_label, episode.numberLabel],
-    ["sortOrder", catalog.sort_order, episode.sortOrder],
-    ["releaseDate", catalog.release_date ? localDate(new Date(catalog.release_date)) : null, episode.releaseDate],
-    ["durationMinutes", catalog.duration_minutes, episode.durationMinutes],
-  ];
-  for (const [key, from, to] of fields) if (from !== to && to !== null) result[key] = { from, to };
-  return result;
+function fieldChanges(episode: NormalizedImportEpisode, catalog: CatalogEpisodeRow, links: NormalizedImportEpisode["links"]): Record<string, { from: unknown; to: unknown }> {
+  return importFieldChanges(episode, {
+    ...episode, title: catalog.title, numberLabel: catalog.number_label, sortOrder: catalog.sort_order,
+    releaseDate: catalog.release_date ? localDate(new Date(catalog.release_date)) : null,
+    durationMinutes: catalog.duration_minutes, links,
+  });
 }
 
 async function loadSource(executor: Pick<PoolClient, "query">, sourceId: string, forUpdate = false): Promise<SourceRow> {
@@ -205,7 +196,11 @@ async function insertProposal(
        source_id, run_id, external_id, proposal_type, candidate_episode_id,
        payload_hash, source_payload, field_changes
      ) VALUES ($1,$2,$3,$4,$5,$6,$7::jsonb,$8::jsonb)
-     ON CONFLICT (source_id, external_id, proposal_type, payload_hash) DO NOTHING
+     ON CONFLICT (source_id, external_id, proposal_type, payload_hash) DO UPDATE SET
+       run_id=EXCLUDED.run_id, candidate_episode_id=EXCLUDED.candidate_episode_id,
+       source_payload=EXCLUDED.source_payload, field_changes=EXCLUDED.field_changes,
+       status='pending', resolved_at=NULL, resolved_by_user_id=NULL
+     WHERE import_proposals.proposal_type='update' AND import_proposals.status='accepted'
      RETURNING id`,
     [
       input.sourceId, input.runId, input.episode.externalId, input.type, input.candidateId || null,
@@ -289,11 +284,11 @@ async function applyProposalRow(
     if (!mapped.rowCount) throw new AppError("Die externe Folge ist nicht mehr verknüpft.", 409, "MAPPING_MISSING");
     episodeId = mapped.rows[0].episode_id;
     await client.query(
-      `UPDATE episodes SET title=$2, number_label=$3, sort_order=$4,
-         release_date=$5, duration_minutes=$6,
-         priority_on_release=priority_on_release OR $7, updated_at=now()
+      `UPDATE episodes SET title=$2, number_label=COALESCE($3,number_label), sort_order=COALESCE($4,sort_order),
+         release_date=COALESCE($5,release_date), duration_minutes=COALESCE($6,duration_minutes),
+         updated_at=now()
        WHERE id=$1`,
-      [episodeId, episode.title, episode.numberLabel, episode.sortOrder, episode.releaseDate, episode.durationMinutes, importedPriority(episode, source.first_import_completed_at)],
+      [episodeId, episode.title, episode.numberLabel, episode.sortOrder, episode.releaseDate, episode.durationMinutes],
     );
     await replaceImportedLinks(client, source.id, episodeId, episode);
   }
@@ -461,14 +456,14 @@ async function withSourceLock<T>(sourceId: string, work: (client: PoolClient) =>
   }
 }
 
-export async function previewImportSource(sourceId: string): Promise<ImportPreviewResult> {
+export async function previewImportSource(sourceId: string, fetcher: typeof fetchImportFeed = fetchImportFeed): Promise<ImportPreviewResult> {
   return withSourceLock(sourceId, async (client) => {
     const source = await loadSource(client, sourceId);
     if (source.first_import_completed_at) throw new AppError("Diese Quelle wurde bereits bestätigt. Nutze „Jetzt prüfen“.", 409, "SOURCE_ALREADY_CONFIRMED");
     const run = await createRun(client, sourceId, "preview");
     if (!run) throw new AppError("Vorschau konnte nicht gestartet werden.", 500, "RUN_FAILED");
     try {
-      const fetched = await fetchImportFeed(source, false);
+      const fetched = await fetcher(source, false);
       const feed = fetched.feed;
       if (!feed) throw new AppError("Die Quelle lieferte keine Daten.", 422, "IMPORT_EMPTY");
       if (!feed.episodes.length) {
@@ -610,17 +605,20 @@ export async function syncImportSource(
       if (!feed) throw new AppError("Die Quelle lieferte keine Daten.", 422, "IMPORT_EMPTY");
       await client.query("BEGIN");
       try {
-        const mappings = await client.query<{ external_id: string; episode_id: string; payload_hash: string }>(
-          "SELECT external_id, episode_id, payload_hash FROM import_source_items WHERE source_id=$1",
+        const mappings = await client.query<{ external_id: string; episode_id: string; source_payload: NormalizedImportEpisode | string }>(
+          "SELECT external_id, episode_id, source_payload FROM import_source_items WHERE source_id=$1",
           [sourceId],
         );
-        const rejected = await client.query<{ external_id: string; payload_hash: string }>(
-          "SELECT external_id,payload_hash FROM import_proposals WHERE source_id=$1 AND status='rejected'",
+        const rejected = await client.query<{ external_id: string; source_payload: NormalizedImportEpisode | string }>(
+          "SELECT external_id,source_payload FROM import_proposals WHERE source_id=$1 AND status='rejected'",
           [sourceId],
         );
-        const rejectedHashes = new Set(rejected.rows.map((item) => `${item.external_id}\0${item.payload_hash}`));
+        const rejectedHashes = new Set(rejected.rows.map((item) => `${item.external_id}\0${hashPayload(jsonValue(item.source_payload))}`));
         const mappingByExternal = new Map(mappings.rows.map((item) => [item.external_id, item]));
         const catalog = await loadCatalogEpisodes(client, source.series_id);
+        const sourceLinks = await client.query<{ episode_id: string; label: string; url: string }>(
+          "SELECT episode_id,label,url FROM episode_links WHERE import_source_id=$1 ORDER BY sort_order,id", [sourceId],
+        );
         const excluded = await excludedSourceItems(client, sourceId);
         const newEpisodes = feed.episodes.filter((episode) => !excluded.has(episode.externalId) && !mappingByExternal.has(episode.externalId));
         const untrustedNewCount = newEpisodes.filter((episode) => !isTkkgRetroEpisode(source, episode)).length;
@@ -635,10 +633,18 @@ export async function syncImportSource(
           const hash = hashPayload(episode);
           if (mapped) {
             await client.query("UPDATE import_source_items SET last_seen_at=now() WHERE source_id=$1 AND external_id=$2", [sourceId, episode.externalId]);
-            if (mapped.payload_hash !== hash) {
+            // Rebuild pending updates from the current response: this also removes
+            // legacy key-order false positives and superseded proposals.
+            await client.query("DELETE FROM import_proposals WHERE source_id=$1 AND external_id=$2 AND proposal_type='update' AND status='pending'", [sourceId, episode.externalId]);
+            if (hashPayload(jsonValue(mapped.source_payload)) !== hash) {
               const target = catalog.find((item) => item.id === mapped.episode_id);
-              await insertProposal(client, { sourceId, runId: run.id, episode, type: "update", candidateId: mapped.episode_id, changes: target ? fieldChanges(episode, target) : {} });
-              changed += 1;
+              const changes = target ? fieldChanges(episode, target, sourceLinks.rows.filter((link) => link.episode_id === mapped.episode_id).map(({ label, url }) => ({ label, url }))) : {};
+              if (Object.keys(changes).length && !rejectedHashes.has(`${episode.externalId}\0${hash}`)) {
+                const inserted = await insertProposal(client, { sourceId, runId: run.id, episode, type: "update", candidateId: mapped.episode_id, changes });
+                if (inserted) changed += 1;
+              } else if (!Object.keys(changes).length) {
+                await mapSourceItem(client, sourceId, mapped.episode_id, episode);
+              }
             }
             continue;
           }
@@ -711,6 +717,27 @@ export async function rejectImportProposal(userId: string, proposalId: string): 
       "UPDATE import_proposals SET status='rejected', resolved_at=now(), resolved_by_user_id=$2 WHERE id=$1",
       [proposalId, userId],
     );
+  });
+}
+
+export async function resolveImportProposals(userId: string, proposalIds: string[], action: "accept" | "reject"): Promise<void> {
+  const ids = [...new Set(proposalIds)].sort();
+  if (!ids.length || ids.length > 1000) throw new AppError("Wähle zwischen 1 und 1000 Änderungen aus.");
+  await transaction(async (client) => {
+    const rows = await client.query<ProposalRow>("SELECT * FROM import_proposals WHERE id=ANY($1::uuid[]) ORDER BY id FOR UPDATE", [ids]);
+    if (rows.rowCount !== ids.length || rows.rows.some((row) => row.status !== "pending" || row.proposal_type !== "update")) {
+      throw new AppError("Die Auswahl ist nicht mehr aktuell. Lade die Seite neu und prüfe die offenen Änderungen.", 409, "PROPOSAL_RESOLVED");
+    }
+    const sources = new Map<string, SourceRow>();
+    for (const id of [...new Set(rows.rows.map((row) => row.source_id))].sort()) {
+      const source = await loadSource(client, id, true);
+      if (!source.first_import_completed_at) throw new AppError("Bestätige zuerst den Erstimport.", 409, "INITIAL_COMMIT_REQUIRED");
+      sources.set(id, source);
+    }
+    for (const row of rows.rows) {
+      if (action === "accept") await applyProposalRow(client, sources.get(row.source_id)!, row, userId);
+      else await client.query("UPDATE import_proposals SET status='rejected', resolved_at=now(), resolved_by_user_id=$2 WHERE id=$1", [row.id, userId]);
+    }
   });
 }
 

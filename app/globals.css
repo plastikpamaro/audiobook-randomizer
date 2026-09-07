@@ -325,6 +325,17 @@ input[type="checkbox"] { width: 17px; height: 17px; margin: 0; accent-color: var
 .source-empty { border-top: 1px solid var(--line); }
 .proposal-section { margin-top: 22px; padding-top: 20px; border-top: 1px solid var(--line); }
 .proposal-row select { max-width: 260px; }
+.proposal-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 16px 0; }
+.proposal-selection { display: flex; flex-direction: row; align-items: center; gap: 8px; font-size: 13px; }
+.proposal-selection input { width: 18px; height: 18px; margin: 0; }
+.proposal-item { padding-top: 12px; border-top: 1px solid var(--line); }
+.proposal-item .proposal-row { border-top: 0; }
+.proposal-row .grow { min-width: 0; }
+.proposal-diff { margin-top: 12px; font-size: 13px; }
+.proposal-diff-row { display: grid; grid-template-columns: minmax(70px, .65fr) minmax(0, 1fr) minmax(0, 1fr); gap: 12px; padding: 8px 0; border-top: 1px solid var(--line); overflow-wrap: anywhere; }
+.proposal-links { list-style: none; padding: 0; margin: 0; }
+.proposal-links li + li { margin-top: 8px; }
+.proposal-links span { display: block; }
 .preview-list { margin: 14px 0 18px; }
 .preview-row { display: grid; grid-template-columns: minmax(220px, 1fr) minmax(170px, .45fr) minmax(210px, .6fr); gap: 10px; align-items: center; padding: 12px 0; border-top: 1px solid var(--line); }
 .preview-row strong, .preview-row small { display: block; }

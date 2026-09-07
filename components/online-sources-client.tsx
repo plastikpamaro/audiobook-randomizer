@@ -59,6 +59,9 @@ export function OnlineSourcesClient({
   const [runs, setRuns] = useState<{ source: ImportSourceSummary; items: ImportRunSummary[] } | null>(null);
   const [busy, setBusy] = useState<string | null>(null);
   const [message, setMessage] = useState("");
+  const [selected, setSelected] = useState<string[]>([]);
+  const updates = proposals.filter((proposal) => proposal.proposalType === "update");
+  const selectedIds = updates.filter((proposal) => selected.includes(proposal.id)).map((proposal) => proposal.id);
 
   const sourceById = useMemo(() => new Map(sources.map((source) => [source.id, source])), [sources]);
 
@@ -179,6 +182,17 @@ export function OnlineSourcesClient({
     finally { setBusy(null); }
   }
 
+  async function resolveSelected(action: "accept" | "reject") {
+    setBusy("bulk"); setMessage("");
+    try {
+      await clientApi("/api/import-proposals/bulk", { method: "POST", body: JSON.stringify({ proposalIds: selectedIds, action }) });
+      setSelected([]);
+      setMessage(`${selectedIds.length} Änderungen ${action === "accept" ? "übernommen" : "verworfen"}.`);
+      await reload();
+    } catch (caught) { setMessage(caught instanceof Error ? caught.message : "Änderungen konnten nicht bearbeitet werden."); await reload(); }
+    finally { setBusy(null); }
+  }
+
   return (
     <Card className="online-sources-card">
       <div className="row space-between source-heading"><div><p className="eyebrow">Automatischer Katalog</p><h2>Online-Quellen</h2><p className="muted">Offizielle Kataloge oder öffentliche Feeds werden täglich sicher geprüft.</p></div><Button onClick={() => setShowWizard(true)}><CloudDownload size={17} />Quelle hinzufügen</Button></div>
@@ -199,7 +213,19 @@ export function OnlineSourcesClient({
         {!sources.length && <div className="empty-state source-empty"><CloudDownload size={30} /><h3>Noch keine Online-Quelle</h3><p className="muted">Der erste Abruf wird immer nur als Vorschau angezeigt.</p></div>}
       </div>
 
-      {proposals.length > 0 && <div className="proposal-section"><div><p className="eyebrow">Manuelle Prüfung</p><h3>Offene Änderungen</h3></div>{proposals.map((proposal) => <ProposalRow key={proposal.id} proposal={proposal} source={sourceById.get(proposal.sourceId)} episodes={episodes} busy={busy === proposal.id} onResolve={resolveProposal} />)}</div>}
+      {proposals.length > 0 && <div className="proposal-section">
+        <div><p className="eyebrow">Manuelle Prüfung</p><h3>Offene Änderungen</h3></div>
+        {updates.length > 0 && <div className="proposal-toolbar">
+          <label className="proposal-selection"><input type="checkbox" checked={selectedIds.length === updates.length} disabled={Boolean(busy)} onChange={(event) => setSelected(event.target.checked ? updates.map((item) => item.id) : [])} />Alle Metadatenänderungen auswählen ({updates.length})</label>
+          <span className="muted" aria-live="polite">{selectedIds.length} ausgewählt</span>
+          <Button size="sm" disabled={Boolean(busy) || !selectedIds.length} onClick={() => resolveSelected("accept")}><Check size={14} />Auswahl annehmen</Button>
+          <Button size="sm" variant="secondary" disabled={Boolean(busy) || !selectedIds.length} onClick={() => resolveSelected("reject")}><X size={14} />Auswahl ablehnen</Button>
+        </div>}
+        {proposals.map((proposal) => <div key={proposal.id} className="proposal-item">
+          {proposal.proposalType === "update" && <label className="proposal-selection"><input type="checkbox" aria-label={`${proposal.episode.title} auswählen`} checked={selectedIds.includes(proposal.id)} disabled={Boolean(busy)} onChange={(event) => setSelected((current) => event.target.checked ? [...current, proposal.id] : current.filter((id) => id !== proposal.id))} />Auswählen</label>}
+          <ProposalRow proposal={proposal} source={sourceById.get(proposal.sourceId)} episodes={episodes} busy={Boolean(busy)} onResolve={resolveProposal} />
+        </div>)}
+      </div>}
 
       {showWizard && <SourceWizard series={series} busy={busy === "create"} message={message} onSubmit={createAndPreview} onClose={() => setShowWizard(false)} />}
       {preview && <PreviewDialog preview={preview} resolutions={resolutions} episodes={episodes} source={sourceById.get(preview.run.sourceId)} busy={busy === "commit"} onChange={(id, value) => setResolutions((current) => ({ ...current, [id]: value }))} onCommit={commitPreview} onClose={() => setPreview(null)} />}
@@ -227,7 +253,25 @@ function PreviewDialog({ preview, resolutions, episodes, source, busy, onChange,
 function ProposalRow({ proposal, source, episodes, busy, onResolve }: { proposal: ImportProposalSummary; source?: ImportSourceSummary; episodes: EpisodeSummary[]; busy: boolean; onResolve: (proposal: ImportProposalSummary, accept: boolean, episodeId?: string) => void }) {
   const [episodeId, setEpisodeId] = useState(proposal.candidateEpisodeId || "");
   const link = proposal.proposalType === "link";
-  return <article className="proposal-row"><div className="grow"><div className="row-wrap"><Badge tone="warn">{proposal.proposalType === "update" ? "Metadaten geändert" : proposal.proposalType === "link" ? "Möglicher Treffer" : "Neue Folge"}</Badge><strong>{proposal.episode.title}</strong></div><small>{source?.name || "Quelle"}{proposal.episode.numberLabel ? ` · Folge ${proposal.episode.numberLabel}` : " · Sonderfolge"}</small>{Object.keys(proposal.fieldChanges).length > 0 && <small>{Object.keys(proposal.fieldChanges).join(", ")}</small>}</div>{link && <select value={episodeId} onChange={(event) => setEpisodeId(event.target.value)}><option value="">Folge wählen…</option>{episodes.filter((episode) => !source || episode.seriesId === source.seriesId).map((episode) => <option key={episode.id} value={episode.id}>{episode.numberLabel ? `${episode.numberLabel} · ` : ""}{episode.title}</option>)}</select>}<Button size="sm" onClick={() => onResolve(proposal, true, episodeId)} disabled={busy || link && !episodeId}><Check size={14} />Annehmen</Button><Button size="sm" variant="ghost" onClick={() => onResolve(proposal, false)} disabled={busy}><X size={14} />Ablehnen</Button></article>;
+  return <article className="proposal-row"><div className="grow"><div className="row-wrap"><Badge tone="warn">{proposal.proposalType === "update" ? "Metadaten geändert" : proposal.proposalType === "link" ? "Möglicher Treffer" : "Neue Folge"}</Badge><strong>{proposal.episode.title}</strong></div><small>{source?.name || "Quelle"}{proposal.episode.numberLabel ? ` · Folge ${proposal.episode.numberLabel}` : " · Sonderfolge"}</small>{proposal.proposalType === "update" && <ProposalChanges changes={proposal.fieldChanges} />}</div>{link && <select value={episodeId} onChange={(event) => setEpisodeId(event.target.value)}><option value="">Folge wählen…</option>{episodes.filter((episode) => !source || episode.seriesId === source.seriesId).map((episode) => <option key={episode.id} value={episode.id}>{episode.numberLabel ? `${episode.numberLabel} · ` : ""}{episode.title}</option>)}</select>}<Button size="sm" onClick={() => onResolve(proposal, true, episodeId)} disabled={busy || link && !episodeId}><Check size={14} />Annehmen</Button><Button size="sm" variant="ghost" onClick={() => onResolve(proposal, false)} disabled={busy}><X size={14} />Ablehnen</Button></article>;
+}
+
+const fieldLabels: Record<string, string> = { title: "Titel", numberLabel: "Folgennummer", sortOrder: "Sortierung", releaseDate: "Veröffentlichungsdatum", durationMinutes: "Dauer", links: "Hörlinks" };
+
+function ChangeValue({ field, value }: { field: string; value: unknown }) {
+  if (value == null || value === "" || Array.isArray(value) && !value.length) return <span className="muted">Keine Angabe</span>;
+  if (field === "links" && Array.isArray(value)) return <ul className="proposal-links">{value.map((link: { label: string; url: string }, index) => <li key={index}><span>{link.label}</span><span className="muted">{link.url}</span></li>)}</ul>;
+  if (field === "durationMinutes") return <>{String(value)} Minuten</>;
+  if (field === "releaseDate" && typeof value === "string" && /^\d{4}-\d{2}-\d{2}$/.test(value)) return <>{value.split("-").reverse().join(".")}</>;
+  return <>{typeof value === "object" ? JSON.stringify(value) : String(value)}</>;
+}
+
+function ProposalChanges({ changes }: { changes: ImportProposalSummary["fieldChanges"] }) {
+  if (!Object.keys(changes).length) return <p className="muted">Kein inhaltlicher Unterschied. Mit „Jetzt prüfen“ wird dieser alte Vorschlag erneut abgeglichen.</p>;
+  return <div className="proposal-diff" role="table" aria-label="Metadaten vorher und nachher">
+    <div className="proposal-diff-row" role="row"><strong role="columnheader">Feld</strong><strong role="columnheader">Bisher</strong><strong role="columnheader">Aus der Quelle</strong></div>
+    {Object.entries(changes).map(([field, change]) => <div className="proposal-diff-row" role="row" key={field}><span role="rowheader">{fieldLabels[field] || field}</span><div role="cell"><ChangeValue field={field} value={change.from} /></div><div role="cell"><ChangeValue field={field} value={change.to} /></div></div>)}
+  </div>;
 }
 
 function RunsDialog({ data, onClose }: { data: { source: ImportSourceSummary; items: ImportRunSummary[] }; onClose: () => void }) {

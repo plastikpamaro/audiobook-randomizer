@@ -120,6 +120,8 @@ Beispiele: [`examples/online-feed.json`](examples/online-feed.json), [`examples/
 
 Metadatenänderungen an bereits verknüpften Folgen erscheinen als Vorschlag und werden erst nach Bestätigung übernommen. Neu entdeckte Folgen seit Einrichtung der Quelle werden automatisch angelegt, sofern der Lauf eindeutig und unauffällig ist. Die Neuerscheinungs-Priorität gilt auch bei einem verspäteten Sync.
 
+Die manuelle Prüfung zeigt für jede Änderung die bisherigen und vorgeschlagenen Werte, einschließlich Hörlinks. Metadatenänderungen lassen sich einzeln oder gemeinsam auswählen und in einer Transaktion annehmen oder ablehnen. Fehlende Quellenangaben löschen keine vorhandenen Metadaten; ein Update priorisiert eine bereits importierte Folge nicht erneut. Der Abgleich ignoriert JSON-Feld- und Linkreihenfolgen. Migration `0006` bereinigt bestehende Fehlmeldungen aus dem früheren Hashvergleich, ohne Folgen zu ändern. Auch alte Hörspiele können echte Katalogkorrekturen oder neue Hörlinks erhalten; diese bleiben sichtbar und bestätigungspflichtig.
+
 ## Bewertungen
 
 Nach **Gehört** wird der Abschluss sofort gespeichert und anschließend optional eine Bewertung von 1 bis 10 angeboten. Bewertungen lassen sich im Verlauf nachtragen, ändern oder entfernen. Jede Runde besitzt ihre eigene Bewertung; korrigierte Abschlüsse behalten den historischen Wert, werden aber nicht mehr bearbeitet oder ausgewertet. Bulk-Markierungen sind nicht bewertbar und Bewertungen verändern die Zufallsauswahl nicht.
