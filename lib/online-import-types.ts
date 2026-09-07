@@ -1,4 +1,4 @@
-export type ImportSourceKind = "drei_fragezeichen" | "tkkg" | "van_dusen" | "van_dusen_neue" | "point_whitmark" | "pater_brown" | "csv" | "json" | "rss";
+export type ImportSourceKind = "drei_fragezeichen" | "tkkg" | "van_dusen" | "van_dusen_neue" | "point_whitmark" | "pater_brown" | "sherlock_titania" | "csv" | "json" | "rss";
 export type ImportRunStatus = "running" | "awaiting_confirmation" | "succeeded" | "failed" | "needs_review" | "not_modified";
 
 export interface NormalizedImportLink {

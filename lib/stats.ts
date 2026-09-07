@@ -1,3 +1,5 @@
+import type { ActivityPoint } from "@/lib/types";
+
 const DAY_MS = 86_400_000;
 
 function dayNumber(date: string): number {
@@ -26,4 +28,18 @@ export function computeStreaks(daysInput: string[], today: string): { current: n
     current += 1;
   }
   return { current, longest };
+}
+/** Include every calendar day, even when the events query returns no row. */
+export function fillActivityDays(points: ActivityPoint[], from: string, to: string): ActivityPoint[] {
+  const byDay = new Map(points.map((point) => [point.bucket, point]));
+  const result: ActivityPoint[] = [];
+  const day = new Date(`${from}T00:00:00Z`);
+  const end = new Date(`${to}T00:00:00Z`);
+  // UTC calendar arithmetic avoids skipping or repeating days at DST changes.
+  while (day <= end) {
+    const bucket = day.toISOString().slice(0, 10);
+    result.push(byDay.get(bucket) ?? { bucket, heard: 0, skipped: 0, minutes: 0 });
+    day.setUTCDate(day.getUTCDate() + 1);
+  }
+  return result;
 }

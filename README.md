@@ -95,6 +95,8 @@ number_label,sort_order,release_date,duration_minutes,priority_on_release,link_l
 
 ## Online-Quellen
 
+**Sherlock Holmes – Titania Medien** ist ebenfalls als Apple-Music-Quelle verfügbar. Die tägliche Synchronisierung erfasst neue Einzelveröffentlichungen dieser Reihe. Auf mehrere Alben verteilte Folgen werden mit allen Teil-Hörlinks als eine Folge importiert; Sammelboxen bleiben außen vor. Unvollständige Mehrteiler stoppen die automatische Übernahme zur Prüfung.
+
 Zusätzlich stehen Apple-Music-Kataloge für **Professor van Dusen – Originalserie**, **Professor van Dusen – Die neuen Fälle**, **Point Whitmark** und **Pater Brown (Maritim)** zur Auswahl. Sie übernehmen nummerierte Einzelalben mit Titel, Veröffentlichungsdatum und Hörlink aus dem deutschen Katalog; Sammelboxen werden ausgelassen. Bei van Dusen bleiben die beiden Nummernkreise durch separate Quellen getrennt. Der Katalog enthält nicht zwingend alle jemals erschienenen Folgen. Bei Erreichen des API-Limits von 200 Alben wird die Automatik zur Prüfung gestoppt.
 
 Live-Prüfung dieser Quellen: `LIVE_IMPORT_TEST=1 npm test -- live-apple-catalog-smoke`.
@@ -123,6 +125,8 @@ Metadatenänderungen an bereits verknüpften Folgen erscheinen als Vorschlag und
 Die manuelle Prüfung zeigt für jede Änderung die bisherigen und vorgeschlagenen Werte, einschließlich Hörlinks. Metadatenänderungen lassen sich einzeln oder gemeinsam auswählen und in einer Transaktion annehmen oder ablehnen. Fehlende Quellenangaben löschen keine vorhandenen Metadaten; ein Update priorisiert eine bereits importierte Folge nicht erneut. Der Abgleich ignoriert JSON-Feld- und Linkreihenfolgen. Migration `0006` bereinigt bestehende Fehlmeldungen aus dem früheren Hashvergleich, ohne Folgen zu ändern. Auch alte Hörspiele können echte Katalogkorrekturen oder neue Hörlinks erhalten; diese bleiben sichtbar und bestätigungspflichtig.
 
 ## Bewertungen
+
+Wird die Laufzeit einer Folge nachträglich ergänzt, zählt sie auch für frühere Hördurchläufe, bei denen noch keine Laufzeit gespeichert war: in der gesamten Hörzeit, im Zeitdiagramm und in der Serienstatistik. Bereits beim Hören gespeicherte Laufzeiten bleiben maßgeblich. Die Ergänzung gilt für jeden früheren Hördurchlauf dieser Folge; rückgängig gemachte Abschlüsse und Bulk-Markierungen bleiben aus der Statistik ausgeschlossen.
 
 Nach **Gehört** wird der Abschluss sofort gespeichert und anschließend optional eine Bewertung von 1 bis 10 angeboten. Bewertungen lassen sich im Verlauf nachtragen, ändern oder entfernen. Jede Runde besitzt ihre eigene Bewertung; korrigierte Abschlüsse behalten den historischen Wert, werden aber nicht mehr bearbeitet oder ausgewertet. Bulk-Markierungen sind nicht bewertbar und Bewertungen verändern die Zufallsauswahl nicht.
 

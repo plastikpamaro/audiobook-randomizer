@@ -23,6 +23,7 @@ const kindLabels: Record<ImportSourceKind, string> = {
   van_dusen_neue: "Professor van Dusen – Die neuen Fälle (Apple Music)",
   point_whitmark: "Point Whitmark (Apple Music)",
   pater_brown: "Pater Brown – Maritim (Apple Music)",
+  sherlock_titania: "Sherlock Holmes – Titania Medien (Apple Music)",
   csv: "Öffentliche CSV-URL",
   json: "Öffentlicher JSON-Feed",
   rss: "Öffentlicher RSS-/Podcast-Feed",

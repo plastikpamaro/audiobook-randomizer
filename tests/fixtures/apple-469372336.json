@@ -1,0 +1,776 @@
+{
+  "results": [
+    {
+      "wrapperType": "artist",
+      "artistId": 469372336
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1588384145,
+      "collectionName": "Folge 47: Das verlassene Haus",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-47-das-verlassene-haus/1588384145?uo=4",
+      "releaseDate": "2021-10-29T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1561860113,
+      "collectionName": "Folge 44: Der zweite Hund",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-44-der-zweite-hund/1561860113?uo=4",
+      "releaseDate": "2021-04-30T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1535567821,
+      "collectionName": "Folge 42: Der Tote im Extra-Waggon",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-42-der-tote-im-extra-waggon/1535567821?uo=4",
+      "releaseDate": "2020-10-30T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1573562482,
+      "collectionName": "Folge 45: Harry Price und der Fall Rosalie",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-45-harry-price-und-der-fall-rosalie/1573562482?uo=4",
+      "releaseDate": "2021-07-30T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1539721065,
+      "collectionName": "Folge 43: Der Zuträger",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-43-der-zutr%C3%A4ger/1539721065?uo=4",
+      "releaseDate": "2020-11-27T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1612209129,
+      "collectionName": "Folge 49: Das Grauen von Old Hall",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-49-das-grauen-von-old-hall/1612209129?uo=4",
+      "releaseDate": "2022-03-25T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1598923046,
+      "collectionName": "Folge 48: Der Gezeitenstrom",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-48-der-gezeitenstrom/1598923046?uo=4",
+      "releaseDate": "2021-12-17T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1580339593,
+      "collectionName": "Folge 46: Der Mann in Gelb",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-46-der-mann-in-gelb/1580339593?uo=4",
+      "releaseDate": "2021-08-27T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1619029806,
+      "collectionName": "Folge 51: Was das Feuer übrigliess",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-51-was-das-feuer-%C3%BCbrigliess/1619029806?uo=4",
+      "releaseDate": "2022-05-27T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1527099762,
+      "collectionName": "Folge 40: Die dritte Botschaft",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-40-die-dritte-botschaft/1527099762?uo=4",
+      "releaseDate": "2019-11-29T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1646974836,
+      "collectionName": "Folge 53: Der maskierte Tod",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-53-der-maskierte-tod/1646974836?uo=4",
+      "releaseDate": "2022-10-28T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1642877213,
+      "collectionName": "Folge 52: Der stille Tod",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-52-der-stille-tod/1642877213?uo=4",
+      "releaseDate": "2022-09-30T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1674297000,
+      "collectionName": "Folge 55: Geheimsache Styles Court",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-55-geheimsache-styles-court/1674297000?uo=4",
+      "releaseDate": "2023-03-31T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1652676483,
+      "collectionName": "Folge 54: Tod eines Giftforschers",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-54-tod-eines-giftforschers/1652676483?uo=4",
+      "releaseDate": "2022-11-25T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1527092149,
+      "collectionName": "Folge 41: Mayerling (Teil 1 von 2)",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-41-mayerling-teil-1-von-2/1527092149?uo=4",
+      "releaseDate": "2020-01-31T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1527124942,
+      "collectionName": "Folge 36: Das unheimliche Pfarrhaus",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-36-das-unheimliche-pfarrhaus/1527124942?uo=4",
+      "releaseDate": "2018-10-26T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1734187531,
+      "collectionName": "Folge 61: Die Spuren auf der Treppe",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-61-die-spuren-auf-der-treppe/1734187531?uo=4",
+      "releaseDate": "2024-03-22T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1527122100,
+      "collectionName": "Folge 37: Der verschwundene Kutscher",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-37-der-verschwundene-kutscher/1527122100?uo=4",
+      "releaseDate": "2019-03-29T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1527092278,
+      "collectionName": "Folge 41: Mayerling (Teil 2 von 2)",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-41-mayerling-teil-2-von-2/1527092278?uo=4",
+      "releaseDate": "2020-01-31T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1656368001,
+      "collectionName": "Folge 50: Ludwig II. - Der Tod im Würmsee",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-50-ludwig-ii-der-tod-im-w%C3%BCrmsee/1656368001?uo=4",
+      "releaseDate": "2022-12-16T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1527342663,
+      "collectionName": "Folge 1: Im Schatten des Rippers",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-1-im-schatten-des-rippers/1527342663?uo=4",
+      "releaseDate": "2011-10-14T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1527156121,
+      "collectionName": "Folge 35: Der Hund der Baskervilles (Teil 1 von 2)",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-35-der-hund-der-baskervilles-teil-1-von-2/1527156121?uo=4",
+      "releaseDate": "2018-09-28T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1527156580,
+      "collectionName": "Folge 35: Der Hund der Baskervilles (Teil 2 von 2)",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-35-der-hund-der-baskervilles-teil-2-von-2/1527156580?uo=4",
+      "releaseDate": "2018-09-28T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1895007300,
+      "collectionName": "Folge 72: Der Aluminiumdolch",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-72-der-aluminiumdolch/1895007300?uo=4",
+      "releaseDate": "2026-05-29T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1775247974,
+      "collectionName": "Folge 66: Der Frauenmörder von Boston",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-66-der-frauenm%C3%B6rder-von-boston/1775247974?uo=4",
+      "releaseDate": "2024-11-29T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1686159795,
+      "collectionName": "Folge 57: Die vierte Flasche",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-57-die-vierte-flasche/1686159795?uo=4",
+      "releaseDate": "2023-05-26T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1527359094,
+      "collectionName": "Folgen 5, 6, 7 und 8 (Box 2)",
+      "collectionViewUrl": "https://music.apple.com/de/album/folgen-5-6-7-und-8-box-2/1527359094?uo=4",
+      "releaseDate": "2017-12-20T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1679323776,
+      "collectionName": "Folge 56: Der Mann im Speisewagen",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-56-der-mann-im-speisewagen/1679323776?uo=4",
+      "releaseDate": "2023-04-28T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1527363279,
+      "collectionName": "Box 1 (Folgen 1, 2, 3, 4)",
+      "collectionViewUrl": "https://music.apple.com/de/album/box-1-folgen-1-2-3-4/1527363279?uo=4",
+      "releaseDate": "2017-12-20T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1527268100,
+      "collectionName": "Folge 33: Das graue Haus",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-33-das-graue-haus/1527268100?uo=4",
+      "releaseDate": "2018-03-29T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1770035038,
+      "collectionName": "Folge 65: Der Fall Harry Houdini",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-65-der-fall-harry-houdini/1770035038?uo=4",
+      "releaseDate": "2024-10-25T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1527237379,
+      "collectionName": "Folge 34: Die quietschende Tür",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-34-die-quietschende-t%C3%BCr/1527237379?uo=4",
+      "releaseDate": "2018-04-27T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1527097107,
+      "collectionName": "Folge 39: Eine Frage des Teers",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-39-eine-frage-des-teers/1527097107?uo=4",
+      "releaseDate": "2019-11-29T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1527119319,
+      "collectionName": "Folge 38: Das Haus mit den Zwingern",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-38-das-haus-mit-den-zwingern/1527119319?uo=4",
+      "releaseDate": "2019-04-26T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1527342386,
+      "collectionName": "Folge 4: Der Engel von Hampstead",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-4-der-engel-von-hampstead/1527342386?uo=4",
+      "releaseDate": "2012-05-18T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1743889891,
+      "collectionName": "Folge 63: Der Lumpensammler von Paris",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-63-der-lumpensammler-von-paris/1743889891?uo=4",
+      "releaseDate": "2024-05-31T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1737742731,
+      "collectionName": "Folge 62: Mr. Marburys Hände",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-62-mr-marburys-h%C3%A4nde/1737742731?uo=4",
+      "releaseDate": "2024-04-26T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1834150719,
+      "collectionName": "Folge 67: Watsons erster Fall",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-67-watsons-erster-fall/1834150719?uo=4",
+      "releaseDate": "2025-09-26T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1527342713,
+      "collectionName": "Folge 3: Das entwendete Fallbeil",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-3-das-entwendete-fallbeil/1527342713?uo=4",
+      "releaseDate": "2011-11-11T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1767896377,
+      "collectionName": "Folge 64: Der verschwundene Grafensohn",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-64-der-verschwundene-grafensohn/1767896377?uo=4",
+      "releaseDate": "2024-09-27T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1527387793,
+      "collectionName": "Folge 31: Der Dauer-Patient",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-31-der-dauer-patient/1527387793?uo=4",
+      "releaseDate": "2017-10-27T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1527361198,
+      "collectionName": "Folgen 9, 10, 12 (Box 3)",
+      "collectionViewUrl": "https://music.apple.com/de/album/folgen-9-10-12-box-3/1527361198?uo=4",
+      "releaseDate": "2017-12-20T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1527342605,
+      "collectionName": "Folge 2: Spuk im Pfarrhaus",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-2-spuk-im-pfarrhaus/1527342605?uo=4",
+      "releaseDate": "2011-10-14T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1849197591,
+      "collectionName": "Folge 69: Die Perle des Mandarins",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-69-die-perle-des-mandarins/1849197591?uo=4",
+      "releaseDate": "2025-11-28T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1841426879,
+      "collectionName": "Folge 68: Blutiger Schnee in Bloomsbury Hill",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-68-blutiger-schnee-in-bloomsbury-hill/1841426879?uo=4",
+      "releaseDate": "2025-10-31T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1527271517,
+      "collectionName": "Folge 29: Die Junker von Reigate",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-29-die-junker-von-reigate/1527271517?uo=4",
+      "releaseDate": "2017-05-26T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1527267907,
+      "collectionName": "Folge 10: Der Vampir von Sussex / Das gefleckte Band / Der Fall Milverton / Der Teufelsfuß",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-10-der-vampir-von-sussex-das-gefleckte-band-der/1527267907?uo=4",
+      "releaseDate": "2013-11-22T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1657158749,
+      "collectionName": "Box 12 (Folgen 41, 42, 43)",
+      "collectionViewUrl": "https://music.apple.com/de/album/box-12-folgen-41-42-43/1657158749?uo=4",
+      "releaseDate": "2022-12-02T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1527482364,
+      "collectionName": "Folge 8: Walpurgisnacht",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-8-walpurgisnacht/1527482364?uo=4",
+      "releaseDate": "2013-05-17T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1527479252,
+      "collectionName": "Folge 9: Die Elfen von Cottingley",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-9-die-elfen-von-cottingley/1527479252?uo=4",
+      "releaseDate": "2013-11-22T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1527360512,
+      "collectionName": "Folgen 11 / 13 / 14: Das Zeichen der Vier / Der Bund der Rotschöpfe / Eine Frage der Identität (Box 4)",
+      "collectionViewUrl": "https://music.apple.com/de/album/folgen-11-13-14-das-zeichen-der-vier-der-bund-der-rotsch%C3%B6pfe/1527360512?uo=4",
+      "releaseDate": "2017-12-20T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1527268293,
+      "collectionName": "Folge 30: Der bucklige Mann",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-30-der-bucklige-mann/1527268293?uo=4",
+      "releaseDate": "2017-06-23T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1886270951,
+      "collectionName": "Folge 71: Blaubarts Erbe",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-71-blaubarts-erbe/1886270951?uo=4",
+      "releaseDate": "2026-04-24T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1712113454,
+      "collectionName": "Folge 59: Gottes Mühlen",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-59-gottes-m%C3%BChlen/1712113454?uo=4",
+      "releaseDate": "2023-10-27T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1527281737,
+      "collectionName": "Folge 28: Eine Studie in Scharlachrot (Teil 1 von 2)",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-28-eine-studie-in-scharlachrot-teil-1-von-2/1527281737?uo=4",
+      "releaseDate": "2017-03-17T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1704730056,
+      "collectionName": "Box 14 (Folgen 48, 49, 50)",
+      "collectionViewUrl": "https://music.apple.com/de/album/box-14-folgen-48-49-50/1704730056?uo=4",
+      "releaseDate": "2023-09-01T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1882048700,
+      "collectionName": "Folge 70: Die Dame mit dem blauen Hut",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-70-die-dame-mit-dem-blauen-hut/1882048700?uo=4",
+      "releaseDate": "2026-03-27T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1704740123,
+      "collectionName": "Box 15 (Folgen 51, 52, 53, 54)",
+      "collectionViewUrl": "https://music.apple.com/de/album/box-15-folgen-51-52-53-54/1704740123?uo=4",
+      "releaseDate": "2023-09-01T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1704626213,
+      "collectionName": "Folge 58: Das Musikzimmer",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-58-das-musikzimmer/1704626213?uo=4",
+      "releaseDate": "2023-09-29T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1616461689,
+      "collectionName": "Box 10: Folgen 34, 35, 36",
+      "collectionViewUrl": "https://music.apple.com/de/album/box-10-folgen-34-35-36/1616461689?uo=4",
+      "releaseDate": "2022-03-25T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1527476487,
+      "collectionName": "Folge 16: Der blaue Karfunkel",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-16-der-blaue-karfunkel/1527476487?uo=4",
+      "releaseDate": "2014-11-14T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1527315320,
+      "collectionName": "Folge 12: Ein Skandal in Böhmen",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-12-ein-skandal-in-b%C3%B6hmen/1527315320?uo=4",
+      "releaseDate": "2014-04-18T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1527300580,
+      "collectionName": "Folge 11: Das Zeichen der Vier",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-11-das-zeichen-der-vier/1527300580?uo=4",
+      "releaseDate": "2014-03-14T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1527297332,
+      "collectionName": "Folge 24: Das gelbe Gesicht",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-24-das-gelbe-gesicht/1527297332?uo=4",
+      "releaseDate": "2016-07-15T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1527283202,
+      "collectionName": "Folge 28: Eine Studie in Scharlachrot (Teil 2 von 2)",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-28-eine-studie-in-scharlachrot-teil-2-von-2/1527283202?uo=4",
+      "releaseDate": "2017-03-17T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1626045570,
+      "collectionName": "Box 11 (Folgen 37, 38, 39, 40)",
+      "collectionViewUrl": "https://music.apple.com/de/album/box-11-folgen-37-38-39-40/1626045570?uo=4",
+      "releaseDate": "2022-05-27T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1527356239,
+      "collectionName": "Folgen 27 / 28 / 29: Das Musgrave-Ritual / Eine Studie in Scharlachrot / Die Junker von Reigate (Box 8)",
+      "collectionViewUrl": "https://music.apple.com/de/album/folgen-27-28-29-das-musgrave-ritual-eine-studie-in/1527356239?uo=4",
+      "releaseDate": "2017-12-20T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1527315447,
+      "collectionName": "Folge 17: Die fünf Orangenkerne",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-17-die-f%C3%BCnf-orangenkerne/1527315447?uo=4",
+      "releaseDate": "2015-03-13T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1527314287,
+      "collectionName": "Folge 18: Der Mann mit der entstellten Lippe",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-18-der-mann-mit-der-entstellten-lippe/1527314287?uo=4",
+      "releaseDate": "2015-04-17T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1527302904,
+      "collectionName": "Folge 26: Die Gloria Scott",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-26-die-gloria-scott/1527302904?uo=4",
+      "releaseDate": "2016-10-14T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1527283182,
+      "collectionName": "Folge 27: Das Musgrave-Ritual",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-27-das-musgrave-ritual/1527283182?uo=4",
+      "releaseDate": "2016-11-11T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1527273401,
+      "collectionName": "Folge 6: Spurlos verschwunden",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-6-spurlos-verschwunden/1527273401?uo=4",
+      "releaseDate": "2012-11-16T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1657159182,
+      "collectionName": "Box 13 (Folgen 44, 45, 46, 47)",
+      "collectionViewUrl": "https://music.apple.com/de/album/box-13-folgen-44-45-46-47/1657159182?uo=4",
+      "releaseDate": "2022-12-02T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1715272488,
+      "collectionName": "Folge 60: Der zehnte Earl",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-60-der-zehnte-earl/1715272488?uo=4",
+      "releaseDate": "2023-11-24T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1527475416,
+      "collectionName": "Folge 32: Der griechische Dolmetscher",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-32-der-griechische-dolmetscher/1527475416?uo=4",
+      "releaseDate": "2017-11-24T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1527347917,
+      "collectionName": "Folge 15: Das Rätsel von Boscombe Valley",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-15-das-r%C3%A4tsel-von-boscombe-valley/1527347917?uo=4",
+      "releaseDate": "2014-10-10T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1527345341,
+      "collectionName": "Folge 14: Eine Frage der Identität",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-14-eine-frage-der-identit%C3%A4t/1527345341?uo=4",
+      "releaseDate": "2014-09-19T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1527305638,
+      "collectionName": "Folge 22: Das Haus bei den Blutbuchen",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-22-das-haus-bei-den-blutbuchen/1527305638?uo=4",
+      "releaseDate": "2015-11-13T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1527305328,
+      "collectionName": "Folge 20: Der adlige Junggeselle",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-20-der-adlige-junggeselle/1527305328?uo=4",
+      "releaseDate": "2015-09-11T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1785720032,
+      "collectionName": "Box 17 (Folgen 59, 60, 61, 62)",
+      "collectionViewUrl": "https://music.apple.com/de/album/box-17-folgen-59-60-61-62/1785720032?uo=4",
+      "releaseDate": "2024-12-24T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1616465069,
+      "collectionName": "Box 9 (Folgen 30, 31, 32, 33)",
+      "collectionViewUrl": "https://music.apple.com/de/album/box-9-folgen-30-31-32-33/1616465069?uo=4",
+      "releaseDate": "2022-03-25T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1527480203,
+      "collectionName": "Folge 7: Der Smaragd des Todes",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-7-der-smaragd-des-todes/1527480203?uo=4",
+      "releaseDate": "2013-05-17T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1527478032,
+      "collectionName": "Folge 13: Der Bund der Rotschöpfe",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-13-der-bund-der-rotsch%C3%B6pfe/1527478032?uo=4",
+      "releaseDate": "2014-05-16T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1527359474,
+      "collectionName": "Folge 15: Das Rätsel von Boscombe Valley, Folge 16: Der blaue Karfunkel, Folge 17: Die fünf Orangenkerne, Folge 18: Der Mann mit der entstellten Lippe (Box 5)",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-15-das-r%C3%A4tsel-von-boscombe-valley-folge-16-der/1527359474?uo=4",
+      "releaseDate": "2017-12-20T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1527359271,
+      "collectionName": "Folge 19: Der Daumen des Ingenieurs, Folge 20: Der adlige Junggeselle, Folge 21: Die Beryll-Krone, Folge 22: Das Haus bei den Blutbuchen (Box 6)",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-19-der-daumen-des-ingenieurs-folge-20-der-adlige/1527359271?uo=4",
+      "releaseDate": "2017-12-20T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1527357092,
+      "collectionName": "Folge 23: Silberblesse, Folge 24: Das gelbe Gesicht, Folge 25: Der Angestellte des Börsenmaklers, Folge 26: Die Gloria Scott (Box 7)",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-23-silberblesse-folge-24-das-gelbe-gesicht-folge/1527357092?uo=4",
+      "releaseDate": "2017-12-20T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1527308050,
+      "collectionName": "Folge 19: Der Daumen des Ingenieurs",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-19-der-daumen-des-ingenieurs/1527308050?uo=4",
+      "releaseDate": "2015-05-15T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1527262959,
+      "collectionName": "Folge 5: Die Affenfrau",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-5-die-affenfrau/1527262959?uo=4",
+      "releaseDate": "2012-05-18T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1818214232,
+      "collectionName": "Box 18 (Folgen 63, 64, 65)",
+      "collectionViewUrl": "https://music.apple.com/de/album/box-18-folgen-63-64-65/1818214232?uo=4",
+      "releaseDate": "2025-05-24T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1527304017,
+      "collectionName": "Folge 21: Die Beryll-Krone",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-21-die-beryll-krone/1527304017?uo=4",
+      "releaseDate": "2015-11-13T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1527303971,
+      "collectionName": "Folge 23: Silberblesse",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-23-silberblesse/1527303971?uo=4",
+      "releaseDate": "2016-06-10T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1527284211,
+      "collectionName": "Folge 25: Der Angestellte des Börsenmaklers",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-25-der-angestellte-des-b%C3%B6rsenmaklers/1527284211?uo=4",
+      "releaseDate": "2016-08-12T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 1746181950,
+      "collectionName": "Box 16 (Folgen 55, 56, 57, 58)",
+      "collectionViewUrl": "https://music.apple.com/de/album/box-16-folgen-55-56-57-58/1746181950?uo=4",
+      "releaseDate": "2024-06-14T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 6783876648,
+      "collectionName": "Box 19 (Folgen 66, 67)",
+      "collectionViewUrl": "https://music.apple.com/de/album/box-19-folgen-66-67/6783876648?uo=4",
+      "releaseDate": "2026-07-10T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 6784622229,
+      "collectionName": "Box 20 (Folgen 68, 69)",
+      "collectionViewUrl": "https://music.apple.com/de/album/box-20-folgen-68-69/6784622229?uo=4",
+      "releaseDate": "2026-08-07T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 469372336,
+      "collectionId": 6798754682,
+      "collectionName": "Folge 73: Die trügerische Spur",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-73-die-tr%C3%BCgerische-spur/6798754682?uo=4",
+      "releaseDate": "2026-09-25T07:00:00Z"
+    }
+  ]
+}

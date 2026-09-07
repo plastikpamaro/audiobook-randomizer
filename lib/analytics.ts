@@ -5,7 +5,7 @@ import { query } from "@/lib/db";
 import { isoDate, localDate } from "@/lib/dates";
 import { getAppTimezone } from "@/lib/env";
 import { AppError } from "@/lib/http";
-import { computeStreaks } from "@/lib/stats";
+import { computeStreaks, fillActivityDays } from "@/lib/stats";
 import type { ActivityPoint, AnalyticsData } from "@/lib/types";
 
 function assertDateRange(from: string, to: string): void {
@@ -31,7 +31,8 @@ export async function getAnalytics(userId: string, from: string, to: string): Pr
          (SELECT count(*) FROM draws d
           WHERE d.user_id=$1 AND d.source_type='random' AND d.status='skipped'
             AND timezone($4, d.resolved_at)::date BETWEEN $2::date AND $3::date)::text AS skipped,
-         (SELECT COALESCE(sum(c.duration_minutes_snapshot), 0) FROM episode_completions c
+         (SELECT COALESCE(sum(COALESCE(c.duration_minutes_snapshot, e.duration_minutes)), 0)
+          FROM episode_completions c JOIN episodes e ON e.id=c.episode_id
           WHERE c.user_id=$1 AND c.source_type='random' AND c.reversed_at IS NULL
             AND timezone($4, c.completed_at)::date BETWEEN $2::date AND $3::date)::text AS minutes,
          (SELECT round(avg(c.rating)::numeric, 2) FROM episode_completions c
@@ -45,8 +46,8 @@ export async function getAnalytics(userId: string, from: string, to: string): Pr
     query<{ bucket: string | Date; heard: string; skipped: string; minutes: string }>(
       `WITH events AS (
          SELECT timezone($4, c.completed_at)::date AS bucket, 1 AS heard, 0 AS skipped,
-                COALESCE(c.duration_minutes_snapshot, 0) AS minutes
-         FROM episode_completions c
+                COALESCE(c.duration_minutes_snapshot, e.duration_minutes, 0) AS minutes
+         FROM episode_completions c JOIN episodes e ON e.id=c.episode_id
          WHERE c.user_id=$1 AND c.source_type='random' AND c.reversed_at IS NULL
            AND timezone($4, c.completed_at)::date BETWEEN $2::date AND $3::date
          UNION ALL
@@ -62,7 +63,7 @@ export async function getAnalytics(userId: string, from: string, to: string): Pr
     ),
     query<{ name: string; heard: string; minutes: string }>(
       `SELECT s.name, count(*)::text AS heard,
-              COALESCE(sum(c.duration_minutes_snapshot),0)::text AS minutes
+              COALESCE(sum(COALESCE(c.duration_minutes_snapshot, e.duration_minutes)),0)::text AS minutes
        FROM episode_completions c
        JOIN episodes e ON e.id=c.episode_id JOIN series s ON s.id=e.series_id
        WHERE c.user_id=$1 AND c.source_type='random' AND c.reversed_at IS NULL
@@ -126,7 +127,7 @@ export async function getAnalytics(userId: string, from: string, to: string): Pr
     minutes: Number(totals.minutes),
     currentStreak: streaks.current,
     longestStreak: streaks.longest,
-    activity,
+    activity: fillActivityDays(activity, from, to),
     topSeries: topSeriesRows.map((row) => ({
       name: row.name,
       heard: Number(row.heard),
