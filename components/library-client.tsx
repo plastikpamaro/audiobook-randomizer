@@ -4,7 +4,7 @@ import { useMemo, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import {
   Archive, BookPlus, CalendarClock, Check, FileUp, Heart,
-  Pencil, Plus, RotateCcw, Search, Star, X,
+  Pencil, Trash2, Plus, RotateCcw, Search, Star, X,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -97,7 +97,8 @@ export function LibraryClient({ initialSeries, initialEpisodes }: { initialSerie
     setSelected((current) => current.includes(id) ? current.filter((item) => item !== id) : [...current, id]);
   }
 
-  async function bulk(action: "heard" | "available" | "archive" | "unarchive") {
+  async function bulk(action: "heard" | "available" | "archive" | "unarchive" | "delete") {
+    if (action === "delete" && !window.confirm(`${selected.length} Folgen endgültig löschen? Verlauf, Bewertungen und Notizen dieser Folgen werden für alle Nutzer entfernt.`)) return;
     setBusy(true); setMessage("");
     try {
       await clientApi("/api/episodes/bulk", { method: "POST", body: JSON.stringify({ episodeIds: selected, action }) });
@@ -114,12 +115,32 @@ export function LibraryClient({ initialSeries, initialEpisodes }: { initialSerie
       await clientApi(existing ? `/api/series/${existing.id}` : "/api/series", {
         method: existing ? "PATCH" : "POST",
         body: JSON.stringify({
-          seriesKey: form.get("seriesKey"), name: form.get("name"), description: form.get("description"),
+          seriesKey: form.get("seriesKey") || undefined, episodeCount: existing ? undefined : Number(form.get("episodeCount")), name: form.get("name"), description: form.get("description"),
           accentColor: form.get("accentColor"), archived: existing?.archived || false,
         }),
       });
       setSeriesEditor(null); router.refresh();
     } catch (caught) { setMessage(caught instanceof Error ? caught.message : "Serie konnte nicht gespeichert werden."); }
+    finally { setBusy(false); }
+  }
+
+  async function removeSeries(series: SeriesOverview) {
+    if (!window.confirm(`„${series.name}“ mit allen Folgen, Importquellen, Verlauf, Bewertungen und Notizen für alle Nutzer endgültig löschen?`)) return;
+    setBusy(true); setMessage("");
+    try {
+      await clientApi(`/api/series/${series.id}`, { method: "DELETE" });
+      setSelected([]); setSeriesFilter("all"); router.refresh();
+    } catch (caught) { setMessage(caught instanceof Error ? caught.message : "Serie konnte nicht gelöscht werden."); }
+    finally { setBusy(false); }
+  }
+
+  async function removeEpisode(episode: EpisodeSummary) {
+    if (!window.confirm(`„${episode.title}“ endgültig löschen? Verlauf, Bewertungen und Notizen dieser Folge werden für alle Nutzer entfernt.`)) return;
+    setBusy(true); setMessage("");
+    try {
+      await clientApi(`/api/episodes/${episode.id}`, { method: "DELETE" });
+      setSelected((current) => current.filter((id) => id !== episode.id)); router.refresh();
+    } catch (caught) { setMessage(caught instanceof Error ? caught.message : "Folge konnte nicht gelöscht werden."); }
     finally { setBusy(false); }
   }
 
@@ -213,12 +234,12 @@ export function LibraryClient({ initialSeries, initialEpisodes }: { initialSerie
           <label className="check-label"><input type="checkbox" checked={favoritesOnly} onChange={(event) => setFavoritesOnly(event.target.checked)} />Nur Favoriten</label>
         </div>
         <div className="row-wrap library-actions">
-          <Button onClick={() => setEpisodeEditor(episodeDraft(null, initialSeries.find((item) => !item.archived)?.id || ""))} disabled={!initialSeries.some((item) => !item.archived)}><BookPlus size={17} />Folge anlegen</Button>
-          <Button variant="secondary" onClick={() => setSeriesEditor("new")}><Plus size={17} />Serie anlegen</Button>
+          <Button variant="secondary" onClick={() => setEpisodeEditor(episodeDraft(null, initialSeries.find((item) => !item.archived)?.id || ""))} disabled={!initialSeries.some((item) => !item.archived)}><BookPlus size={17} />Folge anlegen</Button>
+          <Button onClick={() => setSeriesEditor("new")}><Plus size={17} />Serie mit Folgen anlegen</Button>
           <Button variant="secondary" onClick={() => setShowImport(true)}><FileUp size={17} />CSV importieren</Button>
         </div>
         {selected.length > 0 && (
-          <div className="bulk-bar"><strong>{selected.length} ausgewählt</strong><Button size="sm" onClick={() => bulk("heard")} disabled={busy}><Check size={15} />Gehört</Button><Button size="sm" variant="secondary" onClick={() => bulk("available")} disabled={busy}><RotateCcw size={15} />Verfügbar</Button><Button size="sm" variant="secondary" onClick={() => bulk("archive")} disabled={busy}><Archive size={15} />Archivieren</Button><Button size="sm" variant="secondary" onClick={() => bulk("unarchive")} disabled={busy}><Archive size={15} />Reaktivieren</Button><Button size="sm" variant="ghost" onClick={() => setSelected([])}>Aufheben</Button></div>
+          <div className="bulk-bar"><strong>{selected.length} ausgewählt</strong><Button size="sm" onClick={() => bulk("heard")} disabled={busy}><Check size={15} />Gehört</Button><Button size="sm" variant="secondary" onClick={() => bulk("available")} disabled={busy}><RotateCcw size={15} />Verfügbar</Button><Button size="sm" variant="secondary" onClick={() => bulk("delete")} disabled={busy}><Trash2 size={15} />Löschen</Button><Button size="sm" variant="secondary" onClick={() => bulk("unarchive")} disabled={busy}><Archive size={15} />Reaktivieren</Button><Button size="sm" variant="ghost" onClick={() => setSelected([])}>Aufheben</Button></div>
         )}
         {message && <p className={message.includes("fehl") || message.includes("nicht") ? "form-error" : "form-success"} role="status">{message}</p>}
         <div className="episode-table-wrap">
@@ -228,12 +249,12 @@ export function LibraryClient({ initialSeries, initialEpisodes }: { initialSerie
               {filtered.map((episode) => (
                 <tr key={episode.id}>
                   <td><input type="checkbox" checked={selected.includes(episode.id)} onChange={() => toggleSelected(episode.id)} aria-label={`${episode.title} auswählen`} /></td>
-                  <td><div className="episode-title-cell"><span className="series-dot" style={{ background: episode.accentColor }} /><span><strong>{episode.numberLabel ? `${episode.numberLabel} · ` : ""}{episode.title}</strong><small>{episode.durationMinutes ? `${episode.durationMinutes} Min.` : "Keine Laufzeit"}{episode.links.length ? ` · ${episode.links.length} Link${episode.links.length > 1 ? "s" : ""}` : ""}</small></span>{episode.favorite && <Heart size={14} fill="currentColor" />}</div></td>
+                  <td><div className="episode-title-cell"><span className="series-dot" style={{ background: episode.accentColor }} /><span><strong>{episode.numberLabel && episode.title !== `Folge ${episode.numberLabel}` ? `${episode.numberLabel} · ` : ""}{episode.title}</strong><small>{episode.durationMinutes ? `${episode.durationMinutes} Min.` : "Keine Laufzeit"}{episode.links.length ? ` · ${episode.links.length} Link${episode.links.length > 1 ? "s" : ""}` : ""}</small></span>{episode.favorite && <Heart size={14} fill="currentColor" />}</div></td>
                   <td>{episode.seriesName}</td>
                   <td><Badge tone={episode.status === "available" ? "good" : episode.status === "future" ? "warn" : "neutral"}>{statusLabels[episode.status]}</Badge></td>
                   <td>{episode.ratingAverage == null ? <span className="muted">–</span> : <span className="episode-rating"><Star size={13} fill="currentColor" />{episode.ratingAverage.toLocaleString("de-DE")} <small>({episode.ratingCount})</small></span>}</td>
                   <td>{episode.releaseDate || "–"}</td>
-                  <td><Button variant="ghost" size="sm" onClick={() => setEpisodeEditor(episodeDraft(episode, episode.seriesId))} aria-label={`${episode.title} bearbeiten`}><Pencil size={16} /></Button></td>
+                  <td><Button variant="ghost" size="sm" onClick={() => setEpisodeEditor(episodeDraft(episode, episode.seriesId))} aria-label={`${episode.title} bearbeiten`}><Pencil size={16} /></Button><Button variant="ghost" size="sm" onClick={() => removeEpisode(episode)} disabled={busy} aria-label={`${episode.title} löschen`}><Trash2 size={16} /></Button></td>
                 </tr>
               ))}
             </tbody>
@@ -245,7 +266,7 @@ export function LibraryClient({ initialSeries, initialEpisodes }: { initialSerie
       <Card className="series-admin-card">
         <div className="row space-between"><div><p className="eyebrow">Serienverwaltung</p><h2>Runden und Kataloge</h2></div></div>
         <div className="series-admin-list">
-          {initialSeries.map((item) => <div key={item.id} className="series-admin-row"><span className="series-dot" style={{ background: item.accentColor }} /><span className="grow"><strong>{item.name}</strong><small>{item.seriesKey} · Runde {item.roundNumber} · {item.totalCount} veröffentlicht</small></span>{item.archived && <Badge>Archiviert</Badge>}<Button size="sm" variant="ghost" onClick={() => setSeriesEditor(item)} aria-label={`${item.name} bearbeiten`}><Pencil size={15} /></Button><Button size="sm" variant="ghost" onClick={() => resetSeries(item)} disabled={busy || item.archived}><RotateCcw size={15} />Neue Runde</Button><Button size="sm" variant="ghost" onClick={() => toggleSeriesArchive(item)} disabled={busy}>{item.archived ? "Reaktivieren" : "Archivieren"}</Button></div>)}
+          {initialSeries.map((item) => <div key={item.id} className="series-admin-row"><span className="series-dot" style={{ background: item.accentColor }} /><span className="grow"><strong>{item.name}</strong><small>Runde {item.roundNumber} · {item.totalCount} veröffentlicht</small></span>{item.archived && <Badge>Archiviert</Badge>}<Button size="sm" variant="ghost" onClick={() => setSeriesEditor(item)} aria-label={`${item.name} bearbeiten`}><Pencil size={15} /></Button><Button size="sm" variant="ghost" onClick={() => resetSeries(item)} disabled={busy || item.archived}><RotateCcw size={15} />Neue Runde</Button><Button size="sm" variant="ghost" onClick={() => removeSeries(item)} disabled={busy}><Trash2 size={15} />Löschen</Button>{item.archived && <Button size="sm" variant="ghost" onClick={() => toggleSeriesArchive(item)} disabled={busy}>Reaktivieren</Button>}</div>)}
         </div>
       </Card>
 
@@ -269,7 +290,7 @@ export function LibraryClient({ initialSeries, initialEpisodes }: { initialSerie
       )}
 
       {seriesEditor && (
-        <div className="modal-backdrop"><section className="modal modal-small" role="dialog" aria-modal="true" aria-labelledby="series-editor-title"><div className="modal-header"><div><p className="eyebrow">Katalog</p><h2 id="series-editor-title">{seriesEditor === "new" ? "Neue Serie" : "Serie bearbeiten"}</h2></div><Button variant="ghost" onClick={() => setSeriesEditor(null)}><X size={20} /></Button></div><form key={seriesEditor === "new" ? "new" : seriesEditor.id} onSubmit={saveSeries} className="stack"><label>Name<input name="name" required defaultValue={seriesEditor === "new" ? "" : seriesEditor.name} /></label><label>Stabiler Schlüssel<input name="seriesKey" required pattern="[a-z0-9][a-z0-9_-]*" placeholder="die-drei-fragezeichen" defaultValue={seriesEditor === "new" ? "" : seriesEditor.seriesKey} /></label><label>Beschreibung<textarea name="description" defaultValue={seriesEditor === "new" ? "" : seriesEditor.description} /></label><label>Akzentfarbe<input name="accentColor" type="color" defaultValue={seriesEditor === "new" ? "#f0a35b" : seriesEditor.accentColor} /></label>{message && <p className="form-error">{message}</p>}<div className="modal-actions"><Button type="button" variant="ghost" onClick={() => setSeriesEditor(null)}>Abbrechen</Button><Button type="submit" disabled={busy}>{seriesEditor === "new" ? "Serie anlegen" : "Änderungen speichern"}</Button></div></form></section></div>
+        <div className="modal-backdrop"><section className="modal modal-small" role="dialog" aria-modal="true" aria-labelledby="series-editor-title"><div className="modal-header"><div><p className="eyebrow">Katalog</p><h2 id="series-editor-title">{seriesEditor === "new" ? "Neue Serie" : "Serie bearbeiten"}</h2></div><Button variant="ghost" onClick={() => setSeriesEditor(null)}><X size={20} /></Button></div><form key={seriesEditor === "new" ? "new" : seriesEditor.id} onSubmit={saveSeries} className="stack"><label>Name<input name="name" required defaultValue={seriesEditor === "new" ? "" : seriesEditor.name} /></label><input type="hidden" name="seriesKey" value={seriesEditor === "new" ? "" : seriesEditor.seriesKey} />{seriesEditor === "new" && <><label>Anzahl der Folgen<input name="episodeCount" type="number" min="0" max="10000" step="1" required placeholder="z. B. 250" /></label><p className="muted">Legt die Folgen 1 bis zur angegebenen Anzahl an. Du kannst sofort Nummern ziehen und Informationen später ergänzen. Mit 0 startest du einen leeren Katalog.</p></>}<label>Beschreibung<textarea name="description" defaultValue={seriesEditor === "new" ? "" : seriesEditor.description} /></label><label>Akzentfarbe<input name="accentColor" type="color" defaultValue={seriesEditor === "new" ? "#f0a35b" : seriesEditor.accentColor} /></label>{message && <p className="form-error">{message}</p>}<div className="modal-actions"><Button type="button" variant="ghost" onClick={() => setSeriesEditor(null)}>Abbrechen</Button><Button type="submit" disabled={busy}>{seriesEditor === "new" ? "Serie anlegen" : "Änderungen speichern"}</Button></div></form></section></div>
       )}
 
       {showImport && (

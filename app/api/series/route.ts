@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { requireApiUser } from "@/lib/auth";
 import { createSeries, getSeriesOverview } from "@/lib/catalog";
 import { assertMutationOrigin, errorResponse, jsonBody } from "@/lib/http";
-import { seriesInputSchema } from "@/lib/validation";
+import { seriesCreateSchema } from "@/lib/validation";
 
 export async function GET() {
   try {
@@ -17,7 +17,7 @@ export async function POST(request: Request) {
   try {
     assertMutationOrigin(request);
     await requireApiUser(["owner", "admin"]);
-    const input = seriesInputSchema.parse(await jsonBody(request));
+    const input = seriesCreateSchema.parse(await jsonBody(request));
     return NextResponse.json({ id: await createSeries(input) }, { status: 201 });
   } catch (error) {
     return errorResponse(error);

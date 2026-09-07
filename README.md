@@ -14,7 +14,10 @@ Ein persönlicher Hörspiel-Zufallsgenerator ohne Zurücklegen. Der Fortschritt 
 - optionale Bewertungen von 1 bis 10 pro echtem Hördurchlauf
 - CSV-Import mit Vorschau und vollständigem Rollback bei Fehlern
 - tägliche Online-Importe für Die drei ???, TKKG sowie öffentliche CSV-, JSON- und RSS-Feeds
-- Suche, Filter, Bulk-Status und Archivierung
+- Serien mit Name und Folgenanzahl anlegen: Folgen 1 bis N sind sofort ziehbar
+- Folgennummer im Mittelpunkt; Online-Suche und optionale Angaben direkt bei der Ziehung
+- Suche, Filter, Bulk-Status und endgültiges Löschen von Folgen und Serien
+- Löschen entfernt auch zugehörigen Verlauf, Bewertungen und Notizen für alle Nutzer; beim Löschen einer Serie werden auch deren Importquellen entfernt
 - Hörzeit, Skipquote, Streaks, Zeitdiagramme und Serienfortschritt
 - installierbare, responsive PWA; Ziehungen bleiben bewusst online
 

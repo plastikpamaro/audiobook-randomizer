@@ -22,6 +22,7 @@ describeDatabase("atomarer Zufallsgenerator mit PostgreSQL", () => {
     await pool.query("DROP SCHEMA public CASCADE; CREATE SCHEMA public");
     await pool.query(await readFile(resolve("migrations/0001_initial.sql"), "utf8"));
     await pool.query(await readFile(resolve("migrations/0002_online_imports_and_ratings.sql"), "utf8"));
+    await pool.query(await readFile(resolve("migrations/0003_catalog_deletion.sql"), "utf8"));
     const user = await pool.query<{ id: string }>(
       "INSERT INTO users (email,password_hash,role,catalog_baseline_date) VALUES ('test@example.com','x','owner',current_date) RETURNING id",
     );
@@ -198,4 +199,27 @@ describeDatabase("atomarer Zufallsgenerator mit PostgreSQL", () => {
     expect(parallel.filter((item) => item.status === "rejected")).toHaveLength(1);
     expect(await syncImportSource(source.rows[0].id, "scheduled", "2099-01-01", fetcher)).toBeNull();
   });
+  it("legt nummerierte Folgen an, ergänzt Details und löscht abhängige Daten", async () => {
+    const { seriesCreateSchema, episodeInputSchema } = await import("@/lib/validation");
+    const { createSeries, getEpisodes, updateEpisode, deleteEpisode, deleteSeries, applyBulkEpisodeAction } = await import("@/lib/catalog");
+    const id = await createSeries(seriesCreateSchema.parse({ name: "Nummernserie", episodeCount: 3 }));
+    const episodes = (await getEpisodes(userId)).filter((episode) => episode.seriesId === id);
+    expect(episodes.map((episode) => episode.numberLabel)).toEqual(["1", "2", "3"]);
+    expect(episodes.every((episode) => episode.status === "available")).toBe(true);
+    await updateEpisode(episodes[0].id, episodeInputSchema.parse({ ...episodes[0], title: "Nachgetragen", durationMinutes: 42 }));
+    expect((await getEpisodes(userId)).find((episode) => episode.id === episodes[0].id)?.title).toBe("Nachgetragen");
+    await applyBulkEpisodeAction(userId, [episodes[0].id], "heard");
+    await deleteEpisode(episodes[0].id);
+    expect((await pool.query("SELECT id FROM draws WHERE episode_id=$1", [episodes[0].id])).rowCount).toBe(0);
+    expect((await pool.query("SELECT id FROM episode_completions WHERE episode_id=$1", [episodes[0].id])).rowCount).toBe(0);
+    await applyBulkEpisodeAction(userId, [episodes[1].id], "delete");
+    const source = await pool.query<{ id: string }>(
+      "INSERT INTO import_sources (created_by_user_id,series_id,kind,name) VALUES ($1,$2,'tkkg','Quelle') RETURNING id", [userId, id],
+    );
+    await pool.query("INSERT INTO import_source_items (source_id,external_id,episode_id,payload_hash,source_payload) VALUES ($1,'3',$2,repeat('a',64),'{}')", [source.rows[0].id, episodes[2].id]);
+    await deleteSeries(id);
+    expect((await pool.query("SELECT id FROM episodes WHERE series_id=$1", [id])).rowCount).toBe(0);
+    expect((await pool.query("SELECT id FROM import_sources WHERE series_id=$1", [id])).rowCount).toBe(0);
+  });
+
 });

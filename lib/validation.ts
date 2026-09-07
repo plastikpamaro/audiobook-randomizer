@@ -42,6 +42,11 @@ export const seriesInputSchema = z.object({
   archived: z.boolean().default(false),
 });
 
+export const seriesCreateSchema = seriesInputSchema.extend({
+  seriesKey: keySchema.optional(),
+  episodeCount: z.number().int().min(0).max(10_000).default(0),
+});
+
 export const presetInputSchema = z.object({
   name: z.string().trim().min(1).max(100),
   seriesIds: z.array(z.uuid()).min(1).max(100),

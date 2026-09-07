@@ -1,5 +1,6 @@
 import "server-only";
 
+import { randomUUID } from "node:crypto";
 import type { PoolClient } from "pg";
 import { db, lockUser, query, transaction } from "@/lib/db";
 import { isoDate, localDate } from "@/lib/dates";
@@ -188,14 +189,34 @@ export async function getPresets(userId: string): Promise<Preset[]> {
   return rows.map((row) => ({ id: row.id, name: row.name, seriesIds: row.series_ids || [] }));
 }
 
-export async function createSeries(input: SeriesInput): Promise<string> {
-  const result = await db().query<{ id: string }>(
-    `INSERT INTO series (series_key, name, description, accent_color, archived)
-     VALUES ($1, $2, $3, $4, $5)
-     RETURNING id`,
-    [input.seriesKey, input.name, input.description || null, input.accentColor, input.archived],
-  );
-  return result.rows[0].id;
+export async function createSeries(input: Omit<SeriesInput, "seriesKey"> & { seriesKey?: string; episodeCount?: number }): Promise<string> {
+  return transaction(async (client) => {
+    const result = await client.query<{ id: string }>(
+      `INSERT INTO series (series_key, name, description, accent_color, archived)
+       VALUES ($1, $2, $3, $4, $5) RETURNING id`,
+      [input.seriesKey || `serie-${randomUUID()}`, input.name, input.description || null, input.accentColor, input.archived],
+    );
+    const id = result.rows[0].id;
+    if (input.episodeCount) {
+      await client.query(
+        `INSERT INTO episodes (series_id, episode_key, number_label, sort_order, title)
+         SELECT $1, 'folge-' || n, n::text, n, 'Folge ' || n
+         FROM generate_series(1, $2::integer) AS n`,
+        [id, input.episodeCount],
+      );
+    }
+    return id;
+  });
+}
+
+export async function deleteSeries(id: string): Promise<void> {
+  const result = await db().query("DELETE FROM series WHERE id=$1", [id]);
+  if (!result.rowCount) throw new AppError("Serie nicht gefunden.", 404, "NOT_FOUND");
+}
+
+export async function deleteEpisode(id: string): Promise<void> {
+  const result = await db().query("DELETE FROM episodes WHERE id=$1", [id]);
+  if (!result.rowCount) throw new AppError("Folge nicht gefunden.", 404, "NOT_FOUND");
 }
 
 export async function updateSeries(id: string, input: Partial<SeriesInput>): Promise<void> {
@@ -379,12 +400,16 @@ export async function deletePreset(userId: string, presetId: string): Promise<vo
 export async function applyBulkEpisodeAction(
   userId: string,
   episodeIds: string[],
-  action: "heard" | "available" | "archive" | "unarchive",
+  action: "heard" | "available" | "archive" | "unarchive" | "delete",
 ): Promise<void> {
   const ids = [...new Set(episodeIds)];
   if (!ids.length) throw new AppError("Wähle mindestens eine Folge aus.");
   await transaction(async (client) => {
     await lockUser(client, userId);
+    if (action === "delete") {
+      await client.query("DELETE FROM episodes WHERE id = ANY($1::uuid[])", [ids]);
+      return;
+    }
     const active = await client.query<{ episode_id: string }>(
       "SELECT episode_id FROM draws WHERE user_id=$1 AND status='active' AND episode_id = ANY($2::uuid[])",
       [userId, ids],

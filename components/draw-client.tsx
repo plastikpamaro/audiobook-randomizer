@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import {
   Check, ExternalLink, Heart, LoaderCircle, Plus, RotateCcw, Shuffle, SkipForward,
@@ -48,6 +48,7 @@ export function DrawClient({
   const [showPresetForm, setShowPresetForm] = useState(false);
   const [note, setNote] = useState(initialDraw?.episode.note || "");
   const [ratingTarget, setRatingTarget] = useState<{ id: string; title: string; seriesName: string } | null>(null);
+  const [showDetails, setShowDetails] = useState(false);
   const [ratingScore, setRatingScore] = useState<number | null>(null);
 
   const remaining = useMemo(
@@ -88,7 +89,7 @@ export function DrawClient({
         method: "POST",
         body: JSON.stringify(activePreset ? { presetId: activePreset } : { seriesIds: selected }),
       });
-      setDraw(result.draw); setNote(result.draw.episode.note || "");
+      setDraw(result.draw); setShowDetails(false); setNote(result.draw.episode.note || "");
     } catch (caught) {
       const error = caught as Error & { code?: string; details?: { seriesIds?: string[] } };
       setMessage(error.message);
@@ -120,6 +121,27 @@ export function DrawClient({
       await api(`/api/draws/${ratingTarget.id}/rating`, { method: "PUT", body: JSON.stringify({ score: ratingScore }) });
       setRatingTarget(null); setMessage("Bewertung gespeichert."); router.refresh();
     } catch (caught) { setMessage(caught instanceof Error ? caught.message : "Bewertung fehlgeschlagen."); }
+    finally { setBusy(false); }
+  }
+
+  async function saveDetails(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (!draw) return;
+    const form = new FormData(event.currentTarget);
+    setBusy(true); setMessage("");
+    const episode = draw.episode;
+    const url = String(form.get("url") || "").trim();
+    try {
+      await api(`/api/episodes/${episode.id}`, {
+        method: "PATCH", body: JSON.stringify({
+          ...episode,
+          title: String(form.get("title") || "").trim() || `Folge ${episode.numberLabel || episode.episodeKey}`,
+          durationMinutes: form.get("durationMinutes") ? Number(form.get("durationMinutes")) : null,
+          links: [...episode.links, ...(url ? [{ label: String(form.get("linkLabel") || "Hören").trim() || "Hören", url, sortOrder: episode.links.length }] : [])],
+        }),
+      });
+      setShowDetails(false); await refreshCurrent(); router.refresh(); setMessage("Informationen gespeichert.");
+    } catch (caught) { setMessage(caught instanceof Error ? caught.message : "Speichern fehlgeschlagen."); }
     finally { setBusy(false); }
   }
 
@@ -197,7 +219,8 @@ export function DrawClient({
           </div>
           <div className="series-rule" />
           <p className="now-series">{episode.seriesName}</p>
-          <h1>{episode.title}</h1>
+          <h1>{episode.numberLabel ? `Folge ${episode.numberLabel}` : episode.title}</h1>
+          {episode.numberLabel && episode.title !== `Folge ${episode.numberLabel}` && <h2>{episode.title}</h2>}
           <div className="episode-meta">
             {episode.durationMinutes && <span>{episode.durationMinutes} Min.</span>}
             {episode.releaseDate && <span>Erschienen {new Intl.DateTimeFormat("de-DE").format(new Date(`${episode.releaseDate}T12:00:00Z`))}</span>}
@@ -212,6 +235,16 @@ export function DrawClient({
               ))}
             </div>
           )}
+          <div className="row-wrap">
+            <Button variant="secondary" onClick={() => setShowDetails(!showDetails)} disabled={busy}>Informationen ergänzen</Button>
+            <a className="button button-ghost button-md" href={`https://www.google.com/search?q=${encodeURIComponent(episode.seriesName + " Folge " + (episode.numberLabel || episode.title))}`} target="_blank" rel="noreferrer noopener">Folge online suchen<ExternalLink size={15} /></a>
+          </div>
+          {showDetails && <form key={episode.id} onSubmit={saveDetails} className="stack">
+            <label>Titel (optional)<input name="title" maxLength={300} defaultValue={episode.title === `Folge ${episode.numberLabel}` ? "" : episode.title} placeholder="Wie heißt diese Folge?" /></label>
+            <label>Laufzeit in Minuten (optional)<input name="durationMinutes" type="number" min="1" max="10000" defaultValue={episode.durationMinutes || ""} /></label>
+            <div className="form-grid"><label>Neuer Hörlink (optional)<input name="url" type="url" placeholder="https://…" /></label><label>Link-Name<input name="linkLabel" maxLength={80} placeholder="z. B. Spotify" /></label></div>
+            <div className="row-wrap"><Button type="submit" disabled={busy}>Informationen speichern</Button><Button type="button" variant="ghost" onClick={() => setShowDetails(false)}>Abbrechen</Button></div>
+          </form>}
           <label className="note-field">Private Notiz
             <textarea value={note} onChange={(event) => setNote(event.target.value)} placeholder="Was möchtest du dir zu dieser Folge merken?" maxLength={10_000} />
           </label>

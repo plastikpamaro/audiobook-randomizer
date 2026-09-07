@@ -6,7 +6,7 @@ import { assertMutationOrigin, errorResponse, jsonBody } from "@/lib/http";
 
 const schema = z.object({
   episodeIds: z.array(z.uuid()).min(1).max(1_000),
-  action: z.enum(["heard", "available", "archive", "unarchive"]),
+  action: z.enum(["heard", "available", "archive", "unarchive", "delete"]),
 });
 
 export async function POST(request: Request) {
@@ -14,7 +14,7 @@ export async function POST(request: Request) {
     assertMutationOrigin(request);
     const user = await requireApiUser();
     const input = schema.parse(await jsonBody(request));
-    if (["archive", "unarchive"].includes(input.action) && !["owner", "admin"].includes(user.role)) {
+    if (["archive", "unarchive", "delete"].includes(input.action) && !["owner", "admin"].includes(user.role)) {
       return NextResponse.json({ error: "Dafür fehlen dir die Rechte.", code: "FORBIDDEN" }, { status: 403 });
     }
     await applyBulkEpisodeAction(user.id, input.episodeIds, input.action);

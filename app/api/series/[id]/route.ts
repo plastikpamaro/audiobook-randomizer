@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { requireApiUser } from "@/lib/auth";
-import { updateSeries } from "@/lib/catalog";
+import { deleteSeries, updateSeries } from "@/lib/catalog";
 import { assertMutationOrigin, errorResponse, jsonBody } from "@/lib/http";
 import { seriesInputSchema } from "@/lib/validation";
 
@@ -22,7 +22,7 @@ export async function DELETE(request: Request, context: { params: Promise<{ id: 
     assertMutationOrigin(request);
     await requireApiUser(["owner", "admin"]);
     const { id } = await context.params;
-    await updateSeries(id, { archived: true });
+    await deleteSeries(id);
     return NextResponse.json({ ok: true });
   } catch (error) {
     return errorResponse(error);
