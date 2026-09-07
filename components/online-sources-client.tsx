@@ -19,6 +19,10 @@ import type {
 const kindLabels: Record<ImportSourceKind, string> = {
   drei_fragezeichen: "Die drei ??? – offizieller Katalog",
   tkkg: "TKKG – offizieller Katalog",
+  van_dusen: "Professor van Dusen – Originalserie (Apple Music)",
+  van_dusen_neue: "Professor van Dusen – Die neuen Fälle (Apple Music)",
+  point_whitmark: "Point Whitmark (Apple Music)",
+  pater_brown: "Pater Brown – Maritim (Apple Music)",
   csv: "Öffentliche CSV-URL",
   json: "Öffentlicher JSON-Feed",
   rss: "Öffentlicher RSS-/Podcast-Feed",
@@ -207,7 +211,7 @@ export function OnlineSourcesClient({
 function SourceWizard({ series, busy, message, onSubmit, onClose }: { series: SeriesOverview[]; busy: boolean; message: string; onSubmit: (event: FormEvent<HTMLFormElement>) => void; onClose: () => void }) {
   const [kind, setKind] = useState<ImportSourceKind>("drei_fragezeichen");
   const [seriesId, setSeriesId] = useState(series.find((item) => !item.archived)?.id || "new");
-  const defaults = kind === "drei_fragezeichen" ? "Die drei ??? – offiziell" : kind === "tkkg" ? "TKKG – offiziell" : `Mein ${kind.toUpperCase()}-Feed`;
+  const defaults = ["csv", "json", "rss"].includes(kind) ? `Mein ${kind.toUpperCase()}-Feed` : kindLabels[kind];
   const custom = ["csv", "json", "rss"].includes(kind);
   return <div className="modal-backdrop"><section className="modal" role="dialog" aria-modal="true" aria-labelledby="source-wizard-title"><div className="modal-header"><div><p className="eyebrow">Einrichtungsassistent</p><h2 id="source-wizard-title">Online-Quelle hinzufügen</h2></div><Button variant="ghost" onClick={onClose}><X size={20} /></Button></div><form className="stack" onSubmit={onSubmit}><label>Quellentyp<select name="kind" value={kind} onChange={(event) => setKind(event.target.value as ImportSourceKind)}>{Object.entries(kindLabels).map(([value, label]) => <option key={value} value={value}>{label}</option>)}</select></label><label>Anzeigename<input name="name" key={defaults} defaultValue={defaults} required /></label>{custom && <label>Öffentliche HTTPS-URL<input name="url" type="url" required pattern="https://.*" placeholder="https://example.org/episodes.json" /></label>}<label>Zielserie<select name="seriesId" value={seriesId} onChange={(event) => setSeriesId(event.target.value)}>{series.filter((item) => !item.archived).map((item) => <option key={item.id} value={item.id}>{item.name}</option>)}<option value="new">Neue Serie anlegen…</option></select></label>{seriesId === "new" && <div className="form-grid"><label>Name der Serie<input name="newSeriesName" required /></label><label>Akzentfarbe<input name="accentColor" type="color" defaultValue="#f0a35b" /></label></div>}<p className="muted">Quelle und gegebenenfalls Serie werden angelegt. Folgen werden erst nach deiner Bestätigung in der Vorschau übernommen.</p>{message && <p className="form-error">{message}</p>}<div className="modal-actions"><Button type="button" variant="ghost" onClick={onClose}>Abbrechen</Button><Button type="submit" disabled={busy}>{busy ? "Quelle wird geprüft…" : "Vorschau laden"}</Button></div></form></section></div>;
 }

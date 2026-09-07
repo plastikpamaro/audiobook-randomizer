@@ -1,0 +1,856 @@
+{
+  "results": [
+    {
+      "wrapperType": "artist",
+      "artistId": 626774221
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1425037213,
+      "collectionName": "Die neuen Fälle, Fall 15: Professor van Dusen in der Totenvilla",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-fall-15-professor-van-dusen-in-der/1425037213?uo=4",
+      "releaseDate": "2018-09-14T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1441302254,
+      "collectionName": "Die neuen Fälle, Fall 16: Professor van Dusen nimmt die Beichte ab",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-fall-16-professor-van-dusen-nimmt-die/1441302254?uo=4",
+      "releaseDate": "2018-11-23T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1453425347,
+      "collectionName": "Die neuen Fälle, Fall 17: Professor van Dusen setzt die Segel",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-fall-17-professor-van-dusen-setzt-die-segel/1453425347?uo=4",
+      "releaseDate": "2019-03-15T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1465894405,
+      "collectionName": "Die neuen Fälle, Fall 18: Professor van Dusen und der lachende Mörder",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-fall-18-professor-van-dusen-und-der/1465894405?uo=4",
+      "releaseDate": "2019-06-14T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1481067598,
+      "collectionName": "Die neuen Fälle, Fall 19: Professor van Dusen legt einen Köder aus",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-fall-19-professor-van-dusen-legt-einen/1481067598?uo=4",
+      "releaseDate": "2019-09-27T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1488859573,
+      "collectionName": "Die neuen Fälle, Fall 20: Professor van Dusens Weihnachtsgeschichte",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-fall-20-professor-van-dusens-weihnachtsgeschichte/1488859573?uo=4",
+      "releaseDate": "2019-11-29T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1571976618,
+      "collectionName": "Die neuen Fälle, Fall 26: Professor van Dusen bietet mehr",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-fall-26-professor-van-dusen-bietet-mehr/1571976618?uo=4",
+      "releaseDate": "2021-06-25T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1506767852,
+      "collectionName": "Folge 23: Robinsons Insel",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-23-robinsons-insel/1506767852?uo=4",
+      "releaseDate": "2020-08-14T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1504248622,
+      "collectionName": "Folge 21: Der Kopfjäger von Singapur",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-21-der-kopfj%C3%A4ger-von-singapur/1504248622?uo=4",
+      "releaseDate": "2020-04-17T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1515281868,
+      "collectionName": "Die neuen Fälle, Fall 22: Professor van Dusen bittet zum Tanz",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-fall-22-professor-van-dusen-bittet-zum-tanz/1515281868?uo=4",
+      "releaseDate": "2020-06-19T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1506582102,
+      "collectionName": "Die neuen Fälle, Fall 21: Professor van Dusen zählt nach",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-fall-21-professor-van-dusen-z%C3%A4hlt-nach/1506582102?uo=4",
+      "releaseDate": "2020-03-27T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1503643060,
+      "collectionName": "Folge 27: Professor van Dusen und der schreckliche Schneemensch",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-27-professor-van-dusen-und-der-schreckliche-schneemensch/1503643060?uo=4",
+      "releaseDate": "2021-04-16T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1582449146,
+      "collectionName": "Die neuen Fälle, Fall 27: Professor van Dusen im schwarzen Tann",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-fall-27-professor-van-dusen-im-schwarzen/1582449146?uo=4",
+      "releaseDate": "2021-09-17T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1506768027,
+      "collectionName": "Folge 22: Doktor Tschu Man Fu",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-22-doktor-tschu-man-fu/1506768027?uo=4",
+      "releaseDate": "2020-06-19T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1539152879,
+      "collectionName": "Die neuen Fälle, Fall 24: Professor van Dusen und die Regenbogenmorde",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-fall-24-professor-van-dusen-und-die/1539152879?uo=4",
+      "releaseDate": "2020-11-20T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1506768897,
+      "collectionName": "Folge 25: Professor van Dusen und der Zirkusmörder",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-25-professor-van-dusen-und-der-zirkusm%C3%B6rder/1506768897?uo=4",
+      "releaseDate": "2020-12-18T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1557295495,
+      "collectionName": "Die neuen Fälle, Fall 25: Professor van Dusen und der lange Weg nach Oz",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-fall-25-professor-van-dusen-und-der/1557295495?uo=4",
+      "releaseDate": "2021-03-26T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1529885703,
+      "collectionName": "Die neuen Fälle, Fall 23: Professor van Dusen und die Witwentröster von Bombay",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-fall-23-professor-van-dusen-und-die/1529885703?uo=4",
+      "releaseDate": "2020-09-25T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1506770683,
+      "collectionName": "Folge 26: Professor van Dusen rettet die Venus von Milo",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-26-professor-van-dusen-rettet-die-venus-von-milo/1506770683?uo=4",
+      "releaseDate": "2021-02-19T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1506768512,
+      "collectionName": "Folge 24: Die Erde hat ihn wieder",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-24-die-erde-hat-ihn-wieder/1506768512?uo=4",
+      "releaseDate": "2020-10-16T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1503643823,
+      "collectionName": "Folge 28: Professor van Dusen auf dem Hochseil",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-28-professor-van-dusen-auf-dem-hochseil/1503643823?uo=4",
+      "releaseDate": "2021-06-18T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1503644287,
+      "collectionName": "Folge 29: Wo steckt Professor van Dusen?",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-29-wo-steckt-professor-van-dusen/1503644287?uo=4",
+      "releaseDate": "2021-08-13T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1594065078,
+      "collectionName": "Folge 28: Professor van Dusen auf den Spuren der Blutgräfin (Die neuen Fälle)",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-28-professor-van-dusen-auf-den-spuren-der-blutgr%C3%A4fin/1594065078?uo=4",
+      "releaseDate": "2021-11-19T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1503644116,
+      "collectionName": "Folge 30: Professor van Dusen und der grundlose Mord",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-30-professor-van-dusen-und-der-grundlose-mord/1503644116?uo=4",
+      "releaseDate": "2021-10-15T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1614288574,
+      "collectionName": "Fall 29: Professor van Dusen packt die Koffer (Die neuen Fälle)",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-29-professor-van-dusen-packt-die-koffer-die-neuen-f%C3%A4lle/1614288574?uo=4",
+      "releaseDate": "2022-04-15T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1467946609,
+      "collectionName": "Die neuen Fälle, Fall 1: Professor van Dusen im Spukhaus",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-fall-1-professor-van-dusen-im-spukhaus/1467946609?uo=4",
+      "releaseDate": "2015-04-02T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1654926288,
+      "collectionName": "Die neuen Fälle, Fall 32: Professor van Dusen auf dem Abstellgleis",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-fall-32-professor-van-dusen-auf-dem/1654926288?uo=4",
+      "releaseDate": "2022-12-09T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1628255309,
+      "collectionName": "Fall 30: Professor van Dusen auf Wolke sieben (Die neuen Fälle)",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-30-professor-van-dusen-auf-wolke-sieben-die-neuen-f%C3%A4lle/1628255309?uo=4",
+      "releaseDate": "2022-07-15T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1647819837,
+      "collectionName": "Folge 38: Professor van Dusen und die blutige Botschaft",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-38-professor-van-dusen-und-die-blutige-botschaft/1647819837?uo=4",
+      "releaseDate": "2023-02-03T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1647818963,
+      "collectionName": "Folge 34: Professor van Dusen hilft Scotland Yard",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-34-professor-van-dusen-hilft-scotland-yard/1647818963?uo=4",
+      "releaseDate": "2022-12-09T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1643137445,
+      "collectionName": "Fall 31: Professor van Dusen hört das Gras wachsen (Die neuen Fälle)",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-31-professor-van-dusen-h%C3%B6rt-das-gras-wachsen-die/1643137445?uo=4",
+      "releaseDate": "2022-09-30T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1467899858,
+      "collectionName": "Folge 1: Eine Unze Radium",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-1-eine-unze-radium/1467899858?uo=4",
+      "releaseDate": "2016-04-15T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1647819773,
+      "collectionName": "Folge 36: Professor van Dusen im Wilden Westen",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-36-professor-van-dusen-im-wilden-westen/1647819773?uo=4",
+      "releaseDate": "2023-01-06T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1676901529,
+      "collectionName": "Fall 33: Professor van Dusen ringt mit dem Löwenrudel (Die neuen Fälle)",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-33-professor-van-dusen-ringt-mit-dem-l%C3%B6wenrudel/1676901529?uo=4",
+      "releaseDate": "2023-04-14T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1647818269,
+      "collectionName": "Folge 33: Professor van Dusen und der fliegende Teppich",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-33-professor-van-dusen-und-der-fliegende-teppich/1647818269?uo=4",
+      "releaseDate": "2022-11-25T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1647819268,
+      "collectionName": "Folge 35: Professor van Dusen und der Schatz des Maharadschas",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-35-professor-van-dusen-und-der-schatz-des-maharadschas/1647819268?uo=4",
+      "releaseDate": "2022-12-23T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1647816312,
+      "collectionName": "Folge 31: Professor van Dusen gegen das Phantom",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-31-professor-van-dusen-gegen-das-phantom/1647816312?uo=4",
+      "releaseDate": "2022-10-28T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1467917153,
+      "collectionName": "Folge 10: Lebende Bilder - toter Mann",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-10-lebende-bilder-toter-mann/1467917153?uo=4",
+      "releaseDate": "2013-11-15T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1467910729,
+      "collectionName": "Folge 6: Die Perlen der Kali",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-6-die-perlen-der-kali/1467910729?uo=4",
+      "releaseDate": "2016-04-15T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1647820533,
+      "collectionName": "Folge 40: Schall und Rauch",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-40-schall-und-rauch/1647820533?uo=4",
+      "releaseDate": "2023-03-03T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1647820433,
+      "collectionName": "Folge 39: Professor van Dusen auf der Hintertreppe",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-39-professor-van-dusen-auf-der-hintertreppe/1647820433?uo=4",
+      "releaseDate": "2023-02-17T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1647817560,
+      "collectionName": "Folge 32: Professor van Dusen und das Auge des Zyklopen",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-32-professor-van-dusen-und-das-auge-des-zyklopen/1647817560?uo=4",
+      "releaseDate": "2022-11-11T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1467915722,
+      "collectionName": "Folge 9: Ein Mörder bei Madame Tussaud",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-9-ein-m%C3%B6rder-bei-madame-tussaud/1467915722?uo=4",
+      "releaseDate": "2013-05-17T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1761151101,
+      "collectionName": "Die neuen Fälle, Fall 39: Professor van Dusen auf Jungfernfahrt",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-fall-39-professor-van-dusen-auf-jungfernfahrt/1761151101?uo=4",
+      "releaseDate": "2024-09-13T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1743830806,
+      "collectionName": "Folge 47: Professor van Dusen in Marokko",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-47-professor-van-dusen-in-marokko/1743830806?uo=4",
+      "releaseDate": "2024-08-23T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1647819831,
+      "collectionName": "Folge 37: Professor van Dusen und der Vampir von Brooklyn",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-37-professor-van-dusen-und-der-vampir-von-brooklyn/1647819831?uo=4",
+      "releaseDate": "2023-01-20T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1467944520,
+      "collectionName": "Folge 19: Der Fluch des Pharao",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-19-der-fluch-des-pharao/1467944520?uo=4",
+      "releaseDate": "2018-04-20T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1467943369,
+      "collectionName": "Folge 20: Hatch will heiraten",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-20-hatch-will-heiraten/1467943369?uo=4",
+      "releaseDate": "2018-06-22T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1467918248,
+      "collectionName": "Folge 11: Van Dusens erster Fall",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-11-van-dusens-erster-fall/1467918248?uo=4",
+      "releaseDate": "2014-09-05T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1467950840,
+      "collectionName": "Die neuen Fälle, Fall 3: Professor van Dusen taut auf",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-fall-3-professor-van-dusen-taut-auf/1467950840?uo=4",
+      "releaseDate": "2015-09-25T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1467932384,
+      "collectionName": "Folge 15: Zocker, Zossen und Zinnober",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-15-zocker-zossen-und-zinnober/1467932384?uo=4",
+      "releaseDate": "2017-08-18T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1467924021,
+      "collectionName": "Folge 14: Rotes Blut und weißer Käse",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-14-rotes-blut-und-wei%C3%9Fer-k%C3%A4se/1467924021?uo=4",
+      "releaseDate": "2017-06-23T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1779083927,
+      "collectionName": "Die neuen Fälle, Fall 40: Professor van Dusen in stillen Gewässern",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-fall-40-professor-van-dusen-in-stillen/1779083927?uo=4",
+      "releaseDate": "2024-12-13T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1743831088,
+      "collectionName": "Folge 48: Ein Dinosaurier für Professor van Dusen",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-48-ein-dinosaurier-f%C3%BCr-professor-van-dusen/1743831088?uo=4",
+      "releaseDate": "2024-09-06T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1467910727,
+      "collectionName": "Folge 7: Whisky in den Wolken",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-7-whisky-in-den-wolken/1467910727?uo=4",
+      "releaseDate": "2016-04-15T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1467982717,
+      "collectionName": "Folge 17: Das Gefängnis des Grafen Dracula",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-17-das-gef%C3%A4ngnis-des-grafen-dracula/1467982717?uo=4",
+      "releaseDate": "2017-12-01T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1467948696,
+      "collectionName": "Die neuen Fälle, Fall 2: Professor van Dusen reitet das trojanische Pferd",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-fall-2-professor-van-dusen-reitet-das/1467948696?uo=4",
+      "releaseDate": "2015-07-17T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1467930378,
+      "collectionName": "Folge 12: Stimmen aus dem Jenseits",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-12-stimmen-aus-dem-jenseits/1467930378?uo=4",
+      "releaseDate": "2015-03-06T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1467919950,
+      "collectionName": "Folge 13: Wer stirbt schon gern in Monte Carlo",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-13-wer-stirbt-schon-gern-in-monte-carlo/1467919950?uo=4",
+      "releaseDate": "2017-04-21T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1467909013,
+      "collectionName": "Folge 4: Der Mann, der seinen Kopf verlor",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-4-der-mann-der-seinen-kopf-verlor/1467909013?uo=4",
+      "releaseDate": "2016-04-15T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1467899786,
+      "collectionName": "Folge 2: Das sicherste Gefängnis der Welt",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-2-das-sicherste-gef%C3%A4ngnis-der-welt/1467899786?uo=4",
+      "releaseDate": "2010-10-22T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1743829393,
+      "collectionName": "Folge 46: Professor van Dusen und der Schwarze Ritter",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-46-professor-van-dusen-und-der-schwarze-ritter/1743829393?uo=4",
+      "releaseDate": "2024-08-09T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1467939383,
+      "collectionName": "Folge 18: Im Harem sitzen heulend die Eunuchen",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-18-im-harem-sitzen-heulend-die-eunuchen/1467939383?uo=4",
+      "releaseDate": "2018-02-23T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1467913988,
+      "collectionName": "Folge 8: Wettbewerb der Detektive",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-8-wettbewerb-der-detektive/1467913988?uo=4",
+      "releaseDate": "2016-04-15T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1467900580,
+      "collectionName": "Folge 3: Mord bei Gaslicht",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-3-mord-bei-gaslicht/1467900580?uo=4",
+      "releaseDate": "2016-04-15T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1820869618,
+      "collectionName": "Die neuen Fälle, Fall 42: Professor van Dusen weckt den Skorpion",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-fall-42-professor-van-dusen-weckt-den/1820869618?uo=4",
+      "releaseDate": "2025-07-11T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1467910412,
+      "collectionName": "Folge 5: Stirb schön mit Shakespeare",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-5-stirb-sch%C3%B6n-mit-shakespeare/1467910412?uo=4",
+      "releaseDate": "2016-04-15T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 6805509069,
+      "collectionName": "Die neuen Fälle, Fall 47: Professor van Dusen krault den schwarzen Kater",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-fall-47-professor-van-dusen-krault/6805509069?uo=4",
+      "releaseDate": "2026-09-25T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1743833893,
+      "collectionName": "Folge 50: Professor van Dusen und die sieben Detektive",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-50-professor-van-dusen-und-die-sieben-detektive/1743833893?uo=4",
+      "releaseDate": "2024-10-04T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1743833678,
+      "collectionName": "Folge 49: Professor van Dusen und der Fall Hatch",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-49-professor-van-dusen-und-der-fall-hatch/1743833678?uo=4",
+      "releaseDate": "2024-09-20T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1467970204,
+      "collectionName": "Die neuen Fälle, Fall 5: Professor van Dusen und das Haus der 1000 Türen",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-fall-5-professor-van-dusen-und-das/1467970204?uo=4",
+      "releaseDate": "2016-02-26T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1467965782,
+      "collectionName": "Die neuen Fälle, Fall 13: Professor van Dusen spielt Theater",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-fall-13-professor-van-dusen-spielt-theater/1467965782?uo=4",
+      "releaseDate": "2018-03-23T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1467936508,
+      "collectionName": "Folge 16: Duell der Giganten",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-16-duell-der-giganten/1467936508?uo=4",
+      "releaseDate": "2017-10-20T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1799991249,
+      "collectionName": "Die neuen Fälle, Fall 41: Professor van Dusen lässt den Drachen steigen",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-fall-41-professor-van-dusen-l%C3%A4sst-den/1799991249?uo=4",
+      "releaseDate": "2025-04-04T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1468002156,
+      "collectionName": "Die neuen Fälle, Fall 12: Professor van Dusen fährt Achterbahn",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-fall-12-professor-van-dusen-f%C3%A4hrt-achterbahn/1468002156?uo=4",
+      "releaseDate": "2017-11-24T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1467971228,
+      "collectionName": "Die neuen Fälle, Fall 6: Professor van Dusen schlägt sich selbst",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-fall-6-professor-van-dusen-schl%C3%A4gt/1467971228?uo=4",
+      "releaseDate": "2016-05-27T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1467964239,
+      "collectionName": "Die neuen Fälle, Fall 11: Professor van Dusen in der Höhle des Löwen",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-fall-11-professor-van-dusen-in-der/1467964239?uo=4",
+      "releaseDate": "2017-09-15T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1850435803,
+      "collectionName": "Die neuen Fälle, Fall 44: Professor van Dusen jagt Schneeengel",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-fall-44-professor-van-dusen-jagt-schneeengel/1850435803?uo=4",
+      "releaseDate": "2025-11-28T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1467979546,
+      "collectionName": "Die neuen Fälle, Fall 14: Professor van Dusen geht ein Licht auf",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-fall-14-professor-van-dusen-geht-ein/1467979546?uo=4",
+      "releaseDate": "2018-06-15T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1881527221,
+      "collectionName": "Die neuen Fälle, Fall 45: Professor van Dusen greift nach den Sternen",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-fall-45-professor-van-dusen-greift/1881527221?uo=4",
+      "releaseDate": "2026-03-27T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1838479434,
+      "collectionName": "Die neuen Fälle, Fall 43: Professor van Dusen schlägt ein Schnippchen",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-fall-43-professor-van-dusen-schl%C3%A4gt/1838479434?uo=4",
+      "releaseDate": "2025-10-10T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1743828934,
+      "collectionName": "Folge 45: Professor van Dusen und die verschwundenen Millionäre",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-45-professor-van-dusen-und-die-verschwundenen/1743828934?uo=4",
+      "releaseDate": "2024-07-26T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1747632889,
+      "collectionName": "Die neuen Fälle, Fall 38: Professor van Dusen nimmt ein Bad in der Menge",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-fall-38-professor-van-dusen-nimmt-ein/1747632889?uo=4",
+      "releaseDate": "2024-06-14T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1467976288,
+      "collectionName": "Die neuen Fälle, Fall 10: Professor van Dusen kauft die Katze im Sack",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-fall-10-professor-van-dusen-kauft-die/1467976288?uo=4",
+      "releaseDate": "2017-05-26T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1467951349,
+      "collectionName": "Die neuen Fälle, Fall 4: Professor van Dusen jagt einen Schatten",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-fall-4-professor-van-dusen-jagt-einen/1467951349?uo=4",
+      "releaseDate": "2015-11-27T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1731838464,
+      "collectionName": "Die neuen Fälle, Fall 37: Professor van Dusen zürnt den Göttern",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-fall-37-professor-van-dusen-z%C3%BCrnt-den/1731838464?uo=4",
+      "releaseDate": "2024-03-22T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1705770427,
+      "collectionName": "Fall 35: Professor van Dusen wirbelt Staub auf (Die neuen Fälle)",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-35-professor-van-dusen-wirbelt-staub-auf-die-neuen/1705770427?uo=4",
+      "releaseDate": "2023-10-06T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1743826039,
+      "collectionName": "Folge 44: Professor van Dusen und der Mafia-Mord",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-44-professor-van-dusen-und-der-mafia-mord/1743826039?uo=4",
+      "releaseDate": "2024-07-12T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1718510011,
+      "collectionName": "Die neuen Fälle, Fall 36: Professor van Dusen räumt auf",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-fall-36-professor-van-dusen-r%C3%A4umt-auf/1718510011?uo=4",
+      "releaseDate": "2023-12-22T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1467962281,
+      "collectionName": "Die neuen Fälle, Fall 8: Professor van Dusen und der erfundene Tod",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-fall-8-professor-van-dusen-und-der/1467962281?uo=4",
+      "releaseDate": "2016-11-18T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1467958630,
+      "collectionName": "Die neuen Fälle, Fall 7: Professor van Dusen zündet ein Feuerwerk",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-fall-7-professor-van-dusen-z%C3%BCndet-ein/1467958630?uo=4",
+      "releaseDate": "2016-09-09T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 6783855259,
+      "collectionName": "Die neuen Fälle, Fall 46: Professor van Dusen riecht den Braten",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-fall-46-professor-van-dusen-riecht/6783855259?uo=4",
+      "releaseDate": "2026-07-24T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1743826040,
+      "collectionName": "Folge 43: Professor van Dusen und der Leichenräuber",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-43-professor-van-dusen-und-der-leichenr%C3%A4uber/1743826040?uo=4",
+      "releaseDate": "2024-06-28T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1690152579,
+      "collectionName": "Fall 34: Professor van Dusen klopft auf Holz (Die neuen Fälle)",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-34-professor-van-dusen-klopft-auf-holz-die-neuen-f%C3%A4lle/1690152579?uo=4",
+      "releaseDate": "2023-06-30T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1467974433,
+      "collectionName": "Die neuen Fälle, Fall 9: Professor van Dusen setzt auf Mord",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-fall-9-professor-van-dusen-setzt-auf-mord/1467974433?uo=4",
+      "releaseDate": "2017-02-24T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1743824059,
+      "collectionName": "Folge 42: Dritte Runde für Professor van Dusen",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-42-dritte-runde-f%C3%BCr-professor-van-dusen/1743824059?uo=4",
+      "releaseDate": "2024-06-14T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1743809883,
+      "collectionName": "Folge 41: Professor van Dusen trifft Kaiser Wilhelm",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-41-professor-van-dusen-trifft-kaiser-wilhelm/1743809883?uo=4",
+      "releaseDate": "2024-05-31T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1816702707,
+      "collectionName": "Ultimative Sammlung Volume 3",
+      "collectionViewUrl": "https://music.apple.com/de/album/ultimative-sammlung-volume-3/1816702707?uo=4",
+      "releaseDate": "2025-08-08T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1816690028,
+      "collectionName": "Die neuen Fälle: Ultimative Sammlung Volume 1",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-ultimative-sammlung-volume-1/1816690028?uo=4",
+      "releaseDate": "2025-06-20T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1816687924,
+      "collectionName": "Ultimative Sammlung Volume 1",
+      "collectionViewUrl": "https://music.apple.com/de/album/ultimative-sammlung-volume-1/1816687924?uo=4",
+      "releaseDate": "2025-06-13T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1816705073,
+      "collectionName": "Ultimative Sammlung Volume 4",
+      "collectionViewUrl": "https://music.apple.com/de/album/ultimative-sammlung-volume-4/1816705073?uo=4",
+      "releaseDate": "2025-09-05T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1816687272,
+      "collectionName": "Die neuen Fälle: Ultimative Sammlung Volume 2",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-ultimative-sammlung-volume-2/1816687272?uo=4",
+      "releaseDate": "2025-07-18T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1816687220,
+      "collectionName": "Ultimative Sammlung Volume 5",
+      "collectionViewUrl": "https://music.apple.com/de/album/ultimative-sammlung-volume-5/1816687220?uo=4",
+      "releaseDate": "2025-10-03T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1816686775,
+      "collectionName": "Ultimative Sammlung Volume 2",
+      "collectionViewUrl": "https://music.apple.com/de/album/ultimative-sammlung-volume-2/1816686775?uo=4",
+      "releaseDate": "2025-07-11T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1816696043,
+      "collectionName": "Die neuen Fälle: Ultimative Sammlung Volume 3",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-ultimative-sammlung-volume-3/1816696043?uo=4",
+      "releaseDate": "2025-08-15T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 626774221,
+      "collectionId": 1816697864,
+      "collectionName": "Die neuen Fälle: Ultimative Sammlung Volume 4",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-ultimative-sammlung-volume-4/1816697864?uo=4",
+      "releaseDate": "2025-09-12T07:00:00Z"
+    }
+  ]
+}

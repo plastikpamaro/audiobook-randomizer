@@ -6,7 +6,7 @@ import { AppError } from "@/lib/app-error";
 import { db, query, transaction } from "@/lib/db";
 import { isoDateTime, localDate } from "@/lib/dates";
 import { normalizeTitle, stableEpisodeKey } from "@/lib/feed-parsers";
-import { fetchImportFeed } from "@/lib/online-import-fetch";
+import { builtInSourceUrl, fetchImportFeed } from "@/lib/online-import-fetch";
 import type {
   ImportPreviewResult,
   ImportProposalSummary,
@@ -325,7 +325,7 @@ export async function createImportSource(
   userId: string,
   input: { seriesId: string; kind: ImportSourceKind; name: string; url?: string | null },
 ): Promise<string> {
-  const builtIn = input.kind === "drei_fragezeichen" || input.kind === "tkkg";
+  const builtIn = builtInSourceUrl(input.kind) !== null;
   const url = builtIn ? null : input.url?.trim() || null;
   if (!builtIn && !url) throw new AppError("Für diese Quelle wird eine HTTPS-URL benötigt.");
   if (url) await assertPublicHttpsUrl(url);

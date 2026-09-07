@@ -6,7 +6,7 @@ import { createImportSource, getImportProposals, getImportSources } from "@/lib/
 
 const schema = z.object({
   seriesId: z.uuid(),
-  kind: z.enum(["drei_fragezeichen", "tkkg", "csv", "json", "rss"]),
+  kind: z.enum(["drei_fragezeichen", "tkkg", "van_dusen", "van_dusen_neue", "point_whitmark", "pater_brown", "csv", "json", "rss"]),
   name: z.string().trim().min(1).max(200),
   url: z.url().nullable().optional(),
 });

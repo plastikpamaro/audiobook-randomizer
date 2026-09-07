@@ -95,6 +95,10 @@ number_label,sort_order,release_date,duration_minutes,priority_on_release,link_l
 
 ## Online-Quellen
 
+Zusätzlich stehen Apple-Music-Kataloge für **Professor van Dusen – Originalserie**, **Professor van Dusen – Die neuen Fälle**, **Point Whitmark** und **Pater Brown (Maritim)** zur Auswahl. Sie übernehmen nummerierte Einzelalben mit Titel, Veröffentlichungsdatum und Hörlink aus dem deutschen Katalog; Sammelboxen werden ausgelassen. Bei van Dusen bleiben die beiden Nummernkreise durch separate Quellen getrennt. Der Katalog enthält nicht zwingend alle jemals erschienenen Folgen. Bei Erreichen des API-Limits von 200 Alben wird die Automatik zur Prüfung gestoppt.
+
+Live-Prüfung dieser Quellen: `LIVE_IMPORT_TEST=1 npm test -- live-apple-catalog-smoke`.
+
 Unter **Bibliothek → Online-Quellen** lassen sich die offiziellen Kataloge von Die drei ??? und TKKG oder eine öffentliche Feed-URL hinzufügen. Die TKKG-Quelle umfasst auch die 96 offiziell wiederveröffentlichten Folgen des Retro-Archivs; die drei nicht neu veröffentlichten Folgen 19, 20 und 37 fehlen entsprechend auch hier. Der Erstimport ist immer eine Vorschau: Neue Folgen, mögliche Treffer und Konflikte müssen bestätigt oder ignoriert werden. Erst danach wird die tägliche Synchronisierung aktiviert.
 
 Der interne Worker prüft minütlich, ob der tägliche Lauf fällig ist. Standardmäßig synchronisiert er um `04:15` Uhr in der mit `TZ` konfigurierten Zeitzone und holt einen nach einem Neustart verpassten Lauf nach:

@@ -1,3 +1,4 @@
+import { appleCatalogUrl, isAppleCatalog, parseAppleCatalog } from "@/lib/apple-catalog";
 import {
   deduplicateFeed,
   maxPaginationPage,
@@ -83,13 +84,14 @@ export async function fetchImportFeed(
   if (source.kind === "drei_fragezeichen" || source.kind === "tkkg") {
     return fetchOfficial(source.kind, validators);
   }
-  if (!source.url) throw new AppError("Der Quelle fehlt eine URL.", 422, "SOURCE_URL_MISSING");
-  const result = await safeFetchText(source.url, validators);
+  const url = isAppleCatalog(source.kind) ? appleCatalogUrl(source.kind) : source.url;
+  if (!url) throw new AppError("Der Quelle fehlt eine URL.", 422, "SOURCE_URL_MISSING");
+  const result = await safeFetchText(url, validators);
   if (result.status === 304) {
     return { feed: null, notModified: true, etag: result.etag, lastModified: result.lastModified, finalUrl: result.url };
   }
   if (!result.body) throw new AppError("Die Quelle ist leer.", 502, "IMPORT_EMPTY_RESPONSE");
-  const feed = source.kind === "json"
+  const feed = isAppleCatalog(source.kind) ? parseAppleCatalog(result.body, source.kind) : source.kind === "json"
     ? parseJsonFeed(result.body)
     : source.kind === "csv"
       ? parseCsvFeed(result.body, localDate())
@@ -104,5 +106,6 @@ export async function fetchImportFeed(
 }
 
 export function builtInSourceUrl(kind: ImportSourceKind): string | null {
+  if (isAppleCatalog(kind)) return appleCatalogUrl(kind);
   return kind === "drei_fragezeichen" || kind === "tkkg" ? BUILTIN_URLS[kind] : null;
 }

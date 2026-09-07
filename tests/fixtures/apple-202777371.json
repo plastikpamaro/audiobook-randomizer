@@ -1,0 +1,344 @@
+{
+  "results": [
+    {
+      "wrapperType": "artist",
+      "artistId": 202777371
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 202777371,
+      "collectionId": 1456577870,
+      "collectionName": "Folge 41: Rückkehr aus dem Totenland",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-41-r%C3%BCckkehr-aus-dem-totenland/1456577870?uo=4",
+      "releaseDate": "2019-04-05T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 202777371,
+      "collectionId": 1472056280,
+      "collectionName": "Folge 42: Der Ruf des Wellengängers",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-42-der-ruf-des-welleng%C3%A4ngers/1472056280?uo=4",
+      "releaseDate": "2019-07-26T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 202777371,
+      "collectionId": 1452579893,
+      "collectionName": "Folge 01: Die Bucht der 22 Schreie",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-01-die-bucht-der-22-schreie/1452579893?uo=4",
+      "releaseDate": "2001-02-26T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 202777371,
+      "collectionId": 1452924466,
+      "collectionName": "Folge 14: Die Kammer des schweigenden Ritters",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-14-die-kammer-des-schweigenden-ritters/1452924466?uo=4",
+      "releaseDate": "2007-04-27T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 202777371,
+      "collectionId": 1452582014,
+      "collectionName": "Folge 02: Die rote Hand des Teufels",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-02-die-rote-hand-des-teufels/1452582014?uo=4",
+      "releaseDate": "2001-02-26T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 202777371,
+      "collectionId": 1452580026,
+      "collectionName": "Folge 03: Die Insel der letzten Rache",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-03-die-insel-der-letzten-rache/1452580026?uo=4",
+      "releaseDate": "2001-01-01T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 202777371,
+      "collectionId": 1456169681,
+      "collectionName": "Folge 40: Das Orakel des Unheils",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-40-das-orakel-des-unheils/1456169681?uo=4",
+      "releaseDate": "2015-02-13T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 202777371,
+      "collectionId": 1453752538,
+      "collectionName": "Folge 17: Der steinerne Fluch",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-17-der-steinerne-fluch/1453752538?uo=4",
+      "releaseDate": "2007-04-27T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 202777371,
+      "collectionId": 1452582422,
+      "collectionName": "Folge 04: Das Haus der vergifteten Bilder",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-04-das-haus-der-vergifteten-bilder/1452582422?uo=4",
+      "releaseDate": "2004-09-06T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 202777371,
+      "collectionId": 1455072532,
+      "collectionName": "Folge 30: Der Seelenkünder II",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-30-der-seelenk%C3%BCnder-ii/1455072532?uo=4",
+      "releaseDate": "2010-10-15T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 202777371,
+      "collectionId": 1452581286,
+      "collectionName": "Folge 05: Tief in den nördlichen Minen",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-05-tief-in-den-n%C3%B6rdlichen-minen/1452581286?uo=4",
+      "releaseDate": "2001-01-01T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 202777371,
+      "collectionId": 1456125705,
+      "collectionName": "Folge 33: Das Schloss des Blutmalers",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-33-das-schloss-des-blutmalers/1456125705?uo=4",
+      "releaseDate": "2011-09-30T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 202777371,
+      "collectionId": 1455072703,
+      "collectionName": "Folge 27: Eiland der Gespenster",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-27-eiland-der-gespenster/1455072703?uo=4",
+      "releaseDate": "2009-08-07T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 202777371,
+      "collectionId": 1452924777,
+      "collectionName": "Folge 13: Die Würfel des Hexenmeisters",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-13-die-w%C3%BCrfel-des-hexenmeisters/1452924777?uo=4",
+      "releaseDate": "2007-04-27T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 202777371,
+      "collectionId": 1456169838,
+      "collectionName": "Folge 39: Das Feld beim Krähenhaus",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-39-das-feld-beim-kr%C3%A4henhaus/1456169838?uo=4",
+      "releaseDate": "2014-03-07T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 202777371,
+      "collectionId": 1453750598,
+      "collectionName": "Folge 16: Die Zeit des Knochenfängers",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-16-die-zeit-des-knochenf%C3%A4ngers/1453750598?uo=4",
+      "releaseDate": "2007-04-27T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 202777371,
+      "collectionId": 1452924467,
+      "collectionName": "Folge 12: Im Bann der Totenmelodie",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-12-im-bann-der-totenmelodie/1452924467?uo=4",
+      "releaseDate": "2007-04-27T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 202777371,
+      "collectionId": 1456126192,
+      "collectionName": "Folge 38: Der glühende Mönch",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-38-der-gl%C3%BChende-m%C3%B6nch/1456126192?uo=4",
+      "releaseDate": "2013-10-25T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 202777371,
+      "collectionId": 1455883143,
+      "collectionName": "Folge 31: Das Menschenkabinett",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-31-das-menschenkabinett/1455883143?uo=4",
+      "releaseDate": "2011-04-26T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 202777371,
+      "collectionId": 1453038996,
+      "collectionName": "Folge 15: Das Geheimnis des Scherbendiebes",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-15-das-geheimnis-des-scherbendiebes/1453038996?uo=4",
+      "releaseDate": "2007-04-27T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 202777371,
+      "collectionId": 1452924988,
+      "collectionName": "Folge 11: Die Nacht der ewigen Fliegen",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-11-die-nacht-der-ewigen-fliegen/1452924988?uo=4",
+      "releaseDate": "2007-04-27T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 202777371,
+      "collectionId": 1452578010,
+      "collectionName": "Folge 06: Das kalte Phantom",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-06-das-kalte-phantom/1452578010?uo=4",
+      "releaseDate": "2001-01-01T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 202777371,
+      "collectionId": 1454565471,
+      "collectionName": "Folge 24: Am Tag der großen Flut",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-24-am-tag-der-gro%C3%9Fen-flut/1454565471?uo=4",
+      "releaseDate": "2008-10-24T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 202777371,
+      "collectionId": 1454565375,
+      "collectionName": "Folge 25: Die fiebrigen Tränen",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-25-die-fiebrigen-tr%C3%A4nen/1454565375?uo=4",
+      "releaseDate": "2009-01-01T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 202777371,
+      "collectionId": 1452578578,
+      "collectionName": "Folge 08: Am Berg der Nebelspinne",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-08-am-berg-der-nebelspinne/1452578578?uo=4",
+      "releaseDate": "2001-01-01T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 202777371,
+      "collectionId": 1456126534,
+      "collectionName": "Folge 34: Die einäugigen Puppen",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-34-die-ein%C3%A4ugigen-puppen/1456126534?uo=4",
+      "releaseDate": "2011-12-09T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 202777371,
+      "collectionId": 1455072844,
+      "collectionName": "Folge 26: Die Diener der Pest",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-26-die-diener-der-pest/1455072844?uo=4",
+      "releaseDate": "2009-05-08T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 202777371,
+      "collectionId": 1455072870,
+      "collectionName": "Folge 28: Der Leere Raum",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-28-der-leere-raum/1455072870?uo=4",
+      "releaseDate": "2010-02-26T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 202777371,
+      "collectionId": 1452582524,
+      "collectionName": "Folge 07: Das Grab aus Wüstensand",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-07-das-grab-aus-w%C3%BCstensand/1452582524?uo=4",
+      "releaseDate": "2001-01-01T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 202777371,
+      "collectionId": 1452566103,
+      "collectionName": "010/Der Schattenadmiral",
+      "collectionViewUrl": "https://music.apple.com/de/album/010-der-schattenadmiral/1452566103?uo=4",
+      "releaseDate": "2005-09-05T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 202777371,
+      "collectionId": 1456126357,
+      "collectionName": "Folge 32: Hauptrolle: tot",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-32-hauptrolle-tot/1456126357?uo=4",
+      "releaseDate": "2011-07-29T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 202777371,
+      "collectionId": 1454565190,
+      "collectionName": "Folge 22: Die blutenden Schlüssel",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-22-die-blutenden-schl%C3%BCssel/1454565190?uo=4",
+      "releaseDate": "2008-04-25T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 202777371,
+      "collectionId": 1453750159,
+      "collectionName": "Folge 19: Der Weg zur Dunkelmühle",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-19-der-weg-zur-dunkelm%C3%BChle/1453750159?uo=4",
+      "releaseDate": "2007-07-27T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 202777371,
+      "collectionId": 1456125633,
+      "collectionName": "Folge 37: Das Moor der Vergangenen",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-37-das-moor-der-vergangenen/1456125633?uo=4",
+      "releaseDate": "2013-03-29T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 202777371,
+      "collectionId": 1454565309,
+      "collectionName": "Folge 21: Gefahr am schwarzen Wasser",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-21-gefahr-am-schwarzen-wasser/1454565309?uo=4",
+      "releaseDate": "2008-01-25T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 202777371,
+      "collectionId": 1454565229,
+      "collectionName": "Folge 23: Der Duft der Finsternis",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-23-der-duft-der-finsternis/1454565229?uo=4",
+      "releaseDate": "2008-07-25T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 202777371,
+      "collectionId": 1453752818,
+      "collectionName": "Folge 20: Der Bund des Zorns",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-20-der-bund-des-zorns/1453752818?uo=4",
+      "releaseDate": "2007-10-26T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 202777371,
+      "collectionId": 1453750865,
+      "collectionName": "Folge 18: Im Sog der Sirenen",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-18-im-sog-der-sirenen/1453750865?uo=4",
+      "releaseDate": "2007-04-27T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 202777371,
+      "collectionId": 1455072405,
+      "collectionName": "Folge 29: Der Seelenkünder I",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-29-der-seelenk%C3%BCnder-i/1455072405?uo=4",
+      "releaseDate": "2010-08-06T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 202777371,
+      "collectionId": 1452581678,
+      "collectionName": "Folge 09: Das Buch des Grauenjägers",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-09-das-buch-des-grauenj%C3%A4gers/1452581678?uo=4",
+      "releaseDate": "2005-01-01T00:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 202777371,
+      "collectionId": 1456126105,
+      "collectionName": "Folge 36: Geschöpf der bösen Träume",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-36-gesch%C3%B6pf-der-b%C3%B6sen-tr%C3%A4ume/1456126105?uo=4",
+      "releaseDate": "2012-04-27T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 202777371,
+      "collectionId": 1456126508,
+      "collectionName": "Folge 35: Verirrt im Spinnenwald",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-35-verirrt-im-spinnenwald/1456126508?uo=4",
+      "releaseDate": "2012-02-24T08:00:00Z"
+    }
+  ]
+}
