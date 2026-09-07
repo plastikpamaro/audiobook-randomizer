@@ -64,11 +64,11 @@ export async function getSeriesOverview(userId: string, includeArchived = false)
      FROM series s
      LEFT JOIN user_series_rounds usr ON usr.series_id = s.id AND usr.user_id = $1
      LEFT JOIN episodes e ON e.series_id = s.id
-     LEFT JOIN episode_completions ec
-       ON ec.episode_id = e.id
-      AND ec.user_id = $1
-      AND ec.round_number = COALESCE(usr.round_number, 1)
-      AND ec.reversed_at IS NULL
+     LEFT JOIN LATERAL (
+       SELECT id FROM episode_completions
+       WHERE episode_id=e.id AND user_id=$1 AND round_number=COALESCE(usr.round_number,1)
+         AND reversed_at IS NULL LIMIT 1
+     ) ec ON true
      WHERE ($3::boolean = true OR s.archived = false)
      GROUP BY s.id, usr.round_number
      ORDER BY lower(s.name)`,
@@ -156,16 +156,16 @@ export async function getEpisodes(userId: string): Promise<EpisodeSummary[]> {
      FROM episodes e
      JOIN series s ON s.id = e.series_id
      LEFT JOIN user_series_rounds usr ON usr.user_id = $1 AND usr.series_id = s.id
-     LEFT JOIN episode_completions ec
-       ON ec.user_id = $1
-      AND ec.episode_id = e.id
-      AND ec.round_number = COALESCE(usr.round_number, 1)
-      AND ec.reversed_at IS NULL
+     LEFT JOIN LATERAL (
+       SELECT id FROM episode_completions
+       WHERE user_id=$1 AND episode_id=e.id AND round_number=COALESCE(usr.round_number,1)
+         AND reversed_at IS NULL LIMIT 1
+     ) ec ON true
      LEFT JOIN user_episode_preferences uep ON uep.user_id = $1 AND uep.episode_id = e.id
      LEFT JOIN LATERAL (
        SELECT round(avg(c.rating)::numeric, 1) AS rating_average, count(c.rating) AS rating_count
        FROM episode_completions c
-       WHERE c.user_id=$1 AND c.episode_id=e.id AND c.source_type='random'
+       WHERE c.user_id=$1 AND c.episode_id=e.id AND c.source_type IN ('random','manual')
          AND c.reversed_at IS NULL AND c.rating IS NOT NULL
      ) ratings ON true
      ORDER BY lower(s.name), e.sort_order NULLS LAST, e.release_date NULLS LAST,
@@ -466,7 +466,7 @@ export async function applyBulkEpisodeAction(
           [userId, episode.id, round],
         );
         if (completion.rowCount) {
-          await client.query("UPDATE draws SET corrected_at=now() WHERE id=$1", [completion.rows[0].draw_id]);
+          await client.query("UPDATE draws SET corrected_at=now() WHERE id=ANY($1::uuid[])", [completion.rows.map((row) => row.draw_id)]);
         }
       }
     }

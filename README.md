@@ -126,6 +126,8 @@ Die manuelle Prüfung zeigt für jede Änderung die bisherigen und vorgeschlagen
 
 ## Bewertungen
 
+Unter **Bibliothek → Gezielt hören** lässt sich eine bestimmte Folge auswählen und nach dem Hören mit optionaler Bewertung speichern. Manuelle Hördurchläufe zählen in Hörzeit, Aktivitätsdiagramm, Streaks und Bewertungen. Die Folge ist danach in der aktuellen Runde gehört. Wiederholungen zählen als weitere Hördurchläufe, ohne den Rundenfortschritt mehrfach zu erhöhen. Eine andere aktive Ziehung bleibt offen; ist die gewählte Folge selbst aktiv, wird diese Ziehung abgeschlossen. Im Verlauf sind diese Einträge als **Manuell** gekennzeichnet und können korrigiert werden. Bulk-Statusänderungen zählen weiterhin nicht als echte Hördurchläufe.
+
 Wird die Laufzeit einer Folge nachträglich ergänzt, zählt sie auch für frühere Hördurchläufe, bei denen noch keine Laufzeit gespeichert war: in der gesamten Hörzeit, im Zeitdiagramm und in der Serienstatistik. Bereits beim Hören gespeicherte Laufzeiten bleiben maßgeblich. Die Ergänzung gilt für jeden früheren Hördurchlauf dieser Folge; rückgängig gemachte Abschlüsse und Bulk-Markierungen bleiben aus der Statistik ausgeschlossen.
 
 Nach **Gehört** wird der Abschluss sofort gespeichert und anschließend optional eine Bewertung von 1 bis 10 angeboten. Bewertungen lassen sich im Verlauf nachtragen, ändern oder entfernen. Jede Runde besitzt ihre eigene Bewertung; korrigierte Abschlüsse behalten den historischen Wert, werden aber nicht mehr bearbeitet oder ausgewertet. Bulk-Markierungen sind nicht bewertbar und Bewertungen verändern die Zufallsauswahl nicht.

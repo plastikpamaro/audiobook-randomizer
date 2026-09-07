@@ -34,7 +34,7 @@ export function HistoryClient({ initialItems }: { initialItems: HistoryItem[] })
       setItems((current) => current.map((item) => item.id === id ? {
         ...item, canRestore: false, correctedAt: new Date().toISOString(), ratingEditable: false,
       } : item));
-      setMessage("Die Folge liegt wieder im aktuellen Beutel."); router.refresh();
+      setMessage("Hördurchlauf korrigiert. Die Folge ist wieder verfügbar, sofern kein weiterer Hördurchlauf in dieser Runde besteht."); router.refresh();
     } catch (caught) { setMessage(caught instanceof Error ? caught.message : "Korrektur fehlgeschlagen."); }
     finally { setBusyId(null); }
   }
@@ -64,7 +64,7 @@ export function HistoryClient({ initialItems }: { initialItems: HistoryItem[] })
             <article className={`history-row ${item.correctedAt ? "history-corrected" : ""}`} key={item.id}>
               <span className={`history-icon ${item.status === "heard" ? "heard" : "skipped"}`}>{item.status === "heard" ? <Check size={18} /> : <SkipForward size={18} />}</span>
               <div className="grow history-copy">
-                <div className="row-wrap"><strong>{item.episode.numberLabel ? `${item.episode.numberLabel} · ` : ""}{item.episode.title}</strong>{item.episode.favorite && <Heart size={13} fill="currentColor" />}{item.sourceType === "bulk" && <Badge>Bulk</Badge>}{item.correctedAt && <Badge>Korrigiert</Badge>}</div>
+                <div className="row-wrap"><strong>{item.episode.numberLabel ? `${item.episode.numberLabel} · ` : ""}{item.episode.title}</strong>{item.episode.favorite && <Heart size={13} fill="currentColor" />}{item.sourceType === "bulk" && <Badge>Bulk</Badge>}{item.sourceType === "manual" && <Badge>Manuell</Badge>}{item.correctedAt && <Badge>Korrigiert</Badge>}</div>
                 <small>{item.episode.seriesName} · {new Intl.DateTimeFormat("de-DE", { dateStyle: "medium", timeStyle: "short" }).format(new Date(item.resolvedAt || item.drawnAt))}</small>
                 {item.episode.note && <p>{item.episode.note}</p>}
               </div>

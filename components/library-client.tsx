@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { clientApi } from "@/components/client-api";
+import { ManualListenDialog } from "@/components/manual-listen-dialog";
 import type { CsvImportIssue, CsvImportPreview } from "@/lib/csv-import";
 import type { EpisodeLink, EpisodeSummary, SeriesOverview } from "@/lib/types";
 
@@ -74,6 +75,7 @@ export function LibraryClient({ initialSeries, initialEpisodes }: { initialSerie
   const [favoritesOnly, setFavoritesOnly] = useState(false);
   const [selected, setSelected] = useState<string[]>([]);
   const [episodeEditor, setEpisodeEditor] = useState<EpisodeDraft | null>(null);
+  const [manualEpisode, setManualEpisode] = useState<EpisodeSummary | null>(null);
   const [seriesEditor, setSeriesEditor] = useState<SeriesOverview | "new" | null>(null);
   const [showImport, setShowImport] = useState(false);
   const [csv, setCsv] = useState("");
@@ -254,7 +256,7 @@ export function LibraryClient({ initialSeries, initialEpisodes }: { initialSerie
                   <td><Badge tone={episode.status === "available" ? "good" : episode.status === "future" ? "warn" : "neutral"}>{statusLabels[episode.status]}</Badge></td>
                   <td>{episode.ratingAverage == null ? <span className="muted">–</span> : <span className="episode-rating"><Star size={13} fill="currentColor" />{episode.ratingAverage.toLocaleString("de-DE")} <small>({episode.ratingCount})</small></span>}</td>
                   <td>{episode.releaseDate || "–"}</td>
-                  <td><Button variant="ghost" size="sm" onClick={() => setEpisodeEditor(episodeDraft(episode, episode.seriesId))} aria-label={`${episode.title} bearbeiten`}><Pencil size={16} /></Button><Button variant="ghost" size="sm" onClick={() => removeEpisode(episode)} disabled={busy} aria-label={`${episode.title} löschen`}><Trash2 size={16} /></Button></td>
+                  <td><Button variant="secondary" size="sm" disabled={busy || episode.status === "future" || episode.status === "archived"} onClick={() => setManualEpisode(episode)} aria-label={`${episode.title} gezielt hören`}>Gezielt hören</Button><Button variant="ghost" size="sm" onClick={() => setEpisodeEditor(episodeDraft(episode, episode.seriesId))} aria-label={`${episode.title} bearbeiten`}><Pencil size={16} /></Button><Button variant="ghost" size="sm" onClick={() => removeEpisode(episode)} disabled={busy} aria-label={`${episode.title} löschen`}><Trash2 size={16} /></Button></td>
                 </tr>
               ))}
             </tbody>
@@ -270,6 +272,7 @@ export function LibraryClient({ initialSeries, initialEpisodes }: { initialSerie
         </div>
       </Card>
 
+      {manualEpisode && <ManualListenDialog key={manualEpisode.id} episode={manualEpisode} onClose={() => setManualEpisode(null)} onSaved={() => { setManualEpisode(null); setMessage("Manueller Hördurchlauf gespeichert. Statistik und Runde sind aktualisiert."); router.refresh(); }} />}
       {episodeEditor && (
         <div className="modal-backdrop" role="presentation">
           <section className="modal" role="dialog" aria-modal="true" aria-labelledby="episode-editor-title">

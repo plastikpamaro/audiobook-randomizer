@@ -26,20 +26,20 @@ export async function getAnalytics(userId: string, from: string, to: string): Pr
     query<{ heard: string; skipped: string; minutes: string; rating_average: string | null; rated_count: string }>(
       `SELECT
          (SELECT count(*) FROM episode_completions c
-          WHERE c.user_id=$1 AND c.source_type='random' AND c.reversed_at IS NULL
+          WHERE c.user_id=$1 AND c.source_type IN ('random','manual') AND c.reversed_at IS NULL
             AND timezone($4, c.completed_at)::date BETWEEN $2::date AND $3::date)::text AS heard,
          (SELECT count(*) FROM draws d
-          WHERE d.user_id=$1 AND d.source_type='random' AND d.status='skipped'
+          WHERE d.user_id=$1 AND d.source_type IN ('random','manual') AND d.status='skipped'
             AND timezone($4, d.resolved_at)::date BETWEEN $2::date AND $3::date)::text AS skipped,
          (SELECT COALESCE(sum(COALESCE(c.duration_minutes_snapshot, e.duration_minutes)), 0)
           FROM episode_completions c JOIN episodes e ON e.id=c.episode_id
-          WHERE c.user_id=$1 AND c.source_type='random' AND c.reversed_at IS NULL
+          WHERE c.user_id=$1 AND c.source_type IN ('random','manual') AND c.reversed_at IS NULL
             AND timezone($4, c.completed_at)::date BETWEEN $2::date AND $3::date)::text AS minutes,
          (SELECT round(avg(c.rating)::numeric, 2) FROM episode_completions c
-          WHERE c.user_id=$1 AND c.source_type='random' AND c.reversed_at IS NULL AND c.rating IS NOT NULL
+          WHERE c.user_id=$1 AND c.source_type IN ('random','manual') AND c.reversed_at IS NULL AND c.rating IS NOT NULL
             AND timezone($4, c.completed_at)::date BETWEEN $2::date AND $3::date)::text AS rating_average,
          (SELECT count(c.rating) FROM episode_completions c
-          WHERE c.user_id=$1 AND c.source_type='random' AND c.reversed_at IS NULL
+          WHERE c.user_id=$1 AND c.source_type IN ('random','manual') AND c.reversed_at IS NULL
             AND timezone($4, c.completed_at)::date BETWEEN $2::date AND $3::date)::text AS rated_count`,
       [userId, from, to, timeZone],
     ),
@@ -50,12 +50,12 @@ export async function getAnalytics(userId: string, from: string, to: string): Pr
          SELECT timezone($4, c.completed_at)::date AS bucket, 1 AS heard, 0 AS skipped,
                 COALESCE(c.duration_minutes_snapshot, e.duration_minutes, 0) AS minutes
          FROM episode_completions c JOIN episodes e ON e.id=c.episode_id
-         WHERE c.user_id=$1 AND c.source_type='random' AND c.reversed_at IS NULL
+         WHERE c.user_id=$1 AND c.source_type IN ('random','manual') AND c.reversed_at IS NULL
            AND timezone($4, c.completed_at)::date BETWEEN $2::date AND $3::date
          UNION ALL
          SELECT timezone($4, d.resolved_at)::date AS bucket, 0, 1, 0
          FROM draws d
-         WHERE d.user_id=$1 AND d.source_type='random' AND d.status='skipped'
+         WHERE d.user_id=$1 AND d.source_type IN ('random','manual') AND d.status='skipped'
            AND timezone($4, d.resolved_at)::date BETWEEN $2::date AND $3::date
        )
        SELECT to_char(bucket, 'YYYY-MM-DD') AS bucket, sum(heard)::text AS heard, sum(skipped)::text AS skipped,
@@ -68,7 +68,7 @@ export async function getAnalytics(userId: string, from: string, to: string): Pr
               COALESCE(sum(COALESCE(c.duration_minutes_snapshot, e.duration_minutes)),0)::text AS minutes
        FROM episode_completions c
        JOIN episodes e ON e.id=c.episode_id JOIN series s ON s.id=e.series_id
-       WHERE c.user_id=$1 AND c.source_type='random' AND c.reversed_at IS NULL
+       WHERE c.user_id=$1 AND c.source_type IN ('random','manual') AND c.reversed_at IS NULL
          AND timezone($4, c.completed_at)::date BETWEEN $2::date AND $3::date
        GROUP BY s.id ORDER BY count(*) DESC, lower(s.name) LIMIT 10`,
       [userId, from, to, timeZone],
@@ -76,7 +76,7 @@ export async function getAnalytics(userId: string, from: string, to: string): Pr
     query<{ day: string }>(
       `SELECT DISTINCT to_char(timezone($2, completed_at)::date, 'YYYY-MM-DD') AS day
        FROM episode_completions
-       WHERE user_id=$1 AND source_type='random' AND reversed_at IS NULL
+       WHERE user_id=$1 AND source_type IN ('random','manual') AND reversed_at IS NULL
        ORDER BY day`,
       [userId, timeZone],
     ),
@@ -85,7 +85,7 @@ export async function getAnalytics(userId: string, from: string, to: string): Pr
       `SELECT scores.score, count(c.rating)::text AS count
        FROM generate_series(1,10) scores(score)
        LEFT JOIN episode_completions c ON c.rating=scores.score AND c.user_id=$1
-         AND c.source_type='random' AND c.reversed_at IS NULL
+         AND c.source_type IN ('random','manual') AND c.reversed_at IS NULL
          AND timezone($4,c.completed_at)::date BETWEEN $2::date AND $3::date
        GROUP BY scores.score ORDER BY scores.score`,
       [userId, from, to, timeZone],
@@ -94,7 +94,7 @@ export async function getAnalytics(userId: string, from: string, to: string): Pr
       `SELECT e.title, s.name AS series_name, round(avg(c.rating)::numeric,2)::text AS average,
               count(c.rating)::text AS count
        FROM episode_completions c JOIN episodes e ON e.id=c.episode_id JOIN series s ON s.id=e.series_id
-       WHERE c.user_id=$1 AND c.source_type='random' AND c.reversed_at IS NULL AND c.rating IS NOT NULL
+       WHERE c.user_id=$1 AND c.source_type IN ('random','manual') AND c.reversed_at IS NULL AND c.rating IS NOT NULL
          AND timezone($4,c.completed_at)::date BETWEEN $2::date AND $3::date
        GROUP BY e.id,s.id ORDER BY avg(c.rating) DESC,count(c.rating) DESC,lower(e.title) LIMIT 10`,
       [userId, from, to, timeZone],
@@ -102,7 +102,7 @@ export async function getAnalytics(userId: string, from: string, to: string): Pr
     query<{ name: string; average: string; count: string }>(
       `SELECT s.name, round(avg(c.rating)::numeric,2)::text AS average, count(c.rating)::text AS count
        FROM episode_completions c JOIN episodes e ON e.id=c.episode_id JOIN series s ON s.id=e.series_id
-       WHERE c.user_id=$1 AND c.source_type='random' AND c.reversed_at IS NULL AND c.rating IS NOT NULL
+       WHERE c.user_id=$1 AND c.source_type IN ('random','manual') AND c.reversed_at IS NULL AND c.rating IS NOT NULL
          AND timezone($4,c.completed_at)::date BETWEEN $2::date AND $3::date
        GROUP BY s.id ORDER BY avg(c.rating) DESC,count(c.rating) DESC,lower(s.name) LIMIT 10`,
       [userId, from, to, timeZone],

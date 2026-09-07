@@ -12,7 +12,7 @@ type Executor = Pick<Pool | PoolClient, "query">;
 interface DrawRow extends QueryResultRow {
   id: string;
   status: "active" | "heard" | "skipped";
-  source_type: "random" | "bulk";
+  source_type: "random" | "manual" | "bulk";
   drawn_at: Date | string;
   resolved_at: Date | string | null;
   corrected_at: Date | string | null;
@@ -77,18 +77,18 @@ const drawSelect = `
   JOIN series s ON s.id=e.series_id
   LEFT JOIN user_episode_preferences pref ON pref.user_id=d.user_id AND pref.episode_id=e.id
   LEFT JOIN user_series_rounds usr ON usr.user_id=d.user_id AND usr.series_id=e.series_id
-  LEFT JOIN episode_completions current_completion
-    ON current_completion.user_id=d.user_id
-   AND current_completion.episode_id=e.id
-   AND current_completion.round_number=COALESCE(usr.round_number, 1)
-   AND current_completion.reversed_at IS NULL
+  LEFT JOIN LATERAL (
+    SELECT id FROM episode_completions
+    WHERE user_id=d.user_id AND episode_id=e.id AND round_number=COALESCE(usr.round_number,1)
+      AND reversed_at IS NULL LIMIT 1
+  ) current_completion ON true
   LEFT JOIN episode_completions draw_completion ON draw_completion.draw_id=d.id
   LEFT JOIN LATERAL (
     SELECT round(avg(rating_completion.rating)::numeric, 1) AS rating_average,
            count(rating_completion.rating) AS rating_count
     FROM episode_completions rating_completion
     WHERE rating_completion.user_id=d.user_id AND rating_completion.episode_id=e.id
-      AND rating_completion.source_type='random' AND rating_completion.reversed_at IS NULL
+      AND rating_completion.source_type IN ('random','manual') AND rating_completion.reversed_at IS NULL
       AND rating_completion.rating IS NOT NULL
   ) ratings ON true
 `;
@@ -106,7 +106,7 @@ function mapDraw(row: DrawRow): ActiveDraw {
     selectionSeriesIds: row.selection_series_ids,
     wasPriority: Boolean(row.was_priority),
     rating: row.draw_rating == null ? null : Number(row.draw_rating),
-    ratingEditable: row.status === "heard" && row.source_type === "random" && Boolean(row.draw_completion_id) && !row.draw_completion_reversed_at,
+    ratingEditable: row.status === "heard" && row.source_type !== "bulk" && Boolean(row.draw_completion_id) && !row.draw_completion_reversed_at,
     episode: mapEpisode({
       id: row.episode_id,
       episode_key: row.episode_key,
@@ -300,6 +300,58 @@ export async function resolveDraw(
   return draw;
 }
 
+export async function recordManualListen(
+  userId: string,
+  input: { episodeId: string; requestId: string; rating?: number | null },
+): Promise<ActiveDraw> {
+  if (input.rating != null && (!Number.isInteger(input.rating) || input.rating < 1 || input.rating > 10)) throw new AppError("Die Bewertung muss zwischen 1 und 10 liegen.");
+  const drawId = await transaction(async (client) => {
+    await lockUser(client, userId);
+    const previous = await client.query<{ id: string; episode_id: string }>(
+      "SELECT id,episode_id FROM draws WHERE user_id=$1 AND client_request_id=$2", [userId, input.requestId],
+    );
+    if (previous.rowCount) {
+      if (previous.rows[0].episode_id !== input.episodeId) throw new AppError("Diese Anfrage wurde bereits für eine andere Folge verwendet.", 409, "REQUEST_CONFLICT");
+      return previous.rows[0].id;
+    }
+    const found = await client.query<{ id: string; series_id: string; duration_minutes: number | null; round_number: number; priority_on_release: boolean }>(
+      `SELECT e.id,e.series_id,e.duration_minutes,e.priority_on_release,COALESCE(usr.round_number,1) AS round_number
+       FROM episodes e JOIN series s ON s.id=e.series_id
+       LEFT JOIN user_series_rounds usr ON usr.user_id=$1 AND usr.series_id=e.series_id
+       WHERE e.id=$2 AND NOT e.archived AND NOT s.archived
+         AND (e.release_date IS NULL OR e.release_date <= $3::date) FOR SHARE OF e,s`,
+      [userId, input.episodeId, localDate()],
+    );
+    if (!found.rowCount) throw new AppError("Diese Folge ist nicht verfügbar.", 404, "EPISODE_UNAVAILABLE");
+    const episode = found.rows[0];
+    const active = await client.query<{ id: string; round_number: number }>(
+      "SELECT id,round_number FROM draws WHERE user_id=$1 AND episode_id=$2 AND status='active' FOR UPDATE", [userId, episode.id],
+    );
+    let id: string;
+    const round = active.rows[0]?.round_number ?? episode.round_number;
+    if (active.rowCount) {
+      id = active.rows[0].id;
+      await client.query("UPDATE draws SET status='heard',source_type='manual',resolved_at=now(),client_request_id=$2 WHERE id=$1", [id, input.requestId]);
+    } else {
+      id = (await client.query<{ id: string }>(
+        `INSERT INTO draws(user_id,episode_id,round_number,status,source_type,selection_series_ids,resolved_at,client_request_id)
+         VALUES ($1,$2,$3,'heard','manual',ARRAY[$4::uuid],now(),$5) RETURNING id`,
+        [userId, episode.id, round, episode.series_id, input.requestId],
+      )).rows[0].id;
+    }
+    await client.query(
+      `INSERT INTO episode_completions(user_id,episode_id,round_number,draw_id,source_type,duration_minutes_snapshot,rating,rated_at,rating_updated_at)
+       VALUES ($1,$2,$3,$4,'manual',$5,$6,CASE WHEN $6::smallint IS NOT NULL THEN now() END,CASE WHEN $6::smallint IS NOT NULL THEN now() END)`,
+      [userId, episode.id, round, id, episode.duration_minutes, input.rating ?? null],
+    );
+    if (episode.priority_on_release) await client.query("INSERT INTO episode_priority_offers(user_id,episode_id,draw_id) VALUES ($1,$2,$3) ON CONFLICT (user_id,episode_id) DO NOTHING", [userId, episode.id, id]);
+    return id;
+  });
+  const draw = await loadDraw(db(), userId, drawId);
+  if (!draw) throw new AppError("Der Hördurchlauf konnte nicht geladen werden.", 500, "DRAW_MISSING");
+  return draw;
+}
+
 export async function resetRounds(userId: string, seriesIds: string[]): Promise<void> {
   const ids = [...new Set(seriesIds)];
   if (!ids.length) throw new AppError("Wähle mindestens eine Serie zum Zurücksetzen aus.");
@@ -365,7 +417,7 @@ export async function setDrawRating(userId: string, drawId: string, score: numbe
     const completion = await client.query<{ id: string; rating: number | null; reversed_at: Date | null }>(
       `SELECT c.id, c.rating, c.reversed_at
        FROM episode_completions c JOIN draws d ON d.id=c.draw_id
-       WHERE c.draw_id=$1 AND c.user_id=$2 AND c.source_type='random' AND d.status='heard'
+       WHERE c.draw_id=$1 AND c.user_id=$2 AND c.source_type IN ('random','manual') AND d.status='heard'
        FOR UPDATE OF c`,
       [drawId, userId],
     );

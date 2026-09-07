@@ -59,7 +59,7 @@ export interface Preset {
 export interface ActiveDraw {
   id: string;
   status: "active" | "heard" | "skipped";
-  sourceType: "random" | "bulk";
+  sourceType: "random" | "manual" | "bulk";
   drawnAt: string;
   resolvedAt: string | null;
   correctedAt: string | null;

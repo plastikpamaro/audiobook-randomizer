@@ -1,0 +1,81 @@
+import { readFile, readdir } from "node:fs/promises";
+import { randomUUID } from "node:crypto";
+import { Pool } from "pg";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
+
+describe.skipIf(!process.env.TEST_DATABASE_URL)("Gezielt hören", () => {
+  let pool: Pool;
+  let userId: string;
+  let seriesId: string;
+  beforeAll(async () => {
+    const url = process.env.TEST_DATABASE_URL!;
+    if (!new URL(url).pathname.includes("test")) throw new Error("Testdatenbank erforderlich");
+    process.env.DATABASE_URL = url;
+    process.env.TZ = "Europe/Berlin";
+    pool = new Pool({ connectionString: url });
+    await pool.query("DROP SCHEMA public CASCADE; CREATE SCHEMA public");
+    for (const file of (await readdir("migrations")).filter((name) => name.endsWith(".sql")).sort()) await pool.query(await readFile(`migrations/${file}`, "utf8"));
+    userId = (await pool.query("INSERT INTO users(email,password_hash,catalog_baseline_date) VALUES ('manual@example.org','x',current_date) RETURNING id")).rows[0].id;
+    seriesId = (await pool.query("INSERT INTO series(series_key,name) VALUES ('manual','Meine Serie') RETURNING id")).rows[0].id;
+    for (let n = 1; n <= 3; n++) await pool.query("INSERT INTO episodes(series_id,episode_key,title,duration_minutes) VALUES ($1,$2,$2,30)", [seriesId, `Folge${n}`]);
+  });
+  afterAll(async () => { const { db } = await import("@/lib/db"); await db().end(); await pool.end(); });
+
+  it("zählt manuelle Wiederholungen, erhält die aktive Ziehung und zählt die Runde nur einmal", async () => {
+    const r = await import("@/lib/randomizer");
+    const c = await import("@/lib/catalog");
+    const { getAnalytics } = await import("@/lib/analytics");
+    const { localDate } = await import("@/lib/dates");
+    const active = await r.drawEpisode(userId, { seriesIds: [seriesId] });
+    const other = (await c.getEpisodes(userId)).find((episode) => episode.id !== active.episode.id)!;
+    const input = { episodeId: other.id, requestId: randomUUID(), rating: 8 };
+    const first = await r.recordManualListen(userId, input);
+    expect((await r.recordManualListen(userId, input)).id).toBe(first.id);
+    const second = await r.recordManualListen(userId, { ...input, requestId: randomUUID(), rating: 10 });
+    expect(second.id).not.toBe(first.id);
+    expect(first.sourceType).toBe("manual");
+    expect(first.ratingEditable).toBe(true);
+    expect((await r.getCurrentDraw(userId))?.id).toBe(active.id);
+    expect(await c.getEpisodes(userId)).toHaveLength(3);
+    expect((await c.getSeriesOverview(userId))[0]).toMatchObject({ totalCount: 3, heardCount: 1, remainingCount: 2 });
+    const stats = await getAnalytics(userId, localDate(), localDate());
+    expect(stats).toMatchObject({ heard: 2, minutes: 60, ratedCount: 2, ratingAverage: 9 });
+    expect(stats.topSeries[0]).toMatchObject({ heard: 2, minutes: 60 });
+    expect(stats.activity[0]).toMatchObject({ heard: 2, minutes: 60 });
+    expect(stats.currentStreak).toBe(1);
+    expect(await r.getHistory(userId)).toHaveLength(2);
+    await r.setDrawRating(userId, second.id, 7);
+    await r.restoreHeardDraw(userId, first.id);
+    expect((await c.getSeriesOverview(userId))[0].heardCount).toBe(1);
+    expect((await getAnalytics(userId, localDate(), localDate())).heard).toBe(1);
+    await r.restoreHeardDraw(userId, second.id);
+    expect((await c.getSeriesOverview(userId))[0].heardCount).toBe(0);
+    await expect(r.recordManualListen(userId, { ...input, episodeId: active.episode.id })).rejects.toMatchObject({ code: "REQUEST_CONFLICT" });
+    const finished = await r.recordManualListen(userId, { episodeId: active.episode.id, requestId: randomUUID() });
+    expect(finished.id).toBe(active.id);
+    expect(await r.getCurrentDraw(userId)).toBeNull();
+    expect((await r.resolveDraw(userId, active.id, "heard")).id).toBe(active.id);
+    expect((await getAnalytics(userId, localDate(), localDate())).heard).toBe(1);
+  });
+
+  it("entfernt gewählte Folgen aus dem Zufallspool und unterstützt Bulk-Status und neue Runden", async () => {
+    const r = await import("@/lib/randomizer");
+    const c = await import("@/lib/catalog");
+    const all = await c.getEpisodes(userId);
+    const unplayed = all.filter((episode) => episode.status === "available");
+    await c.applyBulkEpisodeAction(userId, [unplayed[0].id], "heard");
+    await r.recordManualListen(userId, { episodeId: unplayed[0].id, requestId: randomUUID() });
+    expect((await c.getSeriesOverview(userId))[0]).toMatchObject({ totalCount: 3, heardCount: 2 });
+    const last = await r.drawEpisode(userId, { seriesIds: [seriesId] });
+    expect(last.episode.id).toBe(unplayed[1].id);
+    await r.recordManualListen(userId, { episodeId: last.episode.id, requestId: randomUUID() });
+    await expect(r.drawEpisode(userId, { seriesIds: [seriesId] })).rejects.toMatchObject({ code: "EMPTY_POOL" });
+    await r.resetRounds(userId, [seriesId]);
+    expect((await c.getSeriesOverview(userId))[0]).toMatchObject({ heardCount: 0, remainingCount: 3, roundNumber: 2 });
+    const listen = await r.recordManualListen(userId, { episodeId: all[0].id, requestId: randomUUID() });
+    expect(listen.roundNumber).toBe(2);
+    await expect(r.recordManualListen(userId, { episodeId: randomUUID(), requestId: randomUUID() })).rejects.toMatchObject({ code: "EPISODE_UNAVAILABLE" });
+    await pool.query("UPDATE episodes SET release_date='2099-01-01' WHERE id=$1", [all[1].id]);
+    await expect(r.recordManualListen(userId, { episodeId: all[1].id, requestId: randomUUID() })).rejects.toMatchObject({ code: "EPISODE_UNAVAILABLE" });
+  });
+});
