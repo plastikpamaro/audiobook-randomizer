@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { requireApiUser } from "@/lib/auth";
 import { assertMutationOrigin, errorResponse, jsonBody } from "@/lib/http";
-import { disableImportSource, updateImportSource } from "@/lib/online-import-service";
+import { deleteImportSource, updateImportSource } from "@/lib/online-import-service";
 
 const schema = z.object({
   name: z.string().trim().min(1).max(200).optional(),
@@ -27,7 +27,7 @@ export async function DELETE(request: Request, context: { params: Promise<{ id: 
     assertMutationOrigin(request);
     await requireApiUser(["owner", "admin"]);
     const { id } = await context.params;
-    await disableImportSource(id);
+    await deleteImportSource(id);
     return NextResponse.json({ ok: true });
   } catch (error) {
     return errorResponse(error);

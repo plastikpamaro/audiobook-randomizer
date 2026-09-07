@@ -368,9 +368,18 @@ export async function updateImportSource(
   if (!result.rowCount) throw new AppError("Importquelle nicht gefunden.", 404, "NOT_FOUND");
 }
 
-export async function disableImportSource(sourceId: string): Promise<void> {
-  const result = await db().query("UPDATE import_sources SET enabled=false, updated_at=now() WHERE id=$1", [sourceId]);
-  if (!result.rowCount) throw new AppError("Importquelle nicht gefunden.", 404, "NOT_FOUND");
+async function excludedSourceItems(client: PoolClient, sourceId: string): Promise<Set<string>> {
+  const result = await client.query<{ external_id: string }>(
+    "SELECT external_id FROM import_source_exclusions WHERE source_id=$1", [sourceId],
+  );
+  return new Set(result.rows.map((item) => item.external_id));
+}
+
+export async function deleteImportSource(sourceId: string): Promise<void> {
+  await withSourceLock(sourceId, async (client) => {
+    const result = await client.query("DELETE FROM import_sources WHERE id=$1", [sourceId]);
+    if (!result.rowCount) throw new AppError("Importquelle nicht gefunden.", 404, "NOT_FOUND");
+  });
 }
 
 export async function getImportRuns(sourceId: string, limit = 30): Promise<ImportRunSummary[]> {
@@ -469,8 +478,10 @@ export async function previewImportSource(sourceId: string): Promise<ImportPrevi
       await client.query("BEGIN");
       try {
         await client.query("DELETE FROM import_proposals WHERE source_id=$1 AND status='pending'", [sourceId]);
+        const excluded = await excludedSourceItems(client, sourceId);
         const catalog = await loadCatalogEpisodes(client, source.series_id);
         for (const episode of feed.episodes) {
+          if (excluded.has(episode.externalId)) continue;
           const candidate = suggestedEpisode(episode, catalog);
           await insertProposal(client, {
             sourceId, runId: run.id, episode,
@@ -610,7 +621,8 @@ export async function syncImportSource(
         const rejectedHashes = new Set(rejected.rows.map((item) => `${item.external_id}\0${item.payload_hash}`));
         const mappingByExternal = new Map(mappings.rows.map((item) => [item.external_id, item]));
         const catalog = await loadCatalogEpisodes(client, source.series_id);
-        const newEpisodes = feed.episodes.filter((episode) => !mappingByExternal.has(episode.externalId));
+        const excluded = await excludedSourceItems(client, sourceId);
+        const newEpisodes = feed.episodes.filter((episode) => !excluded.has(episode.externalId) && !mappingByExternal.has(episode.externalId));
         const untrustedNewCount = newEpisodes.filter((episode) => !isTkkgRetroEpisode(source, episode)).length;
         const quantityError = feed.issues.length
           ? "Die Quelle enthält ungültige oder doppelte Einträge."
@@ -618,6 +630,7 @@ export async function syncImportSource(
         let added = 0;
         let changed = 0;
         for (const episode of feed.episodes) {
+          if (excluded.has(episode.externalId)) continue;
           const mapped = mappingByExternal.get(episode.externalId);
           const hash = hashPayload(episode);
           if (mapped) {

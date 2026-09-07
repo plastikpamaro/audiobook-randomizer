@@ -157,3 +157,5 @@ npm run build
 ```
 
 Integrationstests verwenden eine separate `TEST_DATABASE_URL`; E2E-Tests erwarten eine vollständig gestartete Testinstanz unter `PLAYWRIGHT_BASE_URL`. Parser- und Feedtests verwenden feste Fixtures und benötigen keinen Live-Zugriff auf fremde Seiten. Ein bewusster Live-Smoke-Test der beiden offiziellen Adapter kann mit `LIVE_IMPORT_TEST=1 npm test -- live-import-smoke` gestartet werden und gehört absichtlich nicht zur CI.
+
+Online-Quellen lassen sich pausieren oder endgültig löschen. Löschen entfernt die Quelle mit ihren Läufen, Vorschlägen und Zuordnungen; importierte Folgen, Hörlinks und Hörverlauf bleiben erhalten. Während eines laufenden Abrufs ist das Löschen gesperrt. Für einzeln gelöschte Importfolgen werden nur die externen Kennungen als Ausschluss gespeichert, damit dieselbe Quelle sie nicht erneut anlegt. Beim Löschen der Quelle verschwinden auch diese Ausschlüsse.

@@ -47,8 +47,8 @@ export function OnlineSourcesClient({
   episodes: EpisodeSummary[];
 }) {
   const router = useRouter();
-  const [sources, setSources] = useState(initialSources);
-  const [proposals, setProposals] = useState(initialProposals);
+  const sources = initialSources;
+  const proposals = initialProposals;
   const [showWizard, setShowWizard] = useState(false);
   const [preview, setPreview] = useState<ImportPreviewResult | null>(null);
   const [resolutions, setResolutions] = useState<Record<string, Resolution>>({});
@@ -59,8 +59,7 @@ export function OnlineSourcesClient({
   const sourceById = useMemo(() => new Map(sources.map((source) => [source.id, source])), [sources]);
 
   async function reload() {
-    const data = await clientApi<{ sources: ImportSourceSummary[]; proposals: ImportProposalSummary[] }>("/api/import-sources", { cache: "no-store" });
-    setSources(data.sources); setProposals(data.proposals);
+    router.refresh();
   }
 
   async function createAndPreview(event: FormEvent<HTMLFormElement>) {
@@ -72,7 +71,7 @@ export function OnlineSourcesClient({
         const created = await clientApi<{ id: string }>("/api/series", {
           method: "POST",
           body: JSON.stringify({
-            seriesKey: form.get("newSeriesKey"), name: form.get("newSeriesName"),
+            name: form.get("newSeriesName"),
             description: "", accentColor: form.get("accentColor"), archived: false,
           }),
         });
@@ -142,9 +141,15 @@ export function OnlineSourcesClient({
   }
 
   async function remove(source: ImportSourceSummary) {
-    if (!window.confirm(`„${source.name}“ deaktivieren? Bereits importierte Folgen und Zuordnungen bleiben erhalten.`)) return;
+    if (!window.confirm(`„${source.name}“ endgültig löschen? Importläufe, Vorschläge und Quellzuordnungen werden entfernt. Importierte Folgen, Hörlinks und dein Hörverlauf bleiben erhalten.`)) return;
     setBusy(source.id); setMessage("");
-    try { await clientApi(`/api/import-sources/${source.id}`, { method: "DELETE" }); await reload(); }
+    try {
+      await clientApi(`/api/import-sources/${source.id}`, { method: "DELETE" });
+      if (runs?.source.id === source.id) setRuns(null);
+      if (preview?.run.sourceId === source.id) setPreview(null);
+      setMessage("Online-Quelle endgültig gelöscht.");
+      await reload();
+    }
     catch (caught) { setMessage(caught instanceof Error ? caught.message : "Quelle konnte nicht entfernt werden."); }
     finally { setBusy(null); }
   }
@@ -164,7 +169,6 @@ export function OnlineSourcesClient({
       await clientApi(`/api/import-proposals/${proposal.id}/${accept ? "accept" : "reject"}`, {
         method: "POST", body: accept ? JSON.stringify({ episodeId: episodeId || undefined }) : undefined,
       });
-      setProposals((current) => current.filter((item) => item.id !== proposal.id));
       setMessage(accept ? "Änderung übernommen." : "Änderung verworfen.");
       await reload(); router.refresh();
     } catch (caught) { setMessage(caught instanceof Error ? caught.message : "Vorschlag konnte nicht bearbeitet werden."); }
@@ -184,7 +188,7 @@ export function OnlineSourcesClient({
               {source.confirmed ? <Button size="sm" variant="secondary" disabled={busy === source.id} onClick={() => sync(source.id)}><RefreshCw size={14} />Jetzt prüfen</Button> : <Button size="sm" variant="secondary" disabled={busy === source.id} onClick={() => previewExisting(source.id)}><Play size={14} />Vorschau</Button>}
               <Button size="sm" variant="ghost" onClick={() => showRuns(source)} disabled={busy === source.id}><History size={14} />Läufe</Button>
               {source.confirmed && <Button size="sm" variant="ghost" onClick={() => toggle(source)} disabled={busy === source.id}>{source.enabled ? <Pause size={14} /> : <Play size={14} />}{source.enabled ? "Pausieren" : "Aktivieren"}</Button>}
-              <Button size="sm" variant="ghost" onClick={() => remove(source)} disabled={busy === source.id} aria-label="Quelle deaktivieren"><Trash2 size={14} /></Button>
+              <Button size="sm" variant="ghost" onClick={() => remove(source)} disabled={busy === source.id} aria-label={`${source.name} endgültig löschen`}><Trash2 size={14} />Löschen</Button>
             </div>
           </article>
         ))}
@@ -205,7 +209,7 @@ function SourceWizard({ series, busy, message, onSubmit, onClose }: { series: Se
   const [seriesId, setSeriesId] = useState(series.find((item) => !item.archived)?.id || "new");
   const defaults = kind === "drei_fragezeichen" ? "Die drei ??? – offiziell" : kind === "tkkg" ? "TKKG – offiziell" : `Mein ${kind.toUpperCase()}-Feed`;
   const custom = ["csv", "json", "rss"].includes(kind);
-  return <div className="modal-backdrop"><section className="modal" role="dialog" aria-modal="true" aria-labelledby="source-wizard-title"><div className="modal-header"><div><p className="eyebrow">Einrichtungsassistent</p><h2 id="source-wizard-title">Online-Quelle hinzufügen</h2></div><Button variant="ghost" onClick={onClose}><X size={20} /></Button></div><form className="stack" onSubmit={onSubmit}><label>Quellentyp<select name="kind" value={kind} onChange={(event) => setKind(event.target.value as ImportSourceKind)}>{Object.entries(kindLabels).map(([value, label]) => <option key={value} value={value}>{label}</option>)}</select></label><label>Anzeigename<input name="name" key={defaults} defaultValue={defaults} required /></label>{custom && <label>Öffentliche HTTPS-URL<input name="url" type="url" required pattern="https://.*" placeholder="https://example.org/episodes.json" /></label>}<label>Zielserie<select name="seriesId" value={seriesId} onChange={(event) => setSeriesId(event.target.value)}>{series.filter((item) => !item.archived).map((item) => <option key={item.id} value={item.id}>{item.name}</option>)}<option value="new">Neue Serie anlegen…</option></select></label>{seriesId === "new" && <div className="form-grid"><label>Name der Serie<input name="newSeriesName" required /></label><label>Stabiler Schlüssel<input name="newSeriesKey" required pattern="[a-z0-9][a-z0-9_-]*" placeholder="meine-serie" /></label><label>Akzentfarbe<input name="accentColor" type="color" defaultValue="#f0a35b" /></label></div>}<p className="muted">Der erste Abruf legt noch nichts an. Du bestätigst jeden Treffer in der nächsten Vorschau.</p>{message && <p className="form-error">{message}</p>}<div className="modal-actions"><Button type="button" variant="ghost" onClick={onClose}>Abbrechen</Button><Button type="submit" disabled={busy}>{busy ? "Quelle wird geprüft…" : "Vorschau laden"}</Button></div></form></section></div>;
+  return <div className="modal-backdrop"><section className="modal" role="dialog" aria-modal="true" aria-labelledby="source-wizard-title"><div className="modal-header"><div><p className="eyebrow">Einrichtungsassistent</p><h2 id="source-wizard-title">Online-Quelle hinzufügen</h2></div><Button variant="ghost" onClick={onClose}><X size={20} /></Button></div><form className="stack" onSubmit={onSubmit}><label>Quellentyp<select name="kind" value={kind} onChange={(event) => setKind(event.target.value as ImportSourceKind)}>{Object.entries(kindLabels).map(([value, label]) => <option key={value} value={value}>{label}</option>)}</select></label><label>Anzeigename<input name="name" key={defaults} defaultValue={defaults} required /></label>{custom && <label>Öffentliche HTTPS-URL<input name="url" type="url" required pattern="https://.*" placeholder="https://example.org/episodes.json" /></label>}<label>Zielserie<select name="seriesId" value={seriesId} onChange={(event) => setSeriesId(event.target.value)}>{series.filter((item) => !item.archived).map((item) => <option key={item.id} value={item.id}>{item.name}</option>)}<option value="new">Neue Serie anlegen…</option></select></label>{seriesId === "new" && <div className="form-grid"><label>Name der Serie<input name="newSeriesName" required /></label><label>Akzentfarbe<input name="accentColor" type="color" defaultValue="#f0a35b" /></label></div>}<p className="muted">Quelle und gegebenenfalls Serie werden angelegt. Folgen werden erst nach deiner Bestätigung in der Vorschau übernommen.</p>{message && <p className="form-error">{message}</p>}<div className="modal-actions"><Button type="button" variant="ghost" onClick={onClose}>Abbrechen</Button><Button type="submit" disabled={busy}>{busy ? "Quelle wird geprüft…" : "Vorschau laden"}</Button></div></form></section></div>;
 }
 
 function PreviewDialog({ preview, resolutions, episodes, source, busy, onChange, onCommit, onClose }: { preview: ImportPreviewResult; resolutions: Record<string, Resolution>; episodes: EpisodeSummary[]; source?: ImportSourceSummary; busy: boolean; onChange: (id: string, value: Resolution) => void; onCommit: () => void; onClose: () => void }) {

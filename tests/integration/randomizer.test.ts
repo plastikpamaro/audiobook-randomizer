@@ -23,6 +23,7 @@ describeDatabase("atomarer Zufallsgenerator mit PostgreSQL", () => {
     await pool.query(await readFile(resolve("migrations/0001_initial.sql"), "utf8"));
     await pool.query(await readFile(resolve("migrations/0002_online_imports_and_ratings.sql"), "utf8"));
     await pool.query(await readFile(resolve("migrations/0003_catalog_deletion.sql"), "utf8"));
+    await pool.query(await readFile(resolve("migrations/0004_deleted_import_items.sql"), "utf8"));
     const user = await pool.query<{ id: string }>(
       "INSERT INTO users (email,password_hash,role,catalog_baseline_date) VALUES ('test@example.com','x','owner',current_date) RETURNING id",
     );
@@ -220,6 +221,47 @@ describeDatabase("atomarer Zufallsgenerator mit PostgreSQL", () => {
     await deleteSeries(id);
     expect((await pool.query("SELECT id FROM episodes WHERE series_id=$1", [id])).rowCount).toBe(0);
     expect((await pool.query("SELECT id FROM import_sources WHERE series_id=$1", [id])).rowCount).toBe(0);
+  });
+
+  it("löscht Quellen endgültig, erhält Hörinhalte und importiert gelöschte Folgen nicht erneut", async () => {
+    const { createSeries, getEpisodes, deleteEpisode, deleteSeries, applyBulkEpisodeAction } = await import("@/lib/catalog");
+    const { seriesCreateSchema } = await import("@/lib/validation");
+    const { deleteImportSource, syncImportSource } = await import("@/lib/online-import-service");
+    const id = await createSeries(seriesCreateSchema.parse({ name: "Quellen löschen", episodeCount: 2 }));
+    const episodes = (await getEpisodes(userId)).filter((episode) => episode.seriesId === id);
+    const source = await pool.query<{ id: string }>(
+      "INSERT INTO import_sources (created_by_user_id,series_id,kind,name,enabled,first_import_completed_at,last_item_count) VALUES ($1,$2,'tkkg','Löschtest',true,now(),2) RETURNING id", [userId, id],
+    );
+    const sourceId = source.rows[0].id;
+    const payloads = episodes.map((episode, index) => ({ externalId: String(index + 1), title: episode.title, numberLabel: episode.numberLabel, sortOrder: episode.sortOrder, releaseDate: null, durationMinutes: null, priorityOnRelease: false, links: [], canonicalUrl: null }));
+    for (const [index, episode] of episodes.entries()) {
+      await pool.query("INSERT INTO import_source_items (source_id,external_id,episode_id,payload_hash,source_payload) VALUES ($1,$2,$3,repeat('a',64),$4::jsonb)", [sourceId, String(index + 1), episode.id, JSON.stringify(payloads[index])]);
+    }
+    await pool.query("INSERT INTO episode_links (episode_id,label,url,import_source_id) VALUES ($1,'Hören','https://example.org/listen',$2)", [episodes[1].id, sourceId]);
+    await applyBulkEpisodeAction(userId, [episodes[1].id], "heard");
+    await deleteEpisode(episodes[0].id);
+    const fetcher = async () => ({ feed: { episodes: payloads, issues: [], warnings: [] }, notModified: false, etag: null, lastModified: null, finalUrl: "https://example.org/feed" });
+    await syncImportSource(sourceId, "manual", undefined, fetcher);
+    expect((await pool.query("SELECT id FROM episodes WHERE series_id=$1", [id])).rowCount).toBe(1);
+    expect((await pool.query("SELECT id FROM import_proposals WHERE source_id=$1 AND external_id='1'", [sourceId])).rowCount).toBe(0);
+    const lock = await pool.connect();
+    try {
+      await lock.query("SELECT pg_advisory_lock(hashtextextended($1,0))", [`import-source:${sourceId}`]);
+      await expect(deleteImportSource(sourceId)).rejects.toMatchObject({ code: "IMPORT_ALREADY_RUNNING" });
+    } finally {
+      await lock.query("SELECT pg_advisory_unlock(hashtextextended($1,0))", [`import-source:${sourceId}`]);
+      lock.release();
+    }
+    await deleteImportSource(sourceId);
+    for (const table of ["import_runs", "import_proposals", "import_source_items", "import_source_exclusions"]) {
+      expect((await pool.query(`SELECT 1 FROM ${table} WHERE source_id=$1`, [sourceId])).rowCount).toBe(0);
+    }
+    expect((await pool.query("SELECT id FROM import_sources WHERE id=$1", [sourceId])).rowCount).toBe(0);
+    expect((await pool.query("SELECT id FROM episodes WHERE series_id=$1", [id])).rowCount).toBe(1);
+    expect((await pool.query("SELECT import_source_id FROM episode_links WHERE episode_id=$1", [episodes[1].id])).rows).toEqual([{ import_source_id: null }]);
+    expect((await pool.query("SELECT id FROM episode_completions WHERE episode_id=$1", [episodes[1].id])).rowCount).toBe(1);
+    await expect(deleteImportSource(sourceId)).rejects.toMatchObject({ code: "NOT_FOUND" });
+    await deleteSeries(id);
   });
 
 });
