@@ -1,5 +1,4 @@
-import { readFile } from "node:fs/promises";
-import { resolve } from "node:path";
+import { readFile, readdir } from "node:fs/promises";
 import { Pool } from "pg";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
@@ -20,10 +19,9 @@ describeDatabase("atomarer Zufallsgenerator mit PostgreSQL", () => {
     process.env.TZ = "Europe/Berlin";
     pool = new Pool({ connectionString: databaseUrl });
     await pool.query("DROP SCHEMA public CASCADE; CREATE SCHEMA public");
-    await pool.query(await readFile(resolve("migrations/0001_initial.sql"), "utf8"));
-    await pool.query(await readFile(resolve("migrations/0002_online_imports_and_ratings.sql"), "utf8"));
-    await pool.query(await readFile(resolve("migrations/0003_catalog_deletion.sql"), "utf8"));
-    await pool.query(await readFile(resolve("migrations/0004_deleted_import_items.sql"), "utf8"));
+    for (const file of (await readdir("migrations")).filter((name) => name.endsWith(".sql")).sort()) {
+      await pool.query(await readFile(`migrations/${file}`, "utf8"));
+    }
     const user = await pool.query<{ id: string }>(
       "INSERT INTO users (email,password_hash,role,catalog_baseline_date) VALUES ('test@example.com','x','owner',current_date) RETURNING id",
     );

@@ -186,6 +186,81 @@ async function resolveSelection(
   return { seriesIds: requested, presetId: null };
 }
 
+interface DrawCandidate {
+  episode_id: string;
+  round_number: number;
+  is_priority: boolean;
+}
+
+async function chooseEpisode(
+  client: PoolClient,
+  userId: string,
+  seriesIds: string[],
+  excludedEpisodeId: string | null = null,
+): Promise<DrawCandidate | null> {
+  const candidate = await client.query<DrawCandidate>(
+    `WITH eligible AS (
+       SELECT e.id AS episode_id, COALESCE(usr.round_number, 1) AS round_number,
+              (
+                e.priority_on_release = true
+                AND e.release_date IS NOT NULL
+                AND e.release_date >= u.catalog_baseline_date
+                AND po.episode_id IS NULL
+              ) AS is_priority
+       FROM episodes e
+       JOIN series s ON s.id=e.series_id
+       JOIN users u ON u.id=$1
+       LEFT JOIN user_series_rounds usr ON usr.user_id=$1 AND usr.series_id=e.series_id
+       LEFT JOIN episode_completions ec
+         ON ec.user_id=$1 AND ec.episode_id=e.id
+        AND ec.round_number=COALESCE(usr.round_number, 1) AND ec.reversed_at IS NULL
+       LEFT JOIN episode_priority_offers po ON po.user_id=$1 AND po.episode_id=e.id
+       WHERE e.series_id = ANY($2::uuid[])
+         AND s.archived=false AND e.archived=false
+         AND (e.release_date IS NULL OR e.release_date <= $3::date)
+         AND ec.id IS NULL
+     ), last_resolved AS (
+       SELECT episode_id, status FROM draws
+       WHERE user_id=$1 AND status <> 'active'
+       ORDER BY resolved_at DESC NULLS LAST LIMIT 1
+     ), last_skipped AS (
+       SELECT episode_id FROM last_resolved WHERE status='skipped'
+     )
+     SELECT episode_id, round_number, is_priority
+     FROM eligible
+     WHERE episode_id <> COALESCE($4::uuid, (SELECT episode_id FROM last_skipped), gen_random_uuid())
+        OR ($4::uuid IS NULL AND (SELECT count(*) FROM eligible) = 1)
+     ORDER BY is_priority DESC, random()
+     LIMIT 1`,
+    [userId, seriesIds, localDate(), excludedEpisodeId],
+  );
+  return candidate.rows[0] ?? null;
+}
+
+async function reserveDraw(
+  client: PoolClient,
+  userId: string,
+  selection: { seriesIds: string[]; presetId: string | null },
+  chosen: DrawCandidate,
+  replacedDrawId: string | null = null,
+): Promise<string> {
+  const inserted = await client.query<{ id: string }>(
+    `INSERT INTO draws (
+       user_id, episode_id, round_number, status, preset_id, selection_series_ids, replaced_draw_id
+     ) VALUES ($1,$2,$3,'active',$4,$5::uuid[],$6) RETURNING id`,
+    [userId, chosen.episode_id, chosen.round_number, selection.presetId, selection.seriesIds, replacedDrawId],
+  );
+  const id = inserted.rows[0].id;
+  if (chosen.is_priority) {
+    await client.query(
+      `INSERT INTO episode_priority_offers (user_id, episode_id, draw_id)
+       VALUES ($1,$2,$3) ON CONFLICT (user_id, episode_id) DO NOTHING`,
+      [userId, chosen.episode_id, id],
+    );
+  }
+  return id;
+}
+
 export async function drawEpisode(
   userId: string,
   input: { seriesIds?: string[]; presetId?: string },
@@ -199,64 +274,62 @@ export async function drawEpisode(
     if (active.rowCount) return active.rows[0].id;
 
     const selection = await resolveSelection(client, userId, input);
-    const candidate = await client.query<{ episode_id: string; round_number: number; is_priority: boolean }>(
-      `WITH eligible AS (
-         SELECT e.id AS episode_id, COALESCE(usr.round_number, 1) AS round_number,
-                (
-                  e.priority_on_release = true
-                  AND e.release_date IS NOT NULL
-                  AND e.release_date >= u.catalog_baseline_date
-                  AND po.episode_id IS NULL
-                ) AS is_priority
-         FROM episodes e
-         JOIN series s ON s.id=e.series_id
-         JOIN users u ON u.id=$1
-         LEFT JOIN user_series_rounds usr ON usr.user_id=$1 AND usr.series_id=e.series_id
-         LEFT JOIN episode_completions ec
-           ON ec.user_id=$1 AND ec.episode_id=e.id
-          AND ec.round_number=COALESCE(usr.round_number, 1) AND ec.reversed_at IS NULL
-         LEFT JOIN episode_priority_offers po ON po.user_id=$1 AND po.episode_id=e.id
-         WHERE e.series_id = ANY($2::uuid[])
-           AND s.archived=false AND e.archived=false
-           AND (e.release_date IS NULL OR e.release_date <= $3::date)
-           AND ec.id IS NULL
-       ), last_resolved AS (
-         SELECT episode_id, status FROM draws
-         WHERE user_id=$1 AND status <> 'active'
-         ORDER BY resolved_at DESC NULLS LAST LIMIT 1
-       ), last_skipped AS (
-         SELECT episode_id FROM last_resolved WHERE status='skipped'
-       )
-       SELECT episode_id, round_number, is_priority
-       FROM eligible
-       WHERE episode_id <> COALESCE((SELECT episode_id FROM last_skipped), gen_random_uuid())
-          OR (SELECT count(*) FROM eligible) = 1
-       ORDER BY is_priority DESC, random()
-       LIMIT 1`,
-      [userId, selection.seriesIds, localDate()],
-    );
-    if (!candidate.rowCount) throw new EmptyPoolError(selection.seriesIds);
-
-    const chosen = candidate.rows[0];
-    const inserted = await client.query<{ id: string }>(
-      `INSERT INTO draws (
-         user_id, episode_id, round_number, status, preset_id, selection_series_ids
-       ) VALUES ($1,$2,$3,'active',$4,$5::uuid[]) RETURNING id`,
-      [userId, chosen.episode_id, chosen.round_number, selection.presetId, selection.seriesIds],
-    );
-    if (chosen.is_priority) {
-      await client.query(
-        `INSERT INTO episode_priority_offers (user_id, episode_id, draw_id)
-         VALUES ($1,$2,$3) ON CONFLICT (user_id, episode_id) DO NOTHING`,
-        [userId, chosen.episode_id, inserted.rows[0].id],
-      );
-    }
-    return inserted.rows[0].id;
+    const chosen = await chooseEpisode(client, userId, selection.seriesIds);
+    if (!chosen) throw new EmptyPoolError(selection.seriesIds);
+    return reserveDraw(client, userId, selection, chosen);
   });
 
   const draw = await loadDraw(db(), userId, drawId);
   if (!draw) throw new AppError("Die Ziehung konnte nicht geladen werden.", 500, "DRAW_MISSING");
   return draw;
+}
+
+export async function skipAndDrawNext(userId: string, drawId: string): Promise<ActiveDraw> {
+  return transaction(async (client) => {
+    await lockUser(client, userId);
+    const result = await client.query<{
+      status: "active" | "heard" | "skipped";
+      episode_id: string;
+      preset_id: string | null;
+      selection_series_ids: string[];
+    }>(
+      `SELECT status, episode_id, preset_id, selection_series_ids FROM draws
+       WHERE id=$1 AND user_id=$2 FOR UPDATE`,
+      [drawId, userId],
+    );
+    if (!result.rowCount) throw new AppError("Ziehung nicht gefunden.", 404, "NOT_FOUND");
+    const current = result.rows[0];
+    let nextId: string;
+    if (current.status === "skipped") {
+      const replacement = await client.query<{ id: string }>(
+        `SELECT id FROM draws
+         WHERE user_id=$1 AND replaced_draw_id=$2 AND status='active'`,
+        [userId, drawId],
+      );
+      if (!replacement.rowCount) {
+        throw new AppError("Diese Ziehung wurde bereits abgeschlossen.", 409, "ALREADY_RESOLVED");
+      }
+      nextId = replacement.rows[0].id;
+    } else {
+      if (current.status !== "active") {
+        throw new AppError("Diese Ziehung wurde bereits anders abgeschlossen.", 409, "ALREADY_RESOLVED");
+      }
+      const selection = { seriesIds: current.selection_series_ids, presetId: current.preset_id };
+      const chosen = await chooseEpisode(client, userId, selection.seriesIds, current.episode_id);
+      if (!chosen) {
+        throw new AppError(
+          "In dieser Auswahl ist gerade keine andere ungehörte Folge verfügbar. Deine aktuelle Folge bleibt ausgewählt.",
+          409,
+          "NO_ALTERNATIVE",
+        );
+      }
+      await client.query("UPDATE draws SET status='skipped', resolved_at=now() WHERE id=$1", [drawId]);
+      nextId = await reserveDraw(client, userId, selection, chosen, drawId);
+    }
+    const next = await loadDraw(client, userId, nextId);
+    if (!next) throw new AppError("Die Ziehung konnte nicht geladen werden.", 500, "DRAW_MISSING");
+    return next;
+  });
 }
 
 export async function resolveDraw(

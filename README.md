@@ -4,13 +4,15 @@ Ein persönlicher Hörspiel-Zufallsgenerator ohne Zurücklegen. Der Fortschritt 
 
 ## Funktionen
 
-- freie Serienauswahl und gespeicherte Presets; das zuletzt gewählte Preset bleibt pro Account auch nach Neuladen und auf anderen Geräten aktiv
+- freie Serienauswahl und bearbeitbare Presets; beide bleiben pro Account auch nach Neuladen und auf anderen Geräten erhalten
 - globaler Fortschritt pro Serie und Runde
 - genau eine atomar reservierte Folge pro Account
 - gehörte, übersprungene und korrigierte Ziehungen
 - geplante, einmal priorisierte Neuerscheinungen
 - Sonderfolgen ohne Nummer
-- mehrere Hör-Links, Favoriten und private Notizen
+- mehrere Hör-Links, Favoriten und private Notizen mit automatischem Speichern und geschützten Entwürfen
+- mit „Andere Folge“ direkt wechseln; ohne verfügbare Alternative bleibt die aktuelle Folge aktiv
+- Suche und Filter in Bibliothek und Verlauf bleiben in diesem Browser pro Account erhalten und lassen sich zurücksetzen
 - optionale Bewertungen von 1 bis 10 pro echtem Hördurchlauf
 - CSV-Import mit Vorschau und vollständigem Rollback bei Fehlern
 - tägliche Online-Importe für Die drei ???, TKKG sowie öffentliche CSV-, JSON- und RSS-Feeds

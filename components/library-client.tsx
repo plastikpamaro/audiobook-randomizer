@@ -11,6 +11,8 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { clientApi } from "@/components/client-api";
 import { ManualListenDialog } from "@/components/manual-listen-dialog";
+import { useLibraryFilters } from "@/components/use-persistent-filters";
+import type { LibraryFilters } from "@/lib/filter-preferences";
 import type { CsvImportIssue, CsvImportPreview } from "@/lib/csv-import";
 import type { EpisodeLink, EpisodeSummary, SeriesOverview } from "@/lib/types";
 
@@ -65,14 +67,11 @@ const statusLabels: Record<EpisodeSummary["status"], string> = {
   available: "Verfügbar", heard: "Gehört", future: "Geplant", archived: "Archiviert",
 };
 
-export function LibraryClient({ initialSeries, initialEpisodes }: { initialSeries: SeriesOverview[]; initialEpisodes: EpisodeSummary[] }) {
+export function LibraryClient({ userId, initialSeries, initialEpisodes }: { userId: string; initialSeries: SeriesOverview[]; initialEpisodes: EpisodeSummary[] }) {
   const router = useRouter();
-  const [search, setSearch] = useState("");
-  const [seriesFilter, setSeriesFilter] = useState("all");
-  const [statusFilter, setStatusFilter] = useState("all");
-  const [releaseFrom, setReleaseFrom] = useState("");
-  const [releaseTo, setReleaseTo] = useState("");
-  const [favoritesOnly, setFavoritesOnly] = useState(false);
+  const [filters, updateFilters, resetFilters] = useLibraryFilters(userId);
+  const { search, statusFilter, releaseFrom, releaseTo, favoritesOnly } = filters;
+  const seriesFilter = initialSeries.some((item) => item.id === filters.seriesFilter) ? filters.seriesFilter : "all";
   const [selected, setSelected] = useState<string[]>([]);
   const [episodeEditor, setEpisodeEditor] = useState<EpisodeDraft | null>(null);
   const [manualEpisode, setManualEpisode] = useState<EpisodeSummary | null>(null);
@@ -131,7 +130,7 @@ export function LibraryClient({ initialSeries, initialEpisodes }: { initialSerie
     setBusy(true); setMessage("");
     try {
       await clientApi(`/api/series/${series.id}`, { method: "DELETE" });
-      setSelected([]); setSeriesFilter("all"); router.refresh();
+      setSelected([]); updateFilters({ seriesFilter: "all" }); router.refresh();
     } catch (caught) { setMessage(caught instanceof Error ? caught.message : "Serie konnte nicht gelöscht werden."); }
     finally { setBusy(false); }
   }
@@ -228,12 +227,13 @@ export function LibraryClient({ initialSeries, initialEpisodes }: { initialSerie
 
       <Card className="library-card">
         <div className="toolbar">
-          <label className="toolbar-search">Suche<span className="input-with-icon"><Search size={16} /><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Titel, Nummer oder Serie" /></span></label>
-          <label>Serie<select value={seriesFilter} onChange={(event) => setSeriesFilter(event.target.value)}><option value="all">Alle Serien</option>{initialSeries.map((item) => <option key={item.id} value={item.id}>{item.name}</option>)}</select></label>
-          <label>Status<select value={statusFilter} onChange={(event) => setStatusFilter(event.target.value)}><option value="all">Alle Status</option><option value="available">Verfügbar</option><option value="heard">Gehört</option><option value="future">Geplant</option><option value="archived">Archiviert</option></select></label>
-          <label>Erschienen ab<input type="date" value={releaseFrom} onChange={(event) => setReleaseFrom(event.target.value)} /></label>
-          <label>Erschienen bis<input type="date" value={releaseTo} onChange={(event) => setReleaseTo(event.target.value)} /></label>
-          <label className="check-label"><input type="checkbox" checked={favoritesOnly} onChange={(event) => setFavoritesOnly(event.target.checked)} />Nur Favoriten</label>
+          <label className="toolbar-search">Suche<span className="input-with-icon"><Search size={16} /><input value={search} onChange={(event) => updateFilters({ search: event.target.value })} placeholder="Titel, Nummer oder Serie" /></span></label>
+          <label>Serie<select value={seriesFilter} onChange={(event) => updateFilters({ seriesFilter: event.target.value })}><option value="all">Alle Serien</option>{initialSeries.map((item) => <option key={item.id} value={item.id}>{item.name}</option>)}</select></label>
+          <label>Status<select value={statusFilter} onChange={(event) => updateFilters({ statusFilter: event.target.value as LibraryFilters["statusFilter"] })}><option value="all">Alle Status</option><option value="available">Verfügbar</option><option value="heard">Gehört</option><option value="future">Geplant</option><option value="archived">Archiviert</option></select></label>
+          <label>Erschienen ab<input type="date" value={releaseFrom} onChange={(event) => updateFilters({ releaseFrom: event.target.value })} /></label>
+          <label>Erschienen bis<input type="date" value={releaseTo} onChange={(event) => updateFilters({ releaseTo: event.target.value })} /></label>
+          <label className="check-label"><input type="checkbox" checked={favoritesOnly} onChange={(event) => updateFilters({ favoritesOnly: event.target.checked })} />Nur Favoriten</label>
+          <Button variant="ghost" size="sm" onClick={resetFilters}><RotateCcw size={15} />Filter zurücksetzen</Button>
         </div>
         <div className="row-wrap library-actions">
           <Button variant="secondary" onClick={() => setEpisodeEditor(episodeDraft(null, initialSeries.find((item) => !item.archived)?.id || ""))} disabled={!initialSeries.some((item) => !item.archived)}><BookPlus size={17} />Folge anlegen</Button>

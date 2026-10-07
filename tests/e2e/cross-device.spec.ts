@@ -89,6 +89,14 @@ test.describe("geräteübergreifender Zustand", () => {
         });
         items.push({ seriesId: series.id as string, seriesName, presetId: preset.id as string });
       }
+      await request("/api/settings/preset", {
+        method: "PUT", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ presetId: null, seriesIds: items.map((item) => item.seriesId) }),
+      });
+      await request("/api/settings/preset", {
+        method: "PUT", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ presetId: items[1].presetId }),
+      });
       return items;
     });
     const [first, second] = seed;

@@ -7,13 +7,14 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { clientApi } from "@/components/client-api";
+import { useHistoryFilters } from "@/components/use-persistent-filters";
+import type { HistoryFilters } from "@/lib/filter-preferences";
 import type { HistoryItem } from "@/lib/types";
 
-export function HistoryClient({ initialItems }: { initialItems: HistoryItem[] }) {
+export function HistoryClient({ userId, initialItems }: { userId: string; initialItems: HistoryItem[] }) {
   const router = useRouter();
-  const [search, setSearch] = useState("");
-  const [status, setStatus] = useState("all");
-  const [favoritesOnly, setFavoritesOnly] = useState(false);
+  const [filters, updateFilters, resetFilters] = useHistoryFilters(userId);
+  const { search, status, favoritesOnly } = filters;
   const [busyId, setBusyId] = useState<string | null>(null);
   const [message, setMessage] = useState("");
   const [items, setItems] = useState(initialItems);
@@ -54,9 +55,10 @@ export function HistoryClient({ initialItems }: { initialItems: HistoryItem[] })
     <>
       <Card>
         <div className="toolbar">
-          <label className="toolbar-search">Suche<span className="input-with-icon"><Search size={16} /><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Titel, Nummer oder Serie" /></span></label>
-          <label>Aktion<select value={status} onChange={(event) => setStatus(event.target.value)}><option value="all">Alles</option><option value="heard">Gehört</option><option value="skipped">Übersprungen</option></select></label>
-          <label className="check-label"><input type="checkbox" checked={favoritesOnly} onChange={(event) => setFavoritesOnly(event.target.checked)} /><Heart size={15} />Nur Favoriten</label>
+          <label className="toolbar-search">Suche<span className="input-with-icon"><Search size={16} /><input value={search} onChange={(event) => updateFilters({ search: event.target.value })} placeholder="Titel, Nummer oder Serie" /></span></label>
+          <label>Aktion<select value={status} onChange={(event) => updateFilters({ status: event.target.value as HistoryFilters["status"] })}><option value="all">Alles</option><option value="heard">Gehört</option><option value="skipped">Übersprungen</option></select></label>
+          <label className="check-label"><input type="checkbox" checked={favoritesOnly} onChange={(event) => updateFilters({ favoritesOnly: event.target.checked })} /><Heart size={15} />Nur Favoriten</label>
+          <Button variant="ghost" size="sm" onClick={resetFilters}><RotateCcw size={15} />Filter zurücksetzen</Button>
         </div>
         {message && <p className="form-success" role="status">{message}</p>}
         <div className="history-list">

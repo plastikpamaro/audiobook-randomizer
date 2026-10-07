@@ -220,7 +220,7 @@ input[type="checkbox"] { width: 17px; height: 17px; margin: 0; accent-color: var
 .check-label { width: auto !important; min-width: auto !important; flex: 0 0 auto !important; display: inline-flex; align-items: center; gap: 8px; padding: 11px 2px; white-space: nowrap; }
 .bulk-bar { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; border: 1px solid rgba(240,163,91,0.22); border-radius: 13px; padding: 10px 12px; margin-bottom: 14px; background: rgba(240,163,91,0.05); }
 .bulk-bar strong { font-size: 0.78rem; margin-right: auto; }
-.episode-table-wrap { overflow-x: auto; }
+.episode-table-wrap { position: relative; overflow-x: auto; }
 .episode-table { width: 100%; border-collapse: collapse; min-width: 760px; }
 .episode-table th { color: var(--muted); text-align: left; text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.63rem; padding: 10px 12px; border-bottom: 1px solid var(--line); }
 .episode-table td { padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.055); color: #d9d7d4; font-size: 0.8rem; vertical-align: middle; }

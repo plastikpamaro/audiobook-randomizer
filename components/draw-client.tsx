@@ -1,14 +1,15 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState, type FormEvent } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import {
-  Check, ExternalLink, Heart, LoaderCircle, Plus, RotateCcw, Shuffle, SkipForward,
+  Check, ExternalLink, Heart, LoaderCircle, Pencil, Plus, RotateCcw, Shuffle, SkipForward,
   Sparkles, Star, Trash2, X,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { useEpisodeNote } from "@/components/use-episode-note";
 import type { ActiveDraw, Preset, SeriesOverview } from "@/lib/types";
 
 async function api<T>(url: string, options?: RequestInit): Promise<T> {
@@ -31,17 +32,26 @@ export function DrawClient({
   initialPresets,
   initialDraw,
   initialPresetId,
+  initialFreeSeriesIds,
+  userId,
 }: {
   initialSeries: SeriesOverview[];
   initialPresets: Preset[];
   initialDraw: ActiveDraw | null;
   initialPresetId: string | null;
+  initialFreeSeriesIds: string[] | null;
+  userId: string;
 }) {
   const router = useRouter();
   const availableSeries = initialSeries.filter((item) => !item.archived);
   const initialPreset = initialPresets.find((item) => item.id === initialPresetId);
   const [selected, setSelected] = useState<string[]>(
-    () => availableSeries.filter((item) => !initialPreset || initialPreset.seriesIds.includes(item.id)).map((item) => item.id),
+    () => availableSeries.filter((item) => initialPreset
+      ? initialPreset.seriesIds.includes(item.id)
+      : initialFreeSeriesIds === null || initialFreeSeriesIds.includes(item.id)).map((item) => item.id),
+  );
+  const [freeSelected, setFreeSelected] = useState<string[]>(
+    () => availableSeries.filter((item) => initialFreeSeriesIds === null || initialFreeSeriesIds.includes(item.id)).map((item) => item.id),
   );
   const [presets, setPresets] = useState(initialPresets);
   const [activePreset, setActivePreset] = useState<string | null>(initialPreset?.id ?? null);
@@ -51,7 +61,12 @@ export function DrawClient({
   const [emptySeries, setEmptySeries] = useState<string[]>([]);
   const [presetName, setPresetName] = useState("");
   const [showPresetForm, setShowPresetForm] = useState(false);
-  const [note, setNote] = useState(initialDraw?.episode.note || "");
+  const [editingPreset, setEditingPreset] = useState<Preset | null>(null);
+  const { note, dirty: noteDirty, saving: noteSaving, error: noteError, setNote, saveNow, syncEpisode, getVersion } = useEpisodeNote({
+    userId, initialEpisode: initialDraw?.episode ?? null,
+  });
+  const drawRevision = useRef(0);
+  const refreshSequence = useRef(0);
   const [ratingTarget, setRatingTarget] = useState<{ id: string; title: string; seriesName: string } | null>(null);
   const [showDetails, setShowDetails] = useState(false);
   const [ratingScore, setRatingScore] = useState<number | null>(null);
@@ -68,14 +83,18 @@ export function DrawClient({
   );
 
   const refreshCurrent = useCallback(async () => {
+    const revision = drawRevision.current;
+    const sequence = ++refreshSequence.current;
+    const noteVersion = getVersion();
     try {
       const result = await api<{ draw: ActiveDraw | null }>("/api/draw/current", { cache: "no-store" });
+      if (revision !== drawRevision.current || sequence !== refreshSequence.current) return;
       setDraw(result.draw);
-      setNote(result.draw?.episode.note || "");
+      syncEpisode(result.draw?.episode ?? null, noteVersion);
     } catch {
       // Hintergrundabgleich darf die Hauptoberfläche nicht stören.
     }
-  }, []);
+  }, [syncEpisode, getVersion]);
 
   useEffect(() => {
     const onFocus = () => void refreshCurrent();
@@ -94,7 +113,8 @@ export function DrawClient({
         method: "POST",
         body: JSON.stringify(activePreset ? { presetId: activePreset } : { seriesIds: selected }),
       });
-      setDraw(result.draw); setShowDetails(false); setNote(result.draw.episode.note || "");
+      drawRevision.current++;
+      setDraw(result.draw); setShowDetails(false); syncEpisode(result.draw.episode);
     } catch (caught) {
       const error = caught as Error & { code?: string; details?: { seriesIds?: string[] } };
       setMessage(error.message);
@@ -106,17 +126,38 @@ export function DrawClient({
     if (!draw) return;
     setBusy(true); setMessage("");
     try {
+      if (!await saveNow()) return;
       const result = await api<{ draw: ActiveDraw }>(`/api/draws/${draw.id}/${outcome}`, { method: "POST" });
       if (outcome === "heard" && result.draw.ratingEditable) {
         setRatingTarget({ id: draw.id, title: draw.episode.title, seriesName: draw.episode.seriesName });
         setRatingScore(null);
       }
-      setDraw(null); setNote("");
+      drawRevision.current++;
+      setDraw(null); syncEpisode(null);
       router.refresh();
     } catch (caught) {
       setMessage(caught instanceof Error ? caught.message : "Aktion fehlgeschlagen.");
       await refreshCurrent();
     } finally { setBusy(false); }
+  }
+
+  async function pickAnother() {
+    if (!draw || busy) return;
+    setBusy(true); setMessage("");
+    try {
+      if (!await saveNow()) return;
+      const result = await api<{ draw: ActiveDraw }>(`/api/draws/${draw.id}/next`, { method: "POST" });
+      drawRevision.current++;
+      setDraw(result.draw); syncEpisode(result.draw.episode); setShowDetails(false);
+      router.refresh();
+    } catch (caught) {
+      setMessage(caught instanceof Error ? caught.message : "Andere Folge konnte nicht gezogen werden.");
+      await refreshCurrent();
+    } finally { setBusy(false); }
+  }
+
+  async function saveNote() {
+    if (await saveNow()) setMessage("Notiz gespeichert.");
   }
 
   async function saveRating() {
@@ -150,12 +191,13 @@ export function DrawClient({
     finally { setBusy(false); }
   }
 
-  async function updatePreference(input: { favorite?: boolean; note?: string }) {
+  async function updatePreference(input: { favorite: boolean }) {
     if (!draw) return;
     try {
       await api(`/api/episodes/${draw.episode.id}/preference`, { method: "PATCH", body: JSON.stringify(input) });
-      setDraw({ ...draw, episode: { ...draw.episode, ...input } });
-      if (input.note !== undefined) setMessage("Notiz gespeichert.");
+      setDraw((current) => current?.episode.id === draw.episode.id
+        ? { ...current, episode: { ...current.episode, ...input } }
+        : current);
     } catch (caught) { setMessage(caught instanceof Error ? caught.message : "Speichern fehlgeschlagen."); }
   }
 
@@ -185,12 +227,29 @@ export function DrawClient({
     finally { setBusy(false); }
   }
 
+  async function updatePreset(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (!editingPreset || busy || !editingPreset.name.trim() || !editingPreset.seriesIds.length) return;
+    const next = { ...editingPreset, name: editingPreset.name.trim() };
+    setBusy(true); setMessage("");
+    try {
+      await api(`/api/presets/${next.id}`, {
+        method: "PATCH", body: JSON.stringify({ name: next.name, seriesIds: next.seriesIds }),
+      });
+      setPresets((current) => current.map((item) => item.id === next.id ? next : item).sort((a, b) => a.name.localeCompare(b.name, "de")));
+      if (activePreset === next.id) setSelected(availableSeries.filter((item) => next.seriesIds.includes(item.id)).map((item) => item.id));
+      setEditingPreset(null); setEmptySeries([]); setMessage("Profil aktualisiert.");
+      router.refresh();
+    } catch (caught) { setMessage(caught instanceof Error ? caught.message : "Profil konnte nicht gespeichert werden."); }
+    finally { setBusy(false); }
+  }
+
   async function removePreset(id: string) {
     setBusy(true);
     try {
       await api(`/api/presets/${id}`, { method: "DELETE" });
       setPresets(presets.filter((item) => item.id !== id));
-      if (activePreset === id) setActivePreset(null);
+      if (activePreset === id) { setActivePreset(null); setSelected(freeSelected); }
     } catch (caught) { setMessage(caught instanceof Error ? caught.message : "Preset konnte nicht gelöscht werden."); }
     finally { setBusy(false); }
   }
@@ -201,8 +260,8 @@ export function DrawClient({
     if (id && !preset) return;
     setBusy(true); setMessage("");
     try {
-      await api("/api/settings/preset", { method: "PUT", body: JSON.stringify({ presetId: id || null }) });
-      if (preset) setSelected(availableSeries.filter((item) => preset.seriesIds.includes(item.id)).map((item) => item.id));
+      await api("/api/settings/preset", { method: "PUT", body: JSON.stringify({ presetId: id || null, ...(!id ? { seriesIds: freeSelected } : {}) }) });
+      setSelected(preset ? availableSeries.filter((item) => preset.seriesIds.includes(item.id)).map((item) => item.id) : freeSelected);
       setActivePreset(id || null); setEmptySeries([]);
     } catch (caught) { setMessage(caught instanceof Error ? caught.message : "Auswahl konnte nicht gespeichert werden."); }
     finally { setBusy(false); }
@@ -210,14 +269,16 @@ export function DrawClient({
 
   async function toggleSeries(id: string) {
     if (busy) return;
+    const next = selected.includes(id) ? selected.filter((item) => item !== id) : [...selected, id];
     setBusy(true); setMessage("");
+    setActivePreset(null); setSelected(next); setEmptySeries([]);
     try {
-      if (activePreset) {
-        await api("/api/settings/preset", { method: "PUT", body: JSON.stringify({ presetId: null }) });
-      }
-      setActivePreset(null); setEmptySeries([]);
-      setSelected((current) => current.includes(id) ? current.filter((item) => item !== id) : [...current, id]);
-    } catch (caught) { setMessage(caught instanceof Error ? caught.message : "Auswahl konnte nicht gespeichert werden."); }
+      await api("/api/settings/preset", { method: "PUT", body: JSON.stringify({ presetId: null, seriesIds: next }) });
+      setFreeSelected(next);
+    } catch (caught) {
+      setSelected(selected); setActivePreset(activePreset);
+      setMessage(caught instanceof Error ? caught.message : "Auswahl konnte nicht gespeichert werden.");
+    }
     finally { setBusy(false); }
   }
 
@@ -232,7 +293,7 @@ export function DrawClient({
               {draw.wasPriority && <Badge tone="warn"><Sparkles size={12} /> Neuerscheinung</Badge>}
               {episode.numberLabel ? <Badge>Folge {episode.numberLabel}</Badge> : <Badge>Sonderfolge</Badge>}
             </div>
-            <Button variant="ghost" size="sm" onClick={() => updatePreference({ favorite: !episode.favorite })} aria-label={episode.favorite ? "Favorit entfernen" : "Als Favorit merken"}>
+            <Button variant="ghost" size="sm" disabled={busy} onClick={() => updatePreference({ favorite: !episode.favorite })} aria-label={episode.favorite ? "Favorit entfernen" : "Als Favorit merken"}>
               <Heart size={19} fill={episode.favorite ? "currentColor" : "none"} />
             </Button>
           </div>
@@ -265,12 +326,14 @@ export function DrawClient({
             <div className="row-wrap"><Button type="submit" disabled={busy}>Informationen speichern</Button><Button type="button" variant="ghost" onClick={() => setShowDetails(false)}>Abbrechen</Button></div>
           </form>}
           <label className="note-field">Private Notiz
-            <textarea value={note} onChange={(event) => setNote(event.target.value)} placeholder="Was möchtest du dir zu dieser Folge merken?" maxLength={10_000} />
+            <textarea value={note} onChange={(event) => setNote(event.target.value)} disabled={busy} placeholder="Was möchtest du dir zu dieser Folge merken?" maxLength={10_000} />
           </label>
+          <small className={noteError ? "form-error" : "muted"} aria-live="polite">{noteError || (noteSaving ? "Notiz wird gespeichert…" : noteDirty ? "Notiz noch nicht gespeichert." : "Notiz gespeichert.")}</small>
           <div className="row-wrap now-actions">
             <Button size="lg" onClick={() => resolve("heard")} disabled={busy}><Check size={20} />Gehört</Button>
-            <Button variant="secondary" size="lg" onClick={() => resolve("skip")} disabled={busy}><SkipForward size={20} />Überspringen</Button>
-            <Button variant="ghost" onClick={() => updatePreference({ note })} disabled={busy}>Notiz speichern</Button>
+            <Button variant="secondary" size="lg" onClick={pickAnother} disabled={busy}><Shuffle size={20} />Andere Folge</Button>
+            <Button variant="ghost" onClick={() => resolve("skip")} disabled={busy}><SkipForward size={18} />Überspringen</Button>
+            <Button variant="ghost" onClick={saveNote} disabled={busy || noteSaving}>Notiz speichern</Button>
           </div>
           {message && <p className={message.includes("gespeichert") ? "form-success" : "form-error"} role="status">{message}</p>}
         </Card>
@@ -293,6 +356,13 @@ export function DrawClient({
               <option value="">Freie Auswahl</option>
               {presets.map((preset) => <option value={preset.id} key={preset.id}>{preset.name}</option>)}
             </select>
+            {activePreset && <Button variant="ghost" size="sm" disabled={busy} aria-label="Profil bearbeiten" onClick={() => {
+              const preset = presets.find((item) => item.id === activePreset);
+              if (preset) {
+                setMessage("");
+                setEditingPreset({ ...preset, seriesIds: [...preset.seriesIds] });
+              }
+            }}><Pencil size={16} /></Button>}
             {activePreset && <Button variant="ghost" size="sm" onClick={() => removePreset(activePreset)} disabled={busy} aria-label="Preset löschen"><Trash2 size={16} /></Button>}
           </div>
         )}
@@ -330,6 +400,7 @@ export function DrawClient({
           <div className="inline-form"><input value={presetName} onChange={(event) => setPresetName(event.target.value)} placeholder="Name, z. B. Detektivabend" maxLength={100} /><Button onClick={savePreset} disabled={busy || !presetName.trim()}>Speichern</Button></div>
         )}
         {message && <p className={emptySeries.length ? "form-error" : "form-success"} role="status">{message}</p>}
+        {noteError && <div className="stack"><p className="form-error" role="alert">{noteError}</p><Button variant="ghost" onClick={() => void saveNow()} disabled={noteSaving}>Notiz erneut speichern</Button></div>}
         {emptySeries.length > 0 && exhaustedSelected.length > 0 && <Button variant="secondary" onClick={reset} disabled={busy}><RotateCcw size={17} />Erschöpfte Serien neu starten</Button>}
       </Card>
       <aside className="draw-aside stack">
@@ -337,6 +408,30 @@ export function DrawClient({
         <Card className="card-subtle"><p className="eyebrow">Neu schlägt alt</p><h3>Veröffentlichungen zuerst.</h3><p className="muted">Fällige Neuerscheinungen erhalten einmal Vorrang. Danach mischen sie sich fair unter alle übrigen Folgen.</p></Card>
       </aside>
     </div>
+    {editingPreset && (
+      <div className="modal-backdrop">
+        <form onSubmit={updatePreset} className="modal modal-frame stack" role="dialog" aria-modal="true" aria-labelledby="preset-editor-title">
+            <div className="modal-header"><h2 id="preset-editor-title">Profil bearbeiten</h2><Button type="button" variant="ghost" disabled={busy} onClick={() => setEditingPreset(null)} aria-label="Schließen"><X size={20} /></Button></div>
+            <div className="modal-scroll-body stack">
+              <label>Profilname<input value={editingPreset.name} onChange={(event) => setEditingPreset({ ...editingPreset, name: event.target.value })} maxLength={100} required disabled={busy} /></label>
+              <div className="series-picker">
+                {availableSeries.map((item) => <label key={item.id} className={`series-option ${editingPreset.seriesIds.includes(item.id) ? "selected" : ""}`}>
+                  <input type="checkbox" checked={editingPreset.seriesIds.includes(item.id)} disabled={busy} onChange={() => setEditingPreset({
+                    ...editingPreset, seriesIds: editingPreset.seriesIds.includes(item.id)
+                      ? editingPreset.seriesIds.filter((id) => id !== item.id)
+                      : [...editingPreset.seriesIds, item.id],
+                  })} />
+                  <span className="series-dot" style={{ background: item.accentColor }} /><strong>{item.name}</strong>
+                </label>)}
+              </div>
+              {editingPreset.seriesIds.some((id) => !availableSeries.some((item) => item.id === id)) && <p className="muted">Archivierte Serien bleiben im Profil erhalten.</p>}
+              {!editingPreset.seriesIds.length && <p className="muted">Wähle mindestens eine Serie für dieses Profil.</p>}
+              {message && <p className="form-error" role="alert">{message}</p>}
+            </div>
+            <div className="modal-actions"><Button type="button" variant="ghost" disabled={busy} onClick={() => setEditingPreset(null)}>Abbrechen</Button><Button type="submit" disabled={busy || !editingPreset.name.trim() || !editingPreset.seriesIds.length}>Änderungen speichern</Button></div>
+        </form>
+      </div>
+    )}
     {ratingTarget && (
       <div className="modal-backdrop">
         <section className="modal modal-small rating-dialog" role="dialog" aria-modal="true" aria-labelledby="rating-title">

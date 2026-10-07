@@ -197,7 +197,33 @@ export async function getActivePresetId(userId: string): Promise<string | null> 
   return rows[0]?.active_preset_id ?? null;
 }
 
-export async function setActivePreset(userId: string, presetId: string | null): Promise<void> {
+export async function getFreeSelectionSeriesIds(userId: string): Promise<string[] | null> {
+  const rows = await query<{ free_selection_series_ids: string[] | null }>(
+    "SELECT free_selection_series_ids FROM users WHERE id=$1",
+    [userId],
+  );
+  return rows[0]?.free_selection_series_ids ?? null;
+}
+
+export async function setActivePreset(userId: string, presetId: string | null, seriesIds?: string[]): Promise<void> {
+  if (seriesIds !== undefined) {
+    if (presetId !== null) throw new AppError("Serien können nur für die freie Auswahl gespeichert werden.", 422, "INVALID_SELECTION");
+    await transaction(async (client) => {
+      await lockUser(client, userId);
+      const series = await client.query<{ id: string }>(
+        "SELECT id FROM series WHERE id=ANY($1::uuid[]) AND archived=false FOR SHARE",
+        [seriesIds],
+      );
+      if (series.rows.length !== new Set(seriesIds.map((id) => id.toLowerCase())).size) {
+        throw new AppError("Mindestens eine ausgewählte Serie ist nicht verfügbar.", 422, "INVALID_SELECTION");
+      }
+      await client.query(
+        "UPDATE users SET active_preset_id=NULL, free_selection_series_ids=$2::uuid[], updated_at=now() WHERE id=$1",
+        [userId, seriesIds],
+      );
+    });
+    return;
+  }
   const result = await db().query(
     `UPDATE users SET active_preset_id=$2, updated_at=now()
      WHERE id=$1 AND ($2::uuid IS NULL OR EXISTS (
