@@ -4,7 +4,7 @@ Ein persönlicher Hörspiel-Zufallsgenerator ohne Zurücklegen. Der Fortschritt 
 
 ## Funktionen
 
-- freie Serienauswahl und gespeicherte Presets
+- freie Serienauswahl und gespeicherte Presets; das zuletzt gewählte Preset bleibt pro Account auch nach Neuladen und auf anderen Geräten aktiv
 - globaler Fortschritt pro Serie und Runde
 - genau eine atomar reservierte Folge pro Account
 - gehörte, übersprungene und korrigierte Ziehungen

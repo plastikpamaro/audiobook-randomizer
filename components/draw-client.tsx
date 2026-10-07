@@ -30,16 +30,21 @@ export function DrawClient({
   initialSeries,
   initialPresets,
   initialDraw,
+  initialPresetId,
 }: {
   initialSeries: SeriesOverview[];
   initialPresets: Preset[];
   initialDraw: ActiveDraw | null;
+  initialPresetId: string | null;
 }) {
   const router = useRouter();
   const availableSeries = initialSeries.filter((item) => !item.archived);
-  const [selected, setSelected] = useState<string[]>(availableSeries.map((item) => item.id));
+  const initialPreset = initialPresets.find((item) => item.id === initialPresetId);
+  const [selected, setSelected] = useState<string[]>(
+    () => availableSeries.filter((item) => !initialPreset || initialPreset.seriesIds.includes(item.id)).map((item) => item.id),
+  );
   const [presets, setPresets] = useState(initialPresets);
-  const [activePreset, setActivePreset] = useState<string | null>(null);
+  const [activePreset, setActivePreset] = useState<string | null>(initialPreset?.id ?? null);
   const [draw, setDraw] = useState(initialDraw);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
@@ -190,16 +195,30 @@ export function DrawClient({
     finally { setBusy(false); }
   }
 
-  function choosePreset(id: string) {
-    if (!id) { setActivePreset(null); return; }
-    const preset = presets.find((item) => item.id === id);
-    if (!preset) return;
-    setSelected(preset.seriesIds); setActivePreset(id); setEmptySeries([]);
+  async function choosePreset(id: string) {
+    if (busy || (id || null) === activePreset) return;
+    const preset = id ? presets.find((item) => item.id === id) : null;
+    if (id && !preset) return;
+    setBusy(true); setMessage("");
+    try {
+      await api("/api/settings/preset", { method: "PUT", body: JSON.stringify({ presetId: id || null }) });
+      if (preset) setSelected(availableSeries.filter((item) => preset.seriesIds.includes(item.id)).map((item) => item.id));
+      setActivePreset(id || null); setEmptySeries([]);
+    } catch (caught) { setMessage(caught instanceof Error ? caught.message : "Auswahl konnte nicht gespeichert werden."); }
+    finally { setBusy(false); }
   }
 
-  function toggleSeries(id: string) {
-    setActivePreset(null); setEmptySeries([]);
-    setSelected((current) => current.includes(id) ? current.filter((item) => item !== id) : [...current, id]);
+  async function toggleSeries(id: string) {
+    if (busy) return;
+    setBusy(true); setMessage("");
+    try {
+      if (activePreset) {
+        await api("/api/settings/preset", { method: "PUT", body: JSON.stringify({ presetId: null }) });
+      }
+      setActivePreset(null); setEmptySeries([]);
+      setSelected((current) => current.includes(id) ? current.filter((item) => item !== id) : [...current, id]);
+    } catch (caught) { setMessage(caught instanceof Error ? caught.message : "Auswahl konnte nicht gespeichert werden."); }
+    finally { setBusy(false); }
   }
 
   if (draw) {
@@ -270,11 +289,11 @@ export function DrawClient({
         </div>
         {presets.length > 0 && (
           <div className="preset-row">
-            <select value={activePreset || ""} onChange={(event) => choosePreset(event.target.value)} aria-label="Gespeichertes Preset auswählen">
+            <select value={activePreset || ""} onChange={(event) => choosePreset(event.target.value)} disabled={busy} aria-label="Gespeichertes Preset auswählen">
               <option value="">Freie Auswahl</option>
               {presets.map((preset) => <option value={preset.id} key={preset.id}>{preset.name}</option>)}
             </select>
-            {activePreset && <Button variant="ghost" size="sm" onClick={() => removePreset(activePreset)} aria-label="Preset löschen"><Trash2 size={16} /></Button>}
+            {activePreset && <Button variant="ghost" size="sm" onClick={() => removePreset(activePreset)} disabled={busy} aria-label="Preset löschen"><Trash2 size={16} /></Button>}
           </div>
         )}
         <div className="series-picker">
@@ -283,7 +302,7 @@ export function DrawClient({
             const total = Math.max(1, item.totalCount);
             return (
               <label key={item.id} className={`series-option ${checked ? "selected" : ""}`}>
-                <input type="checkbox" checked={checked} onChange={() => toggleSeries(item.id)} />
+                <input type="checkbox" checked={checked} onChange={() => toggleSeries(item.id)} disabled={busy} />
                 <span className="series-dot" style={{ background: item.accentColor }} />
                 <span className="grow"><strong>{item.name}</strong><small>{item.remainingCount} von {item.totalCount} verfügbar · Runde {item.roundNumber}</small><span className="mini-progress"><i style={{ width: `${(item.heardCount / total) * 100}%`, background: item.accentColor }} /></span></span>
               </label>
@@ -305,7 +324,7 @@ export function DrawClient({
           ) : (
             <Button size="lg" className="draw-button" disabled><Shuffle size={22} />Keine veröffentlichte Folge verfügbar</Button>
           )}
-          <Button variant="ghost" onClick={() => setShowPresetForm(!showPresetForm)} disabled={!selected.length}><Plus size={17} />Auswahl speichern</Button>
+          <Button variant="ghost" onClick={() => setShowPresetForm(!showPresetForm)} disabled={busy || !selected.length}><Plus size={17} />Auswahl speichern</Button>
         </div>
         {showPresetForm && (
           <div className="inline-form"><input value={presetName} onChange={(event) => setPresetName(event.target.value)} placeholder="Name, z. B. Detektivabend" maxLength={100} /><Button onClick={savePreset} disabled={busy || !presetName.trim()}>Speichern</Button></div>

@@ -60,6 +60,113 @@ test.describe("geräteübergreifender Zustand", () => {
     await secondContext.close();
   });
 
+  test("merkt das gewählte Preset über Navigation, Neuladen und andere Sitzungen", async ({ page, browser, baseURL }) => {
+    await login(page);
+    const seed = await page.evaluate(async () => {
+      async function request(url: string, options?: RequestInit) {
+        const response = await fetch(url, options);
+        const payload = await response.json();
+        if (!response.ok) throw new Error(payload.error || `${url}: ${response.status}`);
+        return payload;
+      }
+      const current = await request("/api/draw/current");
+      if (current.draw) await request(`/api/draws/${current.draw.id}/skip`, { method: "POST" });
+      const suffix = crypto.randomUUID().slice(0, 8);
+      const items = [];
+      for (const index of [1, 2]) {
+        const seriesName = `Profil-Serie ${index} ${suffix}`;
+        const series = await request("/api/series", {
+          method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ seriesKey: `profile-${index}-${suffix}`, name: seriesName, accentColor: "#72c69d", archived: false }),
+        });
+        await request("/api/episodes", {
+          method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ seriesId: series.id, episodeKey: "sonderfolge", title: `Profil-Folge ${index} ${suffix}`, priorityOnRelease: false, archived: false, links: [] }),
+        });
+        const preset = await request("/api/presets", {
+          method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name: `Profil ${index} ${suffix}`, seriesIds: [series.id] }),
+        });
+        items.push({ seriesId: series.id as string, seriesName, presetId: preset.id as string });
+      }
+      return items;
+    });
+    const [first, second] = seed;
+    const secondContext = await browser.newContext({ baseURL });
+
+    const picker = (target: Page) => target.getByLabel("Gespeichertes Preset auswählen");
+    const checkbox = (target: Page, seriesName: string) => target.locator(".series-option").filter({ hasText: seriesName }).getByRole("checkbox");
+    async function expectFirstPreset(target: Page) {
+      await expect(picker(target)).toBeEnabled();
+      await expect(picker(target)).toHaveValue(first.presetId);
+      await expect(checkbox(target, first.seriesName)).toBeChecked();
+      await expect(checkbox(target, second.seriesName)).not.toBeChecked();
+      await expect(target.locator(".series-picker input:checked")).toHaveCount(1);
+    }
+    async function expectFreeSelection(target: Page) {
+      await expect(picker(target)).toBeEnabled();
+      await expect(picker(target)).toHaveValue("");
+      await expect(checkbox(target, first.seriesName)).toBeChecked();
+      await expect(checkbox(target, second.seriesName)).toBeChecked();
+    }
+
+    try {
+      await page.reload();
+      await expect(picker(page)).toHaveValue(second.presetId);
+      await picker(page).selectOption(first.presetId);
+      await expectFirstPreset(page);
+      await page.reload();
+      await expectFirstPreset(page);
+      await page.goto("/bibliothek");
+      await page.goto("/");
+      await expectFirstPreset(page);
+
+      const otherSession = await secondContext.newPage();
+      await login(otherSession);
+      await expectFirstPreset(otherSession);
+
+      await page.getByRole("button", { name: "Zufällige Folge ziehen" }).click();
+      await expect(page.locator(".now-series")).toHaveText(first.seriesName);
+      await page.reload();
+      await expect(page.locator(".now-series")).toHaveText(first.seriesName);
+      await page.getByRole("button", { name: "Überspringen" }).click();
+      await expectFirstPreset(page);
+      await otherSession.reload();
+      await expectFirstPreset(otherSession);
+
+      await picker(page).selectOption("");
+      await expect(picker(page)).toBeEnabled();
+      await expect(picker(page)).toHaveValue("");
+      await page.reload();
+      await expectFreeSelection(page);
+
+      await picker(page).selectOption(first.presetId);
+      await expectFirstPreset(page);
+      await checkbox(page, second.seriesName).click();
+      await expectFreeSelection(page);
+      await page.reload();
+      await expectFreeSelection(page);
+
+      await picker(page).selectOption(first.presetId);
+      await expectFirstPreset(page);
+      await page.getByRole("button", { name: "Preset löschen" }).click();
+      await expect(picker(page)).toBeEnabled();
+      await expect(picker(page)).toHaveValue("");
+      await expect(picker(page).locator(`option[value="${first.presetId}"]`)).toHaveCount(0);
+      await page.reload();
+      await expectFreeSelection(page);
+      await expect(picker(page).locator(`option[value="${first.presetId}"]`)).toHaveCount(0);
+    } finally {
+      await page.evaluate(async (items) => {
+        for (const item of items) {
+          await fetch(`/api/presets/${item.presetId}`, { method: "DELETE" });
+          await fetch(`/api/series/${item.seriesId}`, { method: "DELETE" });
+        }
+      }, seed);
+      await secondContext.close();
+    }
+  });
+
   test("deckt den persönlichen Kernfluss auf Handy und Desktop ab", async ({ page }, testInfo) => {
     await login(page);
     const seed = await page.evaluate(async () => {
@@ -93,6 +200,13 @@ test.describe("geräteübergreifender Zustand", () => {
     await expect(page.locator(testInfo.project.name === "mobile" ? ".mobile-nav" : ".sidebar")).toBeVisible();
     const seriesChoice = page.locator(".series-option").filter({ hasText: seed.seriesName });
     const seriesCheckbox = seriesChoice.getByRole("checkbox");
+    const presetPicker = page.getByLabel("Gespeichertes Preset auswählen");
+    if (await presetPicker.count()) {
+      await presetPicker.selectOption("");
+      await expect(presetPicker).toBeEnabled();
+      await expect(presetPicker).toHaveValue("");
+    }
+    await seriesCheckbox.check();
     await expect(seriesCheckbox).toBeChecked();
     await seriesCheckbox.uncheck();
     await expect(seriesCheckbox).not.toBeChecked();

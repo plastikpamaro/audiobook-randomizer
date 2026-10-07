@@ -189,6 +189,25 @@ export async function getPresets(userId: string): Promise<Preset[]> {
   return rows.map((row) => ({ id: row.id, name: row.name, seriesIds: row.series_ids || [] }));
 }
 
+export async function getActivePresetId(userId: string): Promise<string | null> {
+  const rows = await query<{ active_preset_id: string | null }>(
+    "SELECT active_preset_id FROM users WHERE id=$1",
+    [userId],
+  );
+  return rows[0]?.active_preset_id ?? null;
+}
+
+export async function setActivePreset(userId: string, presetId: string | null): Promise<void> {
+  const result = await db().query(
+    `UPDATE users SET active_preset_id=$2, updated_at=now()
+     WHERE id=$1 AND ($2::uuid IS NULL OR EXISTS (
+       SELECT 1 FROM presets WHERE id=$2 AND user_id=$1
+     ))`,
+    [userId, presetId],
+  );
+  if (!result.rowCount) throw new AppError("Preset nicht gefunden.", 404, "NOT_FOUND");
+}
+
 export async function createSeries(input: Omit<SeriesInput, "seriesKey"> & { seriesKey?: string; episodeCount?: number }): Promise<string> {
   return transaction(async (client) => {
     const result = await client.query<{ id: string }>(
@@ -387,6 +406,9 @@ export async function savePreset(userId: string, input: PresetInput, presetId?: 
     }
     for (const seriesId of [...new Set(input.seriesIds)]) {
       await client.query("INSERT INTO preset_series (preset_id, series_id) VALUES ($1, $2)", [id, seriesId]);
+    }
+    if (!presetId) {
+      await client.query("UPDATE users SET active_preset_id=$2, updated_at=now() WHERE id=$1", [userId, id]);
     }
     return id;
   });
