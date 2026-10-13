@@ -11,3 +11,4 @@ npm-debug.log*
 public/sw.js.map
 *.tsbuildinfo
 .tmp/
+data/audio/

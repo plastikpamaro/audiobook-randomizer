@@ -126,6 +126,22 @@ Metadatenänderungen an bereits verknüpften Folgen erscheinen als Vorschlag und
 
 Die manuelle Prüfung zeigt für jede Änderung die bisherigen und vorgeschlagenen Werte, einschließlich Hörlinks. Metadatenänderungen lassen sich einzeln oder gemeinsam auswählen und in einer Transaktion annehmen oder ablehnen. Fehlende Quellenangaben löschen keine vorhandenen Metadaten; ein Update priorisiert eine bereits importierte Folge nicht erneut. Der Abgleich ignoriert JSON-Feld- und Linkreihenfolgen. Migration `0006` bereinigt bestehende Fehlmeldungen aus dem früheren Hashvergleich, ohne Folgen zu ändern. Auch alte Hörspiele können echte Katalogkorrekturen oder neue Hörlinks erhalten; diese bleiben sichtbar und bestätigungspflichtig.
 
+## Eigene Originalfassungen abspielen
+
+Hinterlegte MP3s erscheinen als **Originalfassung** direkt in der aktiven Ziehung und in **Bibliothek → Gezielt hören**. Der Player unterstützt Pause und Springen innerhalb der Folge. Die Wiedergabe speichert keinen Abschluss automatisch; **Gehört** bzw. **Als gehört speichern** bleiben die bewusste Bestätigung.
+
+Die Dateien liegen außerhalb von Git und des Docker-Images unter `data/audio/<Folgen-UUID>.mp3`. Compose bindet dieses Verzeichnis nur lesbar ein. Der Audio-Endpunkt prüft bei jedem Abruf die Anmeldung und unterstützt Byte-Range-Anfragen. Für lokale Entwicklung kann `AUDIO_STORAGE_PATH` den Ordner überschreiben.
+
+Für einen Import einen JSON-Katalog **einer Serie** mit `id`, `numberLabel` und `title` aus der Datenbank exportieren. Anschließend:
+
+```sh
+npm run audio:import -- "/pfad/zu/Originalfassungen" katalog.json
+```
+
+Dateinamen wie `002 - und der Phantomsee.mp3` werden anhand der Nummer zugeordnet; der Titel wird zusätzlich geprüft. Fehlende oder mehrdeutige Katalogtreffer, doppelte Dateien und Titelkonflikte stoppen den Import. Bereits vorhandene Dateien werden nur bei identischem SHA-256 akzeptiert. Die Quelldateien werden unverändert kopiert; die Zuordnung und Prüfsummen stehen in `data/audio/import-manifest.json`.
+
+Den Inhalt von `data/audio` anschließend verschlüsselt auf den Server in dessen gleichnamiges Verzeichnis übertragen. Die Audiodateien separat sichern: Das PostgreSQL-Backup enthält nur Katalog und Fortschritt. Bei einer Wiederherstellung müssen Datenbank und Audioordner zusammenpassen, da die Zuordnung über Folgen-UUIDs erfolgt.
+
 ## Bewertungen
 
 Unter **Bibliothek → Gezielt hören** lässt sich eine bestimmte Folge auswählen und nach dem Hören mit optionaler Bewertung speichern. Manuelle Hördurchläufe zählen in Hörzeit, Aktivitätsdiagramm, Streaks und Bewertungen. Die Folge ist danach in der aktuellen Runde gehört. Wiederholungen zählen als weitere Hördurchläufe, ohne den Rundenfortschritt mehrfach zu erhöhen. Eine andere aktive Ziehung bleibt offen; ist die gewählte Folge selbst aktiv, wird diese Ziehung abgeschlossen. Im Verlauf sind diese Einträge als **Manuell** gekennzeichnet und können korrigiert werden. Bulk-Statusänderungen zählen weiterhin nicht als echte Hördurchläufe.

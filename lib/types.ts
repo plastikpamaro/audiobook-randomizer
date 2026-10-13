@@ -34,6 +34,7 @@ export interface EpisodeSummary {
   status: "available" | "heard" | "future" | "archived";
   roundNumber: number;
   links: EpisodeLink[];
+  audioUrl?: string | null;
 }
 
 export interface SeriesOverview {

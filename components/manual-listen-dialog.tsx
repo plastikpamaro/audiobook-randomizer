@@ -4,6 +4,7 @@ import { useState, type FormEvent } from "react";
 import { Check, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { clientApi } from "@/components/client-api";
+import { EpisodeAudioPlayer } from "@/components/episode-audio-player";
 import type { EpisodeSummary } from "@/lib/types";
 
 export function ManualListenDialog({ episode, onSaved, onClose }: { episode: EpisodeSummary; onSaved: () => void; onClose: () => void }) {
@@ -24,6 +25,7 @@ export function ManualListenDialog({ episode, onSaved, onClose }: { episode: Epi
     <div className="modal-header"><div><p className="eyebrow">Deine Wahl</p><h2 id="manual-listen-title">Gezielt hören</h2></div><Button variant="ghost" disabled={busy} onClick={onClose} aria-label="Schließen"><X size={20}/></Button></div>
     <form className="stack" onSubmit={save}>
       <div><strong>{episode.numberLabel ? `${episode.numberLabel} · ` : ""}{episode.title}</strong><p className="muted">{episode.seriesName}{episode.durationMinutes ? ` · ${episode.durationMinutes} Minuten` : ""}</p></div>
+      <EpisodeAudioPlayer key={episode.id} episode={episode} />
       <div className="row-wrap">{episode.links.map((link) => <a key={link.id} className="button button-secondary button-sm" href={link.url} target="_blank" rel="noreferrer">{link.label}</a>)}<a className="button button-ghost button-sm" href={`https://www.google.com/search?q=${encodeURIComponent(`${episode.seriesName} ${episode.numberLabel || ""} ${episode.title} hören`)}`} target="_blank" rel="noreferrer">Hörfolge suchen</a></div>
       <p>{episode.status === "heard" ? "Schon in dieser Runde gehört: Erneutes Hören zählt als weiterer Hördurchlauf in deiner Statistik." : "Nach dem Speichern zählt die Folge in deiner Statistik und ist für diese Runde gehört."}</p>
       <p className="muted">Speichere, wenn du fertig gehört hast. Eine andere gezogene Folge bleibt offen.</p>

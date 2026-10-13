@@ -8,6 +8,7 @@ import { AppError } from "@/lib/http";
 import type { EpisodeLink, EpisodeSummary, Preset, SeriesOverview } from "@/lib/types";
 import type { z } from "zod";
 import type { episodeInputSchema, presetInputSchema, seriesInputSchema } from "@/lib/validation";
+import { getAudioEpisodeIds } from "@/lib/audio";
 
 type SeriesInput = z.infer<typeof seriesInputSchema>;
 type EpisodeInput = z.infer<typeof episodeInputSchema>;
@@ -172,7 +173,8 @@ export async function getEpisodes(userId: string): Promise<EpisodeSummary[]> {
               e.number_label NULLS LAST, lower(e.title)`,
     [userId],
   );
-  return rows.map((row) => mapEpisode(row));
+  const audioIds = await getAudioEpisodeIds();
+  return rows.map((row) => ({ ...mapEpisode(row), audioUrl: audioIds.has(row.id) ? `/api/episodes/${row.id}/audio` : null }));
 }
 
 export async function getPresets(userId: string): Promise<Preset[]> {

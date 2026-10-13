@@ -24,6 +24,7 @@ ENV NODE_ENV=production \
     HOSTNAME=0.0.0.0 \
     PORT=3000
 RUN groupmod --gid 10001 node && usermod --uid 10001 --gid 10001 node
+RUN mkdir -p /app/data/audio && chown node:node /app/data/audio
 COPY --from=builder --chown=node:node /app/public ./public
 COPY --from=builder --chown=node:node /app/.next/standalone ./
 COPY --from=builder --chown=node:node /app/.next/static ./.next/static

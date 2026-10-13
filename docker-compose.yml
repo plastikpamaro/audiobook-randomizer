@@ -55,6 +55,8 @@ services:
         condition: service_completed_successfully
     expose:
       - "3000"
+    volumes:
+      - ./data/audio:/app/data/audio:ro
     networks:
       - internal
       - caddy

@@ -9,6 +9,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { EpisodeAudioPlayer } from "@/components/episode-audio-player";
 import { useEpisodeNote } from "@/components/use-episode-note";
 import type { ActiveDraw, Preset, SeriesOverview } from "@/lib/types";
 
@@ -306,6 +307,7 @@ export function DrawClient({
             {episode.releaseDate && <span>Erschienen {new Intl.DateTimeFormat("de-DE").format(new Date(`${episode.releaseDate}T12:00:00Z`))}</span>}
             <span>Runde {draw.roundNumber}</span>
           </div>
+          <EpisodeAudioPlayer key={episode.id} episode={episode} />
           {episode.links.length > 0 && (
             <div className="listen-links">
               {episode.links.map((link) => (

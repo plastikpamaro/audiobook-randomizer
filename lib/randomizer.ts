@@ -3,6 +3,7 @@ import "server-only";
 import type { Pool, PoolClient, QueryResultRow } from "pg";
 import { db, lockUser, transaction } from "@/lib/db";
 import { mapEpisode } from "@/lib/catalog";
+import { getEpisodeAudioUrl } from "@/lib/audio";
 import { isoDateTime, localDate } from "@/lib/dates";
 import { AppError } from "@/lib/http";
 import type { ActiveDraw, HistoryItem } from "@/lib/types";
@@ -93,8 +94,8 @@ const drawSelect = `
   ) ratings ON true
 `;
 
-function mapDraw(row: DrawRow): ActiveDraw {
-  return {
+async function mapDraw(row: DrawRow): Promise<ActiveDraw> {
+  const draw: ActiveDraw = {
     id: row.id,
     status: row.status,
     sourceType: row.source_type,
@@ -131,6 +132,8 @@ function mapDraw(row: DrawRow): ActiveDraw {
       links: row.links as never,
     }),
   };
+  draw.episode.audioUrl = await getEpisodeAudioUrl(row.episode_id);
+  return draw;
 }
 
 async function loadDraw(executor: Executor, userId: string, drawId: string): Promise<ActiveDraw | null> {
@@ -459,7 +462,7 @@ export async function getHistory(userId: string, limit = 100, offset = 0): Promi
      LIMIT $2 OFFSET $3`,
     [userId, limit, offset],
   );
-  return result.rows.map((row) => ({ ...mapDraw(row), canRestore: Boolean(row.can_restore) }));
+  return Promise.all(result.rows.map(async (row) => ({ ...await mapDraw(row), canRestore: Boolean(row.can_restore) })));
 }
 
 export async function restoreHeardDraw(userId: string, drawId: string): Promise<void> {
