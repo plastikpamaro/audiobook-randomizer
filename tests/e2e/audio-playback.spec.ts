@@ -1,6 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { mkdir, unlink, writeFile } from "node:fs/promises";
 import { resolve, sep } from "node:path";
+import { gunzipSync } from "node:zlib";
 import { expect, test, type Page } from "@playwright/test";
 
 const email = process.env.E2E_EMAIL;
@@ -8,17 +9,9 @@ const password = process.env.E2E_PASSWORD;
 const storage = process.env.AUDIO_STORAGE_PATH;
 test.use({ serviceWorkers: "block" });
 
-// Generated silence, rather than recordings from the user's library.
-function silentWave() {
-  const samples = 90 * 8000;
-  const data = Buffer.alloc(44 + samples * 2);
-  data.write("RIFF"); data.writeUInt32LE(data.length - 8, 4); data.write("WAVEfmt ", 8);
-  data.writeUInt32LE(16, 16); data.writeUInt16LE(1, 20); data.writeUInt16LE(1, 22);
-  data.writeUInt32LE(8000, 24); data.writeUInt32LE(16000, 28);
-  data.writeUInt16LE(2, 32); data.writeUInt16LE(16, 34);
-  data.write("data", 36); data.writeUInt32LE(samples * 2, 40);
-  return data;
-}
+// 90 seconds of generated MP3 silence (8 kHz mono, 8 kbit/s), compressed for
+// the fixture. Exercises real authenticated streaming and range requests.
+const silentMp3 = gunzipSync(Buffer.from("H4sIAAAAAAAACu3PcUQcUBzA8dcuMyZNRMaMLf0xc925nCxmZztqinHLmFSnlJGScUxkzBgzEjMSMWNmpJgxM5JkxoxEZEzKyBiJHJPmmrX+yDLqn/l8/3kev/d57zVcSRSHQmevZzLpEEJpCJHGbK4rGYvGk9F4LBb+tLVcO7Wzaejt6vs1X7wSitrzIXL02PGSE2XlFSdPnT5TWXXufHW8JllbdzF1OV1/telapvnGzZa2bGf3rZ7e/tu5OwODd+/df/Dw0dDw4ycjo2NPnz1/8XJ84tXrN2/fTU3Pvv/w8dPc/MLi5y9LK19Xv31fW9/I/9gs3NuYzXUkY9FEfNfDQuWRS9trUXu+9cLiePi3tpYrZkIIkfptP9WUThQ+3vz39pgrOHW/nX2O7+fkDsiZPCBnhsPhcDgcDofD4XA4HA6Hw+FwOBwOh8PhcDgcDofD4XA4HA6Hw+FwOBwOh8PhcDgcDofD4XA4HA6Hw+FwOBwOh8PhcDgcDofD4XA4HA6Hw+FwOBwOh8PhcDgcDofD4XA4HA6Hw+FwOBwOh8PhcDgcDofD4XA4HA6Hw+FwOBwOh8PhcDgcDofD4XA4HA6Hw+FwOBwOh8PhcDgcDofD4XA4HA6Hw+FwOBwOh8PhcDgcDofD4XA4HA6Hw+FwOBwOh8PhcDgcDofD4XA4HA6Hw+FwOBwOh8PhcDgcDofD4XA4HA6Hw+FwOBwOh8PhcDgcDofD4XA4HA6Hw+FwOBwOh8PhcDgcDofD4XA4HA6Hw+FwOBwOh8PhcDgcDofD4XA4HA6Hw+FwOBwOh8PhcDgcDofD4XA4HA6Hw+FwOBwOh8PhcDgcDofD4XA4HA6Hw+FwOBwOh8PhcDgcDofD4Ryes0f/q/MTW3lz4CVhAQA=", "base64"));
 
 async function login(page: Page) {
   await page.goto("/login");
@@ -47,7 +40,7 @@ async function seed(page: Page) {
   const directory = resolve(storage!);
   if (!directory.includes(`${sep}.tmp${sep}`)) throw new Error("Audio-E2E benötigt ein eigenes .tmp-Verzeichnis.");
   await mkdir(directory, { recursive: true });
-  await writeFile(resolve(directory, `${seeded.episodeId}.mp3`), silentWave());
+  await writeFile(resolve(directory, `${seeded.episodeId}.mp3`), silentMp3);
   await page.evaluate(async (seriesId) => {
     const response = await fetch("/api/draw", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ seriesIds: [seriesId] }) });
     if (!response.ok) throw new Error("Testfolge konnte nicht gezogen werden");
@@ -56,14 +49,16 @@ async function seed(page: Page) {
 }
 
 async function openPlayer(page: Page, episodeId: string) {
-  await page.route(`**/api/episodes/${episodeId}/audio`, (route) => route.fulfill({ status: 200, contentType: "audio/wav", body: silentWave() }));
   await page.goto("/");
+  await expect(page.locator("audio")).toHaveAttribute("src", `/api/episodes/${episodeId}/audio`);
   await expect.poll(() => page.locator("audio").evaluate((audio: HTMLAudioElement) => audio.readyState)).toBeGreaterThanOrEqual(1);
   await expect(page.locator(".episode-audio-player")).not.toContainText("Hörposition wird geladen");
 }
 
 async function start(page: Page) {
+  const claimed = page.waitForResponse((response) => response.url().endsWith("/playback") && response.request().method() === "POST");
   await page.locator("audio").click({ position: { x: 20, y: 27 } });
+  expect((await claimed).ok()).toBe(true);
   await expect.poll(() => page.locator("audio").evaluate((audio: HTMLAudioElement) => audio.paused)).toBe(false);
 }
 
