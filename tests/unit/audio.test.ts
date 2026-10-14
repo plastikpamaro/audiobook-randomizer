@@ -1,4 +1,4 @@
-import { mkdtemp, rm, writeFile } from "node:fs/promises";
+import { mkdtemp, rm, utimes, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
@@ -37,7 +37,9 @@ describe("private Originalfassungen", () => {
     const full = await audioResponse(new Request("http://localhost/audio"), episodeId);
     expect(full.status).toBe(200);
     expect(full.headers.get("content-type")).toBe("audio/mpeg");
-    expect(full.headers.get("cache-control")).toBe("private, no-store");
+    expect(full.headers.get("cache-control")).toBe("private, no-cache");
+    expect(full.headers.get("vary")).toBe("Cookie");
+    expect(full.headers.get("etag")).toMatch(/^"[0-9a-f]{64}"$/);
     expect(await full.text()).toBe("0123456789");
     const partial = await audioResponse(new Request("http://localhost/audio", { headers: { range: "bytes=2-5" } }), episodeId);
     expect(partial.status).toBe(206);
@@ -57,6 +59,49 @@ describe("private Originalfassungen", () => {
     const response = await audioResponse(new Request("http://localhost/audio", { headers: { range: "bytes=10-" } }), episodeId);
     expect(response.status).toBe(416);
     expect(response.headers.get("content-range")).toBe("bytes */10");
+  });
+
+  it("bestätigt unveränderte Audiodaten ohne erneuten Download", async () => {
+    await writeFile(audioPath(episodeId), "0123456789");
+    const first = await audioResponse(new Request("http://localhost/audio", { method: "HEAD" }), episodeId);
+    const tag = first.headers.get("etag")!;
+    for (const method of ["GET", "HEAD"]) {
+      const cached = await audioResponse(new Request("http://localhost/audio", { method, headers: { "if-none-match": `"other", W/${tag}`, range: "bytes=2-5" } }), episodeId);
+      expect(cached.status).toBe(304);
+      expect(await cached.text()).toBe("");
+      expect(cached.headers.get("etag")).toBe(tag);
+      expect(cached.headers.get("cache-control")).toBe("private, no-cache");
+      expect(cached.headers.get("content-length")).toBeNull();
+    }
+  });
+
+  it("erkennt ersetzte Dateien gleicher Größe und mischt keine alten Bytebereiche", async () => {
+    const path = audioPath(episodeId);
+    await writeFile(path, "0123456789");
+    const first = await audioResponse(new Request("http://localhost/audio", { method: "HEAD" }), episodeId);
+    const tag = first.headers.get("etag")!;
+    const valid = await audioResponse(new Request("http://localhost/audio", { headers: { range: "bytes=2-5", "if-range": tag } }), episodeId);
+    expect(valid.status).toBe(206);
+    expect(await valid.text()).toBe("2345");
+    await writeFile(path, "abcdefghij");
+    await utimes(path, new Date("2030-01-01"), new Date("2030-01-01"));
+    const changed = await audioResponse(new Request("http://localhost/audio", { headers: { "if-none-match": tag } }), episodeId);
+    expect(changed.status).toBe(200);
+    expect(changed.headers.get("etag")).not.toBe(tag);
+    expect(await changed.text()).toBe("abcdefghij");
+    const outdated = await audioResponse(new Request("http://localhost/audio", { headers: { range: "bytes=2-5", "if-range": tag } }), episodeId);
+    expect(outdated.status).toBe(200);
+    expect(outdated.headers.get("content-range")).toBeNull();
+    expect(await outdated.text()).toBe("abcdefghij");
+  });
+
+  it("erfordert auch für eine Cache-Bestätigung eine Anmeldung", async () => {
+    await writeFile(audioPath(episodeId), "0123456789");
+    const first = await audioResponse(new Request("http://localhost/audio", { method: "HEAD" }), episodeId);
+    vi.mocked(requireApiUser).mockRejectedValueOnce(new AppError("Bitte anmelden", 401, "UNAUTHENTICATED"));
+    const blocked = await GET(new Request("http://localhost/audio", { headers: { "if-none-match": first.headers.get("etag")! } }), { params: Promise.resolve({ id: episodeId }) });
+    expect(blocked.status).toBe(401);
+    expect(blocked.headers.get("cache-control")).toBe("private, no-store");
   });
 
   it("schützt auch Teilbereichsabrufe durch die Anmeldung", async () => {

@@ -2,18 +2,10 @@ import type { PlaybackProgress, PlaybackSave } from "@/lib/playback-types";
 
 const SAVE_INTERVAL_MS = 5_000;
 
-function timestamp(seconds: number): string {
-  const total = Math.floor(seconds);
-  const hours = Math.floor(total / 3600);
-  const minutes = Math.floor(total / 60) % 60;
-  const rest = String(total % 60).padStart(2, "0");
-  return hours ? `${hours}:${String(minutes).padStart(2, "0")}:${rest}` : `${minutes}:${rest}`;
-}
-
 export function syncAudioPlayback(
   audio: HTMLAudioElement,
   endpoint: string,
-  report: (message: string, error: boolean) => void,
+  report: (error: string) => void,
 ): () => void {
   let disposed = false;
   let sessionId: string | null = null;
@@ -26,10 +18,13 @@ export function syncAudioPlayback(
   let selectedPosition: number | null = null;
   let pendingSave: Promise<void> = Promise.resolve();
   let dirty = false;
+  let reportedError = "";
   const loadController = new AbortController();
 
-  function message(text: string, error = false) {
-    if (!disposed) report(text, error);
+  function message(error = "") {
+    if (disposed || reportedError === error) return;
+    reportedError = error;
+    report(error);
   }
 
   async function request(method: "GET" | "POST" | "PUT", body?: object) {
@@ -85,11 +80,9 @@ export function syncAudioPlayback(
   const loaded = Promise.all([request("GET"), metadata]).then(async ([progress]) => {
     if (disposed) return;
     if (selectedPosition === null) await restore(progress.positionSeconds);
-    message(progress.positionSeconds > 0
-      ? `Weiterhören ab ${timestamp(progress.positionSeconds)}. Deine Hörposition wird automatisch gespeichert.`
-      : "Deine Hörposition wird automatisch gespeichert und mit deinen Geräten synchronisiert.");
+    message();
   }).catch(() => {
-    message("Die Hörposition konnte nicht geladen werden. Mit Play erneut versuchen.", true);
+    message("Die Hörposition konnte nicht geladen werden. Mit Play erneut versuchen.");
   });
 
   function save(finished = audio.ended, allowSeeking = false): Promise<void> {
@@ -108,17 +101,16 @@ export function syncAudioPlayback(
       if (sessionId !== savingSession || input.sequence < confirmedSequence) return;
       confirmedSequence = input.sequence;
       if (input.sequence === sequence) dirty = false;
-      message(finished ? "Zu Ende gehört. Beim nächsten Abspielen startet die Folge von vorn."
-        : `Hörposition gespeichert: ${timestamp(input.positionSeconds)}`);
+      message();
     }).catch((error: unknown) => {
       if (disposed || sessionId !== savingSession || input.sequence < confirmedSequence) return;
       if (error instanceof Error && "code" in error && error.code === "PLAYBACK_REPLACED") {
         sessionId = null;
         dirty = false;
         audio.pause();
-        message(error.message, true);
+        message(error.message);
       } else {
-        message("Hörposition noch nicht gespeichert. Bitte prüfe deine Verbindung; das Speichern wird erneut versucht.", true);
+        message("Hörposition noch nicht gespeichert. Bitte prüfe deine Verbindung; das Speichern wird erneut versucht.");
       }
     });
     return pendingSave;
@@ -145,13 +137,13 @@ export function syncAudioPlayback(
       await restore(selectedPosition ?? progress.positionSeconds);
       if (disposed) return;
       selectedPosition = null;
-      message("Deine Hörposition wird automatisch gespeichert und mit deinen Geräten synchronisiert.");
+      message();
       allowNextPlay = true;
       await audio.play();
     } catch {
       sessionId = null;
       allowNextPlay = false;
-      message("Weiterhören konnte nicht gestartet werden. Bitte prüfe deine Verbindung und drücke erneut Play.", true);
+      message("Weiterhören konnte nicht gestartet werden. Bitte prüfe deine Verbindung und drücke erneut Play.");
     } finally { claiming = false; }
   }
 

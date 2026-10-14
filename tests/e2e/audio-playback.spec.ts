@@ -52,7 +52,7 @@ async function openPlayer(page: Page, episodeId: string) {
   await page.goto("/");
   await expect(page.locator("audio")).toHaveAttribute("src", `/api/episodes/${episodeId}/audio`);
   await expect.poll(() => page.locator("audio").evaluate((audio: HTMLAudioElement) => audio.readyState)).toBeGreaterThanOrEqual(1);
-  await expect(page.locator(".episode-audio-player")).not.toContainText("Hörposition wird geladen");
+  await expect(page.locator("audio")).toHaveAttribute("preload", "auto");
 }
 
 async function start(page: Page) {
@@ -68,6 +68,62 @@ async function progress(page: Page, episodeId: string) {
 
 test.describe("Originalfassungen weiterhören", () => {
   test.skip(!email || !password || !storage, "E2E-Zugang und isoliertes AUDIO_STORAGE_PATH fehlen.");
+
+  test("puffert während der Wiedergabe ohne Reset durch Speichern oder Hintergrundabgleich", async ({ page, baseURL }) => {
+    test.setTimeout(60_000);
+    await login(page);
+    const seeded = await seed(page);
+    const audioUrl = `/api/episodes/${seeded.episodeId}/audio`;
+    const cdp = await page.context().newCDPSession(page);
+    let saves = 0;
+    page.on("response", (response) => {
+      if (response.url().endsWith(`/episodes/${seeded.episodeId}/playback`) && response.request().method() === "PUT" && response.ok()) saves++;
+    });
+    try {
+      await cdp.send("Network.enable");
+      // Slow only the media request. This exposes buffering over several saves
+      // without slowing the application, its JSON requests, or the login flow.
+      await cdp.send("Network.emulateNetworkConditionsByRule", { matchedNetworkConditions: [{
+        urlPattern: new URL(audioUrl, baseURL!).href, latency: 20, downloadThroughput: 4096, uploadThroughput: -1,
+      }] });
+      const incoming = page.waitForResponse((response) => response.url().endsWith(audioUrl));
+      await openPlayer(page, seeded.episodeId);
+      const response = await incoming;
+      expect(response.headers()["cache-control"]).toBe("private, no-cache");
+      expect(response.headers().etag).toMatch(/^"[0-9a-f]{64}"$/);
+      const initial = await page.locator("audio").evaluate((audio: HTMLAudioElement) => {
+        const check = { emptied: 0, loadStarts: 0, srcChanges: 0, original: audio };
+        Object.assign(window, { __audioBufferCheck: check });
+        audio.addEventListener("emptied", () => check.emptied++);
+        audio.addEventListener("loadstart", () => check.loadStarts++);
+        new MutationObserver((changes) => { check.srcChanges += changes.length; }).observe(audio, { attributes: true, attributeFilter: ["src"] });
+        return { end: audio.buffered.length ? audio.buffered.end(audio.buffered.length - 1) : 0, duration: audio.duration };
+      });
+      await start(page);
+      await expect.poll(() => saves, { timeout: 25_000 }).toBeGreaterThanOrEqual(4);
+      const final = await page.locator("audio").evaluate((audio: HTMLAudioElement) => {
+        const check = (window as unknown as { __audioBufferCheck: { emptied: number; loadStarts: number; srcChanges: number; original: HTMLAudioElement } }).__audioBufferCheck;
+        return { end: audio.buffered.length ? audio.buffered.end(audio.buffered.length - 1) : 0,
+          time: audio.currentTime, paused: audio.paused, sameElement: check.original === audio,
+          emptied: check.emptied, loadStarts: check.loadStarts, srcChanges: check.srcChanges };
+      });
+      expect(final).toMatchObject({ paused: false, sameElement: true, emptied: 0, loadStarts: 0, srcChanges: 0 });
+      expect(final.time).toBeGreaterThan(14);
+      expect(final.end).toBeGreaterThanOrEqual(initial.end - 0.1);
+      if (initial.end < initial.duration - 1) expect(final.end).toBeGreaterThan(initial.end + 3);
+      await expect(page.locator(".episode-audio-player p:not(.eyebrow)")).toHaveCount(0);
+      const cached = await page.request.get(audioUrl, { headers: { "If-None-Match": response.headers().etag } });
+      expect(cached.status()).toBe(304);
+      expect((await cached.body()).length).toBe(0);
+      console.log(JSON.stringify({ media: "buffer preserved across autosaves", saves, initialBufferedEnd: initial.end, ...final }));
+    } finally {
+      await cdp.send("Network.emulateNetworkConditionsByRule", { matchedNetworkConditions: [] });
+      await cdp.detach();
+      await page.goto("/bibliothek");
+      await page.evaluate(async (id) => { await fetch(`/api/series/${id}`, { method: "DELETE" }); }, seeded.seriesId);
+      await unlink(resolve(storage!, `${seeded.episodeId}.mp3`));
+    }
+  });
 
   test("synchronisiert Pause und Zurückspulen zwischen zwei Geräten und schützt vor dem alten Player", async ({ page, browser, baseURL }) => {
     await login(page);
@@ -124,8 +180,8 @@ test.describe("Originalfassungen weiterhören", () => {
       await expect.poll(() => page.locator("audio").evaluate((audio: HTMLAudioElement) => audio.currentTime)).toBeGreaterThanOrEqual(departure - 0.5);
       await start(page);
       await page.locator("audio").evaluate((audio: HTMLAudioElement) => { audio.currentTime = 89.5; });
-      await expect(page.locator(".episode-audio-player")).toContainText("Zu Ende gehört", { timeout: 10_000 });
-      expect(await progress(page, seeded.episodeId)).toBe(0);
+      await expect.poll(() => page.locator("audio").evaluate((audio: HTMLAudioElement) => audio.ended), { timeout: 10_000 }).toBe(true);
+      await expect.poll(() => progress(page, seeded.episodeId)).toBe(0);
       await page.getByRole("button", { name: "Schließen", exact: true }).last().click();
       await page.goto("/");
       await expect.poll(() => page.locator("audio").evaluate((audio: HTMLAudioElement) => audio.currentTime)).toBe(0);

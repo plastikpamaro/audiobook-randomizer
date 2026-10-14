@@ -27,7 +27,7 @@ describe("Hörposition im Player", () => {
   let owner: string | null;
   let failSaves: boolean;
   let requests: { method: string; body: Record<string, unknown> | null; keepalive?: boolean }[];
-  let report = vi.fn<(message: string, error: boolean) => void>();
+  let report = vi.fn<(error: string) => void>();
   let cleanup: (() => void) | undefined;
   const endpoint = "/api/episodes/test/playback";
   const settle = async () => { for (let index = 0; index < 50; index++) await Promise.resolve(); };
@@ -39,7 +39,7 @@ describe("Hörposition im Player", () => {
     owner = null;
     failSaves = false;
     requests = [];
-    report = vi.fn<(message: string, error: boolean) => void>();
+    report = vi.fn<(error: string) => void>();
     pageWindow = Object.assign(new EventTarget(), { setInterval, clearInterval });
     pageDocument = Object.assign(new EventTarget(), { visibilityState: "visible" });
     vi.stubGlobal("window", pageWindow);
@@ -105,11 +105,11 @@ describe("Hörposition im Player", () => {
     failSaves = true;
     audio.position = 29; audio.pause(); await settle();
     expect(position).toBe(28);
-    expect(report).toHaveBeenLastCalledWith(expect.stringContaining("noch nicht gespeichert"), true);
+    expect(report).toHaveBeenLastCalledWith(expect.stringContaining("noch nicht gespeichert"));
     failSaves = false;
     await vi.advanceTimersByTimeAsync(5000);
     expect(position).toBe(29);
-    expect(report).toHaveBeenLastCalledWith("Hörposition gespeichert: 0:29", false);
+    expect(report).toHaveBeenLastCalledWith("");
   });
 
   it("pausiert einen verdrängten Player und übernimmt beim nächsten Play den neuen Stand", async () => {
@@ -120,7 +120,7 @@ describe("Hörposition im Player", () => {
     await vi.advanceTimersByTimeAsync(5000);
     expect(audio.paused).toBe(true);
     expect(position).toBe(40);
-    expect(report).toHaveBeenLastCalledWith(expect.stringContaining("anderen Gerät"), true);
+    expect(report).toHaveBeenLastCalledWith(expect.stringContaining("anderen Gerät"));
     await start();
     expect(audio.currentTime).toBe(40);
     expect(audio.paused).toBe(false);
@@ -150,5 +150,19 @@ describe("Hörposition im Player", () => {
     await settle();
     expect(audio.paused).toBe(true);
     expect(audio.currentTime).toBe(22);
+  });
+
+  it("speichert regelmäßig ohne Statusupdates oder erneutes Positionieren des Players", async () => {
+    await attach(); await start();
+    const seek = vi.spyOn(audio, "currentTime", "set");
+    for (const value of [26, 31, 36]) {
+      audio.position = value;
+      await vi.advanceTimersByTimeAsync(5000);
+      expect(position).toBe(value);
+    }
+    expect(requests.filter((request) => request.method === "PUT")).toHaveLength(3);
+    expect(report).not.toHaveBeenCalled();
+    expect(seek).not.toHaveBeenCalled();
+    expect(audio.paused).toBe(false);
   });
 });

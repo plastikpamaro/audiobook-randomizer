@@ -11,7 +11,9 @@ async function serve(request: Request, context: { params: Promise<{ id: string }
     const { id } = await context.params;
     return await audioResponse(request, uuidSchema.parse(id));
   } catch (error) {
-    return errorResponse(error);
+    const response = errorResponse(error);
+    response.headers.set("Cache-Control", "private, no-store");
+    return response;
   }
 }
 

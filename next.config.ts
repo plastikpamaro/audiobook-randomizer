@@ -27,6 +27,10 @@ const nextConfig: NextConfig = {
         source: "/api/:path*",
         headers: [{ key: "Cache-Control", value: "private, no-store" }],
       },
+      {
+        source: "/api/episodes/:id/audio",
+        headers: [{ key: "Cache-Control", value: "private, no-cache" }],
+      },
     ];
   },
 };
