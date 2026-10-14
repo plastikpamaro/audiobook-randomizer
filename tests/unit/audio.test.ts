@@ -61,6 +61,35 @@ describe("private Originalfassungen", () => {
     expect(response.headers.get("content-range")).toBe("bytes */10");
   });
 
+  it("liefert Ogg-Originale mit korrektem Typ, Bytebereichen und Cache-Bestätigung", async () => {
+    await writeFile(audioPath(episodeId, "ogg"), "OggS012345");
+    await writeFile(join(directory, "other.ogg"), "irrelevant");
+    expect(await getAudioEpisodeIds()).toEqual(new Set([episodeId]));
+    expect(await getEpisodeAudioUrl(episodeId)).toBe(`/api/episodes/${episodeId}/audio`);
+    const head = await audioResponse(new Request("http://localhost/audio", { method: "HEAD" }), episodeId);
+    expect(head.status).toBe(200);
+    expect(head.headers.get("content-type")).toBe("audio/ogg");
+    expect(head.headers.get("content-length")).toBe("10");
+    const range = await audioResponse(new Request("http://localhost/audio", { headers: { range: "bytes=0-3", "if-range": head.headers.get("etag")! } }), episodeId);
+    expect(range.status).toBe(206);
+    expect(range.headers.get("content-type")).toBe("audio/ogg");
+    expect(await range.text()).toBe("OggS");
+    const cached = await audioResponse(new Request("http://localhost/audio", { headers: { "if-none-match": head.headers.get("etag")! } }), episodeId);
+    expect(cached.status).toBe(304);
+  });
+
+  it("nutzt Ogg als Ersatz für eine leere MP3 und bevorzugt eine vorhandene MP3", async () => {
+    await writeFile(audioPath(episodeId), "");
+    await writeFile(audioPath(episodeId, "ogg"), "OggS");
+    const fallback = await audioResponse(new Request("http://localhost/audio"), episodeId);
+    expect(fallback.headers.get("content-type")).toBe("audio/ogg");
+    expect(await fallback.text()).toBe("OggS");
+    await writeFile(audioPath(episodeId), "MP3");
+    const preferred = await audioResponse(new Request("http://localhost/audio"), episodeId);
+    expect(preferred.headers.get("content-type")).toBe("audio/mpeg");
+    expect(await preferred.text()).toBe("MP3");
+  });
+
   it("bestätigt unveränderte Audiodaten ohne erneuten Download", async () => {
     await writeFile(audioPath(episodeId), "0123456789");
     const first = await audioResponse(new Request("http://localhost/audio", { method: "HEAD" }), episodeId);

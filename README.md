@@ -133,7 +133,7 @@ Die manuelle Prüfung zeigt für jede Änderung die bisherigen und vorgeschlagen
 
 Hinterlegte MP3s erscheinen als **Originalfassung** direkt in der aktiven Ziehung und in **Bibliothek → Gezielt hören**. Der Player unterstützt Pause und Springen innerhalb der Folge. Die Wiedergabe speichert keinen Abschluss automatisch; **Gehört** bzw. **Als gehört speichern** bleiben die bewusste Bestätigung.
 
-Die Dateien liegen außerhalb von Git und des Docker-Images unter `data/audio/<Folgen-UUID>.mp3`. Compose bindet dieses Verzeichnis nur lesbar ein. Der Audio-Endpunkt prüft bei jedem Abruf die Anmeldung und unterstützt Byte-Range-Anfragen. Der Player lädt Audiodaten vor; der Browser darf sie privat zwischenspeichern und prüft beim Wiederverwenden per ETag auf Änderungen. Hörpositionen werden ohne Erfolgsanzeige im Hintergrund gespeichert. Für lokale Entwicklung kann `AUDIO_STORAGE_PATH` den Ordner überschreiben.
+Die Dateien liegen außerhalb von Git und des Docker-Images unter `data/audio/<Folgen-UUID>.mp3` oder `.ogg`. So können auch Ogg/Vorbis-Aufnahmen ohne Neukomprimierung wiedergegeben werden. Falls beide Formate vorliegen, hat eine nicht leere MP3 Vorrang. Compose bindet dieses Verzeichnis nur lesbar ein. Der Audio-Endpunkt prüft bei jedem Abruf die Anmeldung und unterstützt Byte-Range-Anfragen. Der Player lädt Audiodaten vor; der Browser darf sie privat zwischenspeichern und prüft beim Wiederverwenden per ETag auf Änderungen. Hörpositionen werden ohne Erfolgsanzeige im Hintergrund gespeichert. Für lokale Entwicklung kann `AUDIO_STORAGE_PATH` den Ordner überschreiben.
 
 Für einen Import einen JSON-Katalog **einer Serie** mit `id`, `numberLabel` und `title` aus der Datenbank exportieren. Anschließend:
 
