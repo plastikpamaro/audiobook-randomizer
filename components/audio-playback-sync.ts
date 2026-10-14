@@ -53,21 +53,38 @@ export function syncAudioPlayback(
     return result.progress;
   }
 
-  function restore(position: number) {
+  async function restore(position: number) {
     const target = Number.isFinite(audio.duration) && position >= audio.duration ? 0 : position;
-    if (Math.abs(audio.currentTime - target) > 0.01) {
-      restoring = true;
-      audio.currentTime = target;
-    }
+    if (Math.abs(audio.currentTime - target) <= 0.01) return;
+    restoring = true;
+    // Setting currentTime starts an asynchronous seek. Do not play or save
+    // until the browser has actually reached the restored position.
+    await new Promise<void>((resolve, reject) => {
+      const timer = setTimeout(() => finish(new Error("Die Hörposition konnte nicht wiederhergestellt werden.")), 10_000);
+      function finish(error?: Error) {
+        clearTimeout(timer);
+        audio.removeEventListener("seeked", reached);
+        loadController.signal.removeEventListener("abort", cancelled);
+        restoring = false;
+        if (error) reject(error); else resolve();
+      }
+      function reached() {
+        finish(Math.abs(audio.currentTime - target) > 1 ? new Error("Die Hörposition konnte nicht wiederhergestellt werden.") : undefined);
+      }
+      function cancelled() { finish(new Error("Player geschlossen")); }
+      audio.addEventListener("seeked", reached, { once: true });
+      loadController.signal.addEventListener("abort", cancelled, { once: true });
+      try { audio.currentTime = target; } catch { finish(new Error("Die Hörposition konnte nicht wiederhergestellt werden.")); }
+    });
   }
 
   const metadata = audio.readyState >= 1 ? Promise.resolve() : new Promise<void>((resolve, reject) => {
     audio.addEventListener("loadedmetadata", () => resolve(), { once: true, signal: loadController.signal });
     audio.addEventListener("error", () => reject(new Error("Audio konnte nicht geladen werden")), { once: true, signal: loadController.signal });
   });
-  const loaded = Promise.all([request("GET"), metadata]).then(([progress]) => {
+  const loaded = Promise.all([request("GET"), metadata]).then(async ([progress]) => {
     if (disposed) return;
-    if (selectedPosition === null) restore(progress.positionSeconds);
+    if (selectedPosition === null) await restore(progress.positionSeconds);
     message(progress.positionSeconds > 0
       ? `Weiterhören ab ${timestamp(progress.positionSeconds)}. Deine Hörposition wird automatisch gespeichert.`
       : "Deine Hörposition wird automatisch gespeichert und mit deinen Geräten synchronisiert.");
@@ -125,12 +142,14 @@ export function syncAudioPlayback(
       confirmedSequence = 0;
       dirty = false;
       sessionId = nextSession;
-      restore(selectedPosition ?? progress.positionSeconds);
+      await restore(selectedPosition ?? progress.positionSeconds);
+      if (disposed) return;
       selectedPosition = null;
       message("Deine Hörposition wird automatisch gespeichert und mit deinen Geräten synchronisiert.");
       allowNextPlay = true;
       await audio.play();
     } catch {
+      sessionId = null;
       allowNextPlay = false;
       message("Weiterhören konnte nicht gestartet werden. Bitte prüfe deine Verbindung und drücke erneut Play.", true);
     } finally { claiming = false; }
