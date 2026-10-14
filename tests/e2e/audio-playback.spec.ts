@@ -69,7 +69,7 @@ async function progress(page: Page, episodeId: string) {
 test.describe("Originalfassungen weiterhören", () => {
   test.skip(!email || !password || !storage, "E2E-Zugang und isoliertes AUDIO_STORAGE_PATH fehlen.");
 
-  test("puffert während der Wiedergabe ohne Reset durch Speichern oder Hintergrundabgleich", async ({ page, baseURL }) => {
+  test("puffert während der Wiedergabe ohne Reset durch Speichern oder Hintergrundabgleich", async ({ page, baseURL, request }) => {
     test.setTimeout(60_000);
     await login(page);
     const seeded = await seed(page);
@@ -115,6 +115,9 @@ test.describe("Originalfassungen weiterhören", () => {
       const cached = await page.request.get(audioUrl, { headers: { "If-None-Match": response.headers().etag } });
       expect(cached.status()).toBe(304);
       expect((await cached.body()).length).toBe(0);
+      const anonymous = await request.get(audioUrl, { headers: { "If-None-Match": response.headers().etag } });
+      expect(anonymous.status()).toBe(401);
+      expect(anonymous.headers()["cache-control"]).toBe("private, no-store");
       console.log(JSON.stringify({ media: "buffer preserved across autosaves", saves, initialBufferedEnd: initial.end, ...final }));
     } finally {
       await cdp.send("Network.emulateNetworkConditionsByRule", { matchedNetworkConditions: [] });

@@ -24,12 +24,9 @@ const nextConfig: NextConfig = {
         ],
       },
       {
-        source: "/api/:path*",
+        // The audio route sets its own cache policy, including no-store errors.
+        source: "/api/:path((?!episodes/[^/]+/audio$).*)",
         headers: [{ key: "Cache-Control", value: "private, no-store" }],
-      },
-      {
-        source: "/api/episodes/:id/audio",
-        headers: [{ key: "Cache-Control", value: "private, no-cache" }],
       },
     ];
   },
