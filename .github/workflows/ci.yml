@@ -32,6 +32,7 @@ jobs:
       E2E_EMAIL: owner@example.test
       E2E_PASSWORD: a-very-long-ci-password
       PLAYWRIGHT_BASE_URL: http://127.0.0.1:3000
+      AUDIO_STORAGE_PATH: .tmp/e2e-audio
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
@@ -64,4 +65,7 @@ jobs:
           -H 'Content-Type: application/json'
           --data '{"email":"owner@example.test","password":"a-very-long-ci-password","setupToken":"ci-setup-token-with-at-least-32-bytes"}'
       - run: npx playwright install --with-deps chromium
-      - run: npm run test:e2e
+      - name: Originalfassungen auf Desktop und Handy prüfen
+        run: npm run test:e2e -- --grep 'Originalfassungen weiterhören' --reporter=line
+      - name: Bestehende Bedienabläufe prüfen
+        run: npm run test:e2e -- --grep-invert 'Originalfassungen weiterhören' --reporter=line

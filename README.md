@@ -7,6 +7,7 @@ Ein persönlicher Hörspiel-Zufallsgenerator ohne Zurücklegen. Der Fortschritt 
 - freie Serienauswahl und bearbeitbare Presets; beide bleiben pro Account auch nach Neuladen und auf anderen Geräten erhalten
 - globaler Fortschritt pro Serie und Runde
 - genau eine atomar reservierte Folge pro Account
+- eigene Originalaufnahmen mit persönlicher Hörposition: alle fünf Sekunden, beim Pausieren, Spulen und Verlassen des Players gespeichert; Weiterhören auf anderen Geräten mit demselben Account
 - gehörte, übersprungene und korrigierte Ziehungen
 - geplante, einmal priorisierte Neuerscheinungen
 - Sonderfolgen ohne Nummer
@@ -22,6 +23,8 @@ Ein persönlicher Hörspiel-Zufallsgenerator ohne Zurücklegen. Der Fortschritt 
 - Löschen entfernt auch zugehörigen Verlauf, Bewertungen und Notizen für alle Nutzer; beim Löschen einer Serie werden auch deren Importquellen entfernt
 - Hörzeit, Skipquote, Streaks, Zeitdiagramme und Serienfortschritt
 - installierbare, responsive PWA; Ziehungen bleiben bewusst online
+
+Bei einem Gerätewechsel wird beim Drücken von Play die zuletzt gespeicherte Hörposition geladen. Der bisherige Player pausiert beim nächsten Abgleich und kann den neueren Stand nicht überschreiben. Ohne Verbindung oder bei abruptem Geräteabbruch bleibt der letzte vom Server bestätigte Stand erhalten. Nach dem Ende beginnt die Folge beim nächsten Abspielen wieder von vorn; der Status „gehört“ wird weiterhin bewusst separat gespeichert. Die Positionsspeicherung gilt für den eingebauten Originalfassungsplayer.
 
 ## VPS-Installation
 
