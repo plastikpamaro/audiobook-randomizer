@@ -286,6 +286,38 @@ test.describe("geräteübergreifender Zustand", () => {
     await page.getByRole("button", { name: "Tag", exact: true }).click();
   });
 
+  test("bietet alte und neue Sherlock-Holmes-Fälle mit passender Zielserie an", async ({ page }) => {
+    await login(page);
+    const existing = await page.evaluate(async () => {
+      const response = await fetch("/api/series", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ seriesKey: `sherlock-${crypto.randomUUID()}`, name: "Sherlock Holmes - Die neuen Fälle", accentColor: "#f0a35b", archived: false }),
+      });
+      if (!response.ok) throw new Error("Testserie konnte nicht angelegt werden");
+      return await response.json() as { id: string };
+    });
+    try {
+      await page.goto("/bibliothek");
+      await page.getByRole("button", { name: "Quelle hinzufügen" }).click();
+      for (const [kind, name] of [
+        ["sherlock_original", "Sherlock Holmes – Die alten Fälle (Originale)"],
+        ["sherlock_reloaded", "Sherlock Holmes – Die alten Fälle (Reloaded)"],
+      ]) {
+        await page.getByLabel("Quellentyp").selectOption(kind);
+        await expect(page.getByLabel("Zielserie")).toHaveValue("new");
+        await expect(page.getByLabel("Name der Serie")).toHaveValue(name);
+        await expect(page.getByLabel("Öffentliche HTTPS-URL")).toHaveCount(0);
+      }
+      await page.getByLabel("Quellentyp").selectOption("sherlock_neue");
+      await expect(page.getByLabel("Zielserie")).toHaveValue(existing.id);
+      await expect(page.getByLabel("Name der Serie")).toHaveCount(0);
+      await expect(page.getByLabel("Anzeigename")).toHaveValue("Sherlock Holmes – Die neuen Fälle (Apple Music)");
+      await expect(page.getByLabel("Öffentliche HTTPS-URL")).toHaveCount(0);
+    } finally {
+      await page.evaluate(async (id) => { await fetch(`/api/series/${id}`, { method: "DELETE" }); }, existing.id);
+    }
+  });
+
   test("führt durch Online-Quellen-Vorschau, Zuordnung und Sync", async ({ page }) => {
     await login(page);
     const seeded = await page.evaluate(async () => {

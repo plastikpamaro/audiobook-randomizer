@@ -1,0 +1,448 @@
+{
+  "results": [
+    {
+      "wrapperType": "artist",
+      "artistId": 1553810025
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553810025,
+      "collectionId": 1444286720,
+      "collectionName": "Die alten Fälle (Reloaded), Fall 49: Der erbleichte Soldat",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-alten-f%C3%A4lle-reloaded-fall-49-der-erbleichte-soldat/1444286720?uo=4",
+      "releaseDate": "2019-02-08T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553810025,
+      "collectionId": 1442547695,
+      "collectionName": "Die alten Fälle (Reloaded), Fall 48: Der illustre Klient",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-alten-f%C3%A4lle-reloaded-fall-48-der-illustre-klient/1442547695?uo=4",
+      "releaseDate": "2019-01-11T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553810025,
+      "collectionId": 1444286722,
+      "collectionName": "Die alten Fälle (Reloaded), Fall 50: Shoscombe Old Place",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-alten-f%C3%A4lle-reloaded-fall-50-shoscombe-old-place/1444286722?uo=4",
+      "releaseDate": "2019-03-08T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553810025,
+      "collectionId": 1487119372,
+      "collectionName": "Folge 52: Wisteria Lodge (Die alten Fälle: Reloaded)",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-52-wisteria-lodge-die-alten-f%C3%A4lle-reloaded/1487119372?uo=4",
+      "releaseDate": "2019-12-20T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553810025,
+      "collectionId": 1495663748,
+      "collectionName": "Fall 54: Die drei Studenten (Die alten Fälle) [Reloaded]",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-54-die-drei-studenten-die-alten-f%C3%A4lle-reloaded/1495663748?uo=4",
+      "releaseDate": "2020-02-28T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553810025,
+      "collectionId": 1495649430,
+      "collectionName": "Die alten Fälle (Reloaded), Fall 55: Der Mann mit dem geduckten Gang",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-alten-f%C3%A4lle-reloaded-fall-55-der-mann-mit-dem-geduckten/1495649430?uo=4",
+      "releaseDate": "2020-04-24T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553810025,
+      "collectionId": 1483596804,
+      "collectionName": "Fall 51: Der Farbenhändler im Ruhestand (Die alten Fälle (Reloaded))",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-51-der-farbenh%C3%A4ndler-im-ruhestand-die-alten-f%C3%A4lle/1483596804?uo=4",
+      "releaseDate": "2019-11-01T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553810025,
+      "collectionId": 1493570884,
+      "collectionName": "Die alten Fälle (Reloaded), Fall 53: Der Detektiv auf dem Sterbebett",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-alten-f%C3%A4lle-reloaded-fall-53-der-detektiv-auf-dem/1493570884?uo=4",
+      "releaseDate": "2020-01-24T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553810025,
+      "collectionId": 1474633218,
+      "collectionName": "Fall 18: Der Hund der Baskervilles (Die alten Fälle) [Reloaded]",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-18-der-hund-der-baskervilles-die-alten-f%C3%A4lle-reloaded/1474633218?uo=4",
+      "releaseDate": "2015-01-23T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553810025,
+      "collectionId": 1474630872,
+      "collectionName": "Die alten Fälle (Reloaded), Fall 12: Eine Studie in Scharlachrot",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-alten-f%C3%A4lle-reloaded-fall-12-eine-studie-in-scharlachrot/1474630872?uo=4",
+      "releaseDate": "2014-10-10T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553810025,
+      "collectionId": 1474628288,
+      "collectionName": "Fall 6: Das Tal der Furcht (Die alten Fälle) [Reloaded]",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-6-das-tal-der-furcht-die-alten-f%C3%A4lle-reloaded/1474628288?uo=4",
+      "releaseDate": "2014-06-27T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553810025,
+      "collectionId": 1474634986,
+      "collectionName": "Fall 24: Im Zeichen der Vier (Die alten Fälle) [Reloaded]",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-24-im-zeichen-der-vier-die-alten-f%C3%A4lle-reloaded/1474634986?uo=4",
+      "releaseDate": "2015-12-18T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553810025,
+      "collectionId": 1474629330,
+      "collectionName": "Die alten Fälle (Reloaded), Fall 8: Der Patient",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-alten-f%C3%A4lle-reloaded-fall-8-der-patient/1474629330?uo=4",
+      "releaseDate": "2014-08-08T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553810025,
+      "collectionId": 1474627044,
+      "collectionName": "Fall 3: Das Musgrave-Ritual (Die alten Fälle) [Reloaded]",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-3-das-musgrave-ritual-die-alten-f%C3%A4lle-reloaded/1474627044?uo=4",
+      "releaseDate": "2014-04-25T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553810025,
+      "collectionId": 1474646192,
+      "collectionName": "Fall 43: Die Pappschachtel (Die alten Fälle) [Reloaded]",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-43-die-pappschachtel-die-alten-f%C3%A4lle-reloaded/1474646192?uo=4",
+      "releaseDate": "2018-08-24T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553810025,
+      "collectionId": 1474626528,
+      "collectionName": "Fall 1: Das Haus bei den Blutbuchen (Die alten Fälle) [Reloaded]",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-1-das-haus-bei-den-blutbuchen-die-alten-f%C3%A4lle-reloaded/1474626528?uo=4",
+      "releaseDate": "2014-03-28T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553810025,
+      "collectionId": 1474630653,
+      "collectionName": "Die alten Fälle (Reloaded), Fall 13: Der griechische Dolmetscher",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-alten-f%C3%A4lle-reloaded-fall-13-der-griechische-dolmetscher/1474630653?uo=4",
+      "releaseDate": "2014-10-24T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553810025,
+      "collectionId": 1474643746,
+      "collectionName": "Fall 39: Die Thor-Brücke (Die alten Fälle) [Reloaded]",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-39-die-thor-br%C3%BCcke-die-alten-f%C3%A4lle-reloaded/1474643746?uo=4",
+      "releaseDate": "2017-09-01T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553810025,
+      "collectionId": 1474643052,
+      "collectionName": "Fall 40: Der goldene Kneifer (Die alten Fälle) [Reloaded]",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-40-der-goldene-kneifer-die-alten-f%C3%A4lle-reloaded/1474643052?uo=4",
+      "releaseDate": "2017-09-15T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553810025,
+      "collectionId": 1474642852,
+      "collectionName": "Fall 38: Das gesprenkelte Band (Die alten Fälle) [Reloaded]",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-38-das-gesprenkelte-band-die-alten-f%C3%A4lle-reloaded/1474642852?uo=4",
+      "releaseDate": "2017-08-18T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553810025,
+      "collectionId": 1474640019,
+      "collectionName": "Fall 36: Der Teufelsfuß (Die alten Fälle) [Reloaded]",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-36-der-teufelsfu%C3%9F-die-alten-f%C3%A4lle-reloaded/1474640019?uo=4",
+      "releaseDate": "2017-07-21T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553810025,
+      "collectionId": 1474628848,
+      "collectionName": "Die alten Fälle (Reloaded), Fall 7: Der Vampir von Sussex",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-alten-f%C3%A4lle-reloaded-fall-7-der-vampir-von-sussex/1474628848?uo=4",
+      "releaseDate": "2014-07-18T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553810025,
+      "collectionId": 1474626932,
+      "collectionName": "Fall 5: Die sechs Napoleons (Die alten Fälle) [Reloaded]",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-5-die-sechs-napoleons-die-alten-f%C3%A4lle-reloaded/1474626932?uo=4",
+      "releaseDate": "2014-06-06T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553810025,
+      "collectionId": 1474627514,
+      "collectionName": "Fall 4: Die fünf Orangenkerne (Die alten Fälle) [Reloaded]",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-4-die-f%C3%BCnf-orangenkerne-die-alten-f%C3%A4lle-reloaded/1474627514?uo=4",
+      "releaseDate": "2014-05-16T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553810025,
+      "collectionId": 1474647487,
+      "collectionName": "Fall 47: Der Mazarin-Stein (Die alten Fälle) [Reloaded]",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-47-der-mazarin-stein-die-alten-f%C3%A4lle-reloaded/1474647487?uo=4",
+      "releaseDate": "2018-12-14T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553810025,
+      "collectionId": 1474646763,
+      "collectionName": "Die alten Fälle (Reloaded), Fall 45: Das Verschwinden der Lady Carfax",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-alten-f%C3%A4lle-reloaded-fall-45-das-verschwinden-der/1474646763?uo=4",
+      "releaseDate": "2018-09-21T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553810025,
+      "collectionId": 1474646033,
+      "collectionName": "Die alten Fälle (Reloaded), Fall 44: Die Bruce-Partington-Pläne",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-alten-f%C3%A4lle-reloaded-fall-44-die-bruce-partington-pl%C3%A4ne/1474646033?uo=4",
+      "releaseDate": "2018-09-07T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553810025,
+      "collectionId": 1474645216,
+      "collectionName": "Fall 41: Abbey Grange (Die alten Fälle) [Reloaded]",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-41-abbey-grange-die-alten-f%C3%A4lle-reloaded/1474645216?uo=4",
+      "releaseDate": "2018-07-27T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553810025,
+      "collectionId": 1474637612,
+      "collectionName": "Fall 30: Eine Frage der Identität (Die alten Fälle) [Reloaded]",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-30-eine-frage-der-identit%C3%A4t-die-alten-f%C3%A4lle-reloaded/1474637612?uo=4",
+      "releaseDate": "2016-07-08T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553810025,
+      "collectionId": 1474629636,
+      "collectionName": "Die alten Fälle (Reloaded), Fall 10: Der Baumeister von Norwood",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-alten-f%C3%A4lle-reloaded-fall-10-der-baumeister-von-norwood/1474629636?uo=4",
+      "releaseDate": "2014-09-12T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553810025,
+      "collectionId": 1474629578,
+      "collectionName": "Die alten Fälle (Reloaded), Fall 9: Ein Skandal in Böhmen",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-alten-f%C3%A4lle-reloaded-fall-9-ein-skandal-in-b%C3%B6hmen/1474629578?uo=4",
+      "releaseDate": "2014-08-29T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553810025,
+      "collectionId": 1474626615,
+      "collectionName": "Fall 2: Der blaue Karfunkel (Die alten Fälle) [Reloaded]",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-2-der-blaue-karfunkel-die-alten-f%C3%A4lle-reloaded/1474626615?uo=4",
+      "releaseDate": "2014-04-11T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553810025,
+      "collectionId": 1474630436,
+      "collectionName": "Die alten Fälle (Reloaded), Fall 11: Die drei Garridebs",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-alten-f%C3%A4lle-reloaded-fall-11-die-drei-garridebs/1474630436?uo=4",
+      "releaseDate": "2014-09-26T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553810025,
+      "collectionId": 1474646226,
+      "collectionName": "Fall 42: Das Rätsel von Boscombe Valley (Die alten Fälle) [Reloaded]",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-42-das-r%C3%A4tsel-von-boscombe-valley-die-alten-f%C3%A4lle/1474646226?uo=4",
+      "releaseDate": "2018-08-10T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553810025,
+      "collectionId": 1474632836,
+      "collectionName": "Fall 19: Der Angestellte des Börsenmaklers (Die alten Fälle) [Reloaded]",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-19-der-angestellte-des-b%C3%B6rsenmaklers-die-alten/1474632836?uo=4",
+      "releaseDate": "2015-06-19T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553810025,
+      "collectionId": 1474647693,
+      "collectionName": "Die alten Fälle (Reloaded), Fall 46: Die Löwenmähne",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-alten-f%C3%A4lle-reloaded-fall-46-die-l%C3%B6wenm%C3%A4hne/1474647693?uo=4",
+      "releaseDate": "2018-11-16T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553810025,
+      "collectionId": 1474640565,
+      "collectionName": "Fall 37: Die einsame Radfahrerin (Die alten Fälle) [Reloaded]",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-37-die-einsame-radfahrerin-die-alten-f%C3%A4lle-reloaded/1474640565?uo=4",
+      "releaseDate": "2017-08-04T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553810025,
+      "collectionId": 1474638583,
+      "collectionName": "Fall 35: Die verschleierte Mieterin (Die alten Fälle) [Reloaded]",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-35-die-verschleierte-mieterin-die-alten-f%C3%A4lle/1474638583?uo=4",
+      "releaseDate": "2016-09-09T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553810025,
+      "collectionId": 1474637931,
+      "collectionName": "Fall 32: Der rote Kreis (Die alten Fälle) [Reloaded]",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-32-der-rote-kreis-die-alten-f%C3%A4lle-reloaded/1474637931?uo=4",
+      "releaseDate": "2016-08-12T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553810025,
+      "collectionId": 1474633703,
+      "collectionName": "Fall 20: Der Landadel von Reigate (Die alten Fälle) [Reloaded]",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-20-der-landadel-von-reigate-die-alten-f%C3%A4lle-reloaded/1474633703?uo=4",
+      "releaseDate": "2015-07-03T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553810025,
+      "collectionId": 1474631649,
+      "collectionName": "Fall 15: Die Internatsschule (Die alten Fälle) [Reloaded]",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-15-die-internatsschule-die-alten-f%C3%A4lle-reloaded/1474631649?uo=4",
+      "releaseDate": "2014-11-21T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553810025,
+      "collectionId": 1474637600,
+      "collectionName": "Fall 31: Die drei Giebel (Die alten Fälle) [Reloaded]",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-31-die-drei-giebel-die-alten-f%C3%A4lle-reloaded/1474637600?uo=4",
+      "releaseDate": "2016-07-22T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553810025,
+      "collectionId": 1474637335,
+      "collectionName": "Fall 29: Die Liga der Rothaarigen (Die alten Fälle) [Reloaded]",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-29-die-liga-der-rothaarigen-die-alten-f%C3%A4lle-reloaded/1474637335?uo=4",
+      "releaseDate": "2016-04-15T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553810025,
+      "collectionId": 1474634316,
+      "collectionName": "Fall 23: Der Flottenvertrag (Die alten Fälle) [Reloaded]",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-23-der-flottenvertrag-die-alten-f%C3%A4lle-reloaded/1474634316?uo=4",
+      "releaseDate": "2015-10-09T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553810025,
+      "collectionId": 1474633702,
+      "collectionName": "Fall 21: Der Bucklige (Die alten Fälle) [Reloaded]",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-21-der-bucklige-die-alten-f%C3%A4lle-reloaded/1474633702?uo=4",
+      "releaseDate": "2015-09-11T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553810025,
+      "collectionId": 1474632479,
+      "collectionName": "Fall 17: Silberpfeil (Die alten Fälle) [Reloaded]",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-17-silberpfeil-die-alten-f%C3%A4lle-reloaded/1474632479?uo=4",
+      "releaseDate": "2015-01-02T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553810025,
+      "collectionId": 1474639323,
+      "collectionName": "Fall 34: Charles Augustus Milverton (Die alten Fälle) [Reloaded]",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-34-charles-augustus-milverton-die-alten-f%C3%A4lle/1474639323?uo=4",
+      "releaseDate": "2016-09-02T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553810025,
+      "collectionId": 1474631651,
+      "collectionName": "Fall 16: Der zweite Fleck (Die alten Fälle) [Reloaded]",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-16-der-zweite-fleck-die-alten-f%C3%A4lle-reloaded/1474631651?uo=4",
+      "releaseDate": "2014-12-12T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553810025,
+      "collectionId": 1474638130,
+      "collectionName": "Fall 33: Der schwarze Peter (Die alten Fälle) [Reloaded]",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-33-der-schwarze-peter-die-alten-f%C3%A4lle-reloaded/1474638130?uo=4",
+      "releaseDate": "2016-08-26T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553810025,
+      "collectionId": 1474631487,
+      "collectionName": "Fall 14: Die tanzenden Männchen (Die alten Fälle) [Reloaded]",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-14-die-tanzenden-m%C3%A4nnchen-die-alten-f%C3%A4lle-reloaded/1474631487?uo=4",
+      "releaseDate": "2014-11-07T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553810025,
+      "collectionId": 1474636175,
+      "collectionName": "Fall 27: Der vermisste Rugbyspieler (Die alten Fälle) [Reloaded]",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-27-der-vermisste-rugbyspieler-die-alten-f%C3%A4lle/1474636175?uo=4",
+      "releaseDate": "2016-03-18T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553810025,
+      "collectionId": 1474635991,
+      "collectionName": "Fall 28: Der Mann mit der entstellten Lippe (Die alten Fälle) [Reloaded]",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-28-der-mann-mit-der-entstellten-lippe-die-alten/1474635991?uo=4",
+      "releaseDate": "2016-04-01T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553810025,
+      "collectionId": 1474634991,
+      "collectionName": "Fall 25: Das gelbe Gesicht (Die alten Fälle) [Reloaded]",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-25-das-gelbe-gesicht-die-alten-f%C3%A4lle-reloaded/1474634991?uo=4",
+      "releaseDate": "2016-01-08T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553810025,
+      "collectionId": 1474634524,
+      "collectionName": "Fall 22: Das Geheimnis der Gloria Scott (Die alten Fälle) [Reloaded]",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-22-das-geheimnis-der-gloria-scott-die-alten-f%C3%A4lle/1474634524?uo=4",
+      "releaseDate": "2015-09-15T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553810025,
+      "collectionId": 1474635235,
+      "collectionName": "Fall 26: Das Diadem (Die alten Fälle) [Reloaded]",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-26-das-diadem-die-alten-f%C3%A4lle-reloaded/1474635235?uo=4",
+      "releaseDate": "2016-01-22T08:00:00Z"
+    }
+  ]
+}

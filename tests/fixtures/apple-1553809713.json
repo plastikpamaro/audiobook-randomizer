@@ -1,0 +1,600 @@
+{
+  "results": [
+    {
+      "wrapperType": "artist",
+      "artistId": 1553809713
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1477993103,
+      "collectionName": "Fall 42: Der Fluch der bösen Tat (Die neuen Fälle)",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-42-der-fluch-der-b%C3%B6sen-tat-die-neuen-f%C3%A4lle/1477993103?uo=4",
+      "releaseDate": "2019-09-20T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1480363884,
+      "collectionName": "Fall 43: Der Sturm des Unheils (Die neuen Fälle)",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-43-der-sturm-des-unheils-die-neuen-f%C3%A4lle/1480363884?uo=4",
+      "releaseDate": "2019-11-22T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1495657165,
+      "collectionName": "Die neuen Fälle, Fall 44: Die Glocken des Teufels",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-fall-44-die-glocken-des-teufels/1495657165?uo=4",
+      "releaseDate": "2020-03-20T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1495648780,
+      "collectionName": "Die neuen Fälle, Fall 45: Der sterbende Engel",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-fall-45-der-sterbende-engel/1495648780?uo=4",
+      "releaseDate": "2020-05-22T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1515723984,
+      "collectionName": "Fall 47: Das Ritual im Moor (Die neuen Fälle)",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-47-das-ritual-im-moor-die-neuen-f%C3%A4lle/1515723984?uo=4",
+      "releaseDate": "2020-11-20T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1515725191,
+      "collectionName": "Die neuen Fälle, Fall 46: Für Königreich und Vaterland",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-fall-46-f%C3%BCr-k%C3%B6nigreich-und-vaterland/1515725191?uo=4",
+      "releaseDate": "2020-09-18T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1554819484,
+      "collectionName": "Fall 48: Der Keim des Bösen (Die neuen Fälle)",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-48-der-keim-des-b%C3%B6sen-die-neuen-f%C3%A4lle/1554819484?uo=4",
+      "releaseDate": "2021-04-09T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1554819941,
+      "collectionName": "Fall 49: Die Jagd nach Mr. Hyde (Die neuen Fälle)",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-49-die-jagd-nach-mr-hyde-die-neuen-f%C3%A4lle/1554819941?uo=4",
+      "releaseDate": "2021-09-10T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1554820833,
+      "collectionName": "Fall 50: Im Zeichen des Vollstreckers (Die neuen Fälle)",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-50-im-zeichen-des-vollstreckers-die-neuen-f%C3%A4lle/1554820833?uo=4",
+      "releaseDate": "2021-12-03T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1604219931,
+      "collectionName": "Die neuen Fälle, Fall 51: Ein Schilling für den Tod",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-fall-51-ein-schilling-f%C3%BCr-den-tod/1604219931?uo=4",
+      "releaseDate": "2022-04-08T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1604224208,
+      "collectionName": "Die neuen Fälle, Fall 52: Familienbande",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-fall-52-familienbande/1604224208?uo=4",
+      "releaseDate": "2022-09-02T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1604224404,
+      "collectionName": "Die neuen Fälle, Fall 53: Die sieben Zinnsoldaten",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-fall-53-die-sieben-zinnsoldaten/1604224404?uo=4",
+      "releaseDate": "2022-11-25T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1670983872,
+      "collectionName": "Fall 56: Das Ende der Wahrheit (Die neuen Fälle)",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-56-das-ende-der-wahrheit-die-neuen-f%C3%A4lle/1670983872?uo=4",
+      "releaseDate": "2023-11-24T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1478299640,
+      "collectionName": "Fall 41: Die dunkle Seite der Seele (Die neuen Fälle)",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-41-die-dunkle-seite-der-seele-die-neuen-f%C3%A4lle/1478299640?uo=4",
+      "releaseDate": "2019-05-17T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1671000303,
+      "collectionName": "Folge 54: Die Schatten von Dartmoor",
+      "collectionViewUrl": "https://music.apple.com/de/album/folge-54-die-schatten-von-dartmoor/1671000303?uo=4",
+      "releaseDate": "2023-04-07T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1478282957,
+      "collectionName": "Fall 1: Besuche eines Gehenkten (Die neuen Fälle)",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-1-besuche-eines-gehenkten-die-neuen-f%C3%A4lle/1478282957?uo=4",
+      "releaseDate": "2012-11-16T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1478283967,
+      "collectionName": "Fall 2: Die Gesellschaft des Schreckens (Die neuen Fälle)",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-2-die-gesellschaft-des-schreckens-die-neuen-f%C3%A4lle/1478283967?uo=4",
+      "releaseDate": "2013-01-04T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1478298025,
+      "collectionName": "Fall 40: Die Speise der Götter (Die neuen Fälle)",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-40-die-speise-der-g%C3%B6tter-die-neuen-f%C3%A4lle/1478298025?uo=4",
+      "releaseDate": "2019-03-15T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1767340228,
+      "collectionName": "Die neuen Fälle, Fall 57: Die Büchse der Pandora",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-fall-57-die-b%C3%BCchse-der-pandora/1767340228?uo=4",
+      "releaseDate": "2024-10-04T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1478297571,
+      "collectionName": "Fall 38: Die rote Spinne (Die neuen Fälle)",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-38-die-rote-spinne-die-neuen-f%C3%A4lle/1478297571?uo=4",
+      "releaseDate": "2018-09-14T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1478284019,
+      "collectionName": "Fall 3: Die betrogenen Titanic-Passagiere (Die neuen Fälle)",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-3-die-betrogenen-titanic-passagiere-die-neuen-f%C3%A4lle/1478284019?uo=4",
+      "releaseDate": "2013-01-11T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1798718995,
+      "collectionName": "Die neuen Fälle, Fall 58: Der verlorene Schmetterling",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-fall-58-der-verlorene-schmetterling/1798718995?uo=4",
+      "releaseDate": "2025-04-04T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1478297655,
+      "collectionName": "Fall 37: Schatten der Vergangenheit (Die neuen Fälle)",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-37-schatten-der-vergangenheit-die-neuen-f%C3%A4lle/1478297655?uo=4",
+      "releaseDate": "2018-05-11T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1838480882,
+      "collectionName": "Die neuen Fälle, Fall 59: Die Spatha des Zenturios",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-fall-59-die-spatha-des-zenturios/1838480882?uo=4",
+      "releaseDate": "2025-10-24T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1872163131,
+      "collectionName": "Die neuen Fälle, Fall 60: Nervus Rerum",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-fall-60-nervus-rerum/1872163131?uo=4",
+      "releaseDate": "2026-03-20T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1478297732,
+      "collectionName": "Fall 39: Der Tod des Henkers (Die neuen Fälle)",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-39-der-tod-des-henkers-die-neuen-f%C3%A4lle/1478297732?uo=4",
+      "releaseDate": "2018-11-30T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1478286937,
+      "collectionName": "Fall 7: Der eisige Tod (Die neuen Fälle)",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-7-der-eisige-tod-die-neuen-f%C3%A4lle/1478286937?uo=4",
+      "releaseDate": "2013-10-25T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1478292601,
+      "collectionName": "Fall 23: Die Prinzen im Tower (Die neuen Fälle)",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-23-die-prinzen-im-tower-die-neuen-f%C3%A4lle/1478292601?uo=4",
+      "releaseDate": "2016-01-29T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1478296700,
+      "collectionName": "Fall 35: Die letzte Symphonie (Die neuen Fälle)",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-35-die-letzte-symphonie-die-neuen-f%C3%A4lle/1478296700?uo=4",
+      "releaseDate": "2017-12-22T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1478284507,
+      "collectionName": "Fall 4: Die gelbe und die blaue Flamme (Die neuen Fälle)",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-4-die-gelbe-und-die-blaue-flamme-die-neuen-f%C3%A4lle/1478284507?uo=4",
+      "releaseDate": "2013-05-10T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1478297106,
+      "collectionName": "Fall 36: Remis in zehn Zügen (Die neuen Fälle)",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-36-remis-in-zehn-z%C3%BCgen-die-neuen-f%C3%A4lle/1478297106?uo=4",
+      "releaseDate": "2018-03-16T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1478295560,
+      "collectionName": "Fall 32: Der Fall John Watson (Die neuen Fälle)",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-32-der-fall-john-watson-die-neuen-f%C3%A4lle/1478295560?uo=4",
+      "releaseDate": "2017-06-09T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1478288320,
+      "collectionName": "Fall 12: Der verhängnisvolle Schlüssel (Die neuen Fälle)",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-12-der-verh%C3%A4ngnisvolle-schl%C3%BCssel-die-neuen-f%C3%A4lle/1478288320?uo=4",
+      "releaseDate": "2014-07-18T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1670999143,
+      "collectionName": "Die neuen Fälle, Fall 55: Der Blütenmacher",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-fall-55-der-bl%C3%BCtenmacher/1670999143?uo=4",
+      "releaseDate": "2023-09-08T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1478293542,
+      "collectionName": "Fall 26: Der siebte Monat (Die neuen Fälle)",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-26-der-siebte-monat-die-neuen-f%C3%A4lle/1478293542?uo=4",
+      "releaseDate": "2016-07-29T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1478286188,
+      "collectionName": "Fall 6: Das Haus auf dem Hexenhügel (Die neuen Fälle)",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-6-das-haus-auf-dem-hexenh%C3%BCgel-die-neuen-f%C3%A4lle/1478286188?uo=4",
+      "releaseDate": "2013-10-11T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1478291286,
+      "collectionName": "Fall 20: Die Spur ins Nichts (Die neuen Fälle)",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-20-die-spur-ins-nichts-die-neuen-f%C3%A4lle/1478291286?uo=4",
+      "releaseDate": "2015-09-25T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1478296765,
+      "collectionName": "Fall 33: Die Wölfe von Whitechapel (Die neuen Fälle)",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-33-die-w%C3%B6lfe-von-whitechapel-die-neuen-f%C3%A4lle/1478296765?uo=4",
+      "releaseDate": "2017-07-28T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1478296223,
+      "collectionName": "Fall 34: In den Klauen der Angst (Die neuen Fälle)",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-34-in-den-klauen-der-angst-die-neuen-f%C3%A4lle/1478296223?uo=4",
+      "releaseDate": "2017-09-29T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1478285233,
+      "collectionName": "Fall 5: Das steinerne Schiff (Die neuen Fälle)",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-5-das-steinerne-schiff-die-neuen-f%C3%A4lle/1478285233?uo=4",
+      "releaseDate": "2013-07-05T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1478291354,
+      "collectionName": "Fall 19: Die Untoten von Tilbury (Die neuen Fälle)",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-19-die-untoten-von-tilbury-die-neuen-f%C3%A4lle/1478291354?uo=4",
+      "releaseDate": "2015-07-24T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1478294117,
+      "collectionName": "Fall 29: Im Labyrinth des Wahnsinns (Die neuen Fälle)",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-29-im-labyrinth-des-wahnsinns-die-neuen-f%C3%A4lle/1478294117?uo=4",
+      "releaseDate": "2016-11-25T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1478288668,
+      "collectionName": "Fall 11: Im kalten Nebel der Themse (Die neuen Fälle)",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-11-im-kalten-nebel-der-themse-die-neuen-f%C3%A4lle/1478288668?uo=4",
+      "releaseDate": "2014-05-23T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1478295846,
+      "collectionName": "Fall 31: Die Todesfalle von Dornwood (Die neuen Fälle)",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-31-die-todesfalle-von-dornwood-die-neuen-f%C3%A4lle/1478295846?uo=4",
+      "releaseDate": "2017-03-24T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1478287440,
+      "collectionName": "Fall 8: Der grüne Admiral (Die neuen Fälle)",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-8-der-gr%C3%BCne-admiral-die-neuen-f%C3%A4lle/1478287440?uo=4",
+      "releaseDate": "2013-11-22T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1478293601,
+      "collectionName": "Fall 27: Ein ehrbares Haus (Die neuen Fälle)",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-27-ein-ehrbares-haus-die-neuen-f%C3%A4lle/1478293601?uo=4",
+      "releaseDate": "2016-09-23T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1478289281,
+      "collectionName": "Fall 15: Das Geheimnis von Baskerville Hall (Die neuen Fälle)",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-15-das-geheimnis-von-baskerville-hall-die-neuen-f%C3%A4lle/1478289281?uo=4",
+      "releaseDate": "2014-11-14T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1478292412,
+      "collectionName": "Fall 22: Die schreiende Tänzerin (Die neuen Fälle)",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-22-die-schreiende-t%C3%A4nzerin-die-neuen-f%C3%A4lle/1478292412?uo=4",
+      "releaseDate": "2015-11-27T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1478291652,
+      "collectionName": "Fall 21: Der ehrlose Löwe (Die neuen Fälle)",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-21-der-ehrlose-l%C3%B6we-die-neuen-f%C3%A4lle/1478291652?uo=4",
+      "releaseDate": "2015-10-23T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1478289003,
+      "collectionName": "Fall 13: Der geniale Magier (Die neuen Fälle)",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-13-der-geniale-magier-die-neuen-f%C3%A4lle/1478289003?uo=4",
+      "releaseDate": "2014-09-19T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1478294522,
+      "collectionName": "Fall 28: Die Rache des Gerechten (Die neuen Fälle)",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-28-die-rache-des-gerechten-die-neuen-f%C3%A4lle/1478294522?uo=4",
+      "releaseDate": "2016-10-28T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1478296316,
+      "collectionName": "Fall 30: Das Rätsel der Aurora (Die neuen Fälle)",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-30-das-r%C3%A4tsel-der-aurora-die-neuen-f%C3%A4lle/1478296316?uo=4",
+      "releaseDate": "2017-01-27T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1478293165,
+      "collectionName": "Fall 25: Die siebzehn Salutschüsse (Die neuen Fälle)",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-25-die-siebzehn-salutsch%C3%BCsse-die-neuen-f%C3%A4lle/1478293165?uo=4",
+      "releaseDate": "2016-05-20T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1478288079,
+      "collectionName": "Fall 10: Der Biss des Zerberus",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-10-der-biss-des-zerberus/1478288079?uo=4",
+      "releaseDate": "2014-03-14T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1478291059,
+      "collectionName": "Fall 18: Das Ratten-Problem (Die neuen Fälle)",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-18-das-ratten-problem-die-neuen-f%C3%A4lle/1478291059?uo=4",
+      "releaseDate": "2015-05-22T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1478290241,
+      "collectionName": "Fall 17: Die drei Diven (Die neuen Fälle)",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-17-die-drei-diven-die-neuen-f%C3%A4lle/1478290241?uo=4",
+      "releaseDate": "2015-03-20T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1478289943,
+      "collectionName": "Fall 16: Der leise Takt des Todes (Die neuen Fälle)",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-16-der-leise-takt-des-todes-die-neuen-f%C3%A4lle/1478289943?uo=4",
+      "releaseDate": "2015-01-23T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1478292781,
+      "collectionName": "Fall 24: Das Monster von Soho (Die neuen Fälle)",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-24-das-monster-von-soho-die-neuen-f%C3%A4lle/1478292781?uo=4",
+      "releaseDate": "2016-03-18T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1478287562,
+      "collectionName": "Fall 9: Holmes unter Verdacht (Die neuen Fälle)",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-9-holmes-unter-verdacht-die-neuen-f%C3%A4lle/1478287562?uo=4",
+      "releaseDate": "2014-01-31T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1478290095,
+      "collectionName": "Fall 14: Der bibelfeste Mörder (Die neuen Fälle)",
+      "collectionViewUrl": "https://music.apple.com/de/album/fall-14-der-bibelfeste-m%C3%B6rder-die-neuen-f%C3%A4lle/1478290095?uo=4",
+      "releaseDate": "2014-10-17T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1608859256,
+      "collectionName": "Die neuen Fälle, Collector's Box 1",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-collectors-box-1/1608859256?uo=4",
+      "releaseDate": "2022-05-06T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1608861137,
+      "collectionName": "Die neuen Fälle, Collector's Box 4",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-collectors-box-4/1608861137?uo=4",
+      "releaseDate": "2022-08-05T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1608859487,
+      "collectionName": "Die neuen Fälle, Collector's Box 2",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-collectors-box-2/1608859487?uo=4",
+      "releaseDate": "2022-06-03T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1726965257,
+      "collectionName": "Die neuen Fälle, Collector's Box 10",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-collectors-box-10/1726965257?uo=4",
+      "releaseDate": "2024-03-22T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1726973626,
+      "collectionName": "Die neuen Fälle, Collector's Box 9",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-collectors-box-9/1726973626?uo=4",
+      "releaseDate": "2024-03-08T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1608861889,
+      "collectionName": "Die neuen Fälle, Collector's Box 5",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-collectors-box-5/1608861889?uo=4",
+      "releaseDate": "2022-10-14T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1608860426,
+      "collectionName": "Die neuen Fälle, Collector's Box 3",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-collectors-box-3/1608860426?uo=4",
+      "releaseDate": "2022-07-01T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1726977771,
+      "collectionName": "Die neuen Fälle, Collector's Box 8",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-collectors-box-8/1726977771?uo=4",
+      "releaseDate": "2024-02-23T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1726968447,
+      "collectionName": "Die neuen Fälle, Collector's Box 7",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-collectors-box-7/1726968447?uo=4",
+      "releaseDate": "2024-02-09T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1726967574,
+      "collectionName": "Die neuen Fälle, Collector's Box 6",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-collectors-box-6/1726967574?uo=4",
+      "releaseDate": "2024-01-26T08:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1808471429,
+      "collectionName": "Die neuen Fälle: Collector's Box 14",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-collectors-box-14/1808471429?uo=4",
+      "releaseDate": "2025-08-08T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1808469512,
+      "collectionName": "Die neuen Fälle: Collector's Box 12",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-collectors-box-12/1808469512?uo=4",
+      "releaseDate": "2025-06-13T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1808469968,
+      "collectionName": "Die neuen Fälle: Collector's Box 13",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-collectors-box-13/1808469968?uo=4",
+      "releaseDate": "2025-07-11T07:00:00Z"
+    },
+    {
+      "wrapperType": "collection",
+      "artistId": 1553809713,
+      "collectionId": 1808470557,
+      "collectionName": "Die neuen Fälle: Collector's Box 11",
+      "collectionViewUrl": "https://music.apple.com/de/album/die-neuen-f%C3%A4lle-collectors-box-11/1808470557?uo=4",
+      "releaseDate": "2025-05-16T07:00:00Z"
+    }
+  ]
+}

@@ -6,6 +6,10 @@ export const APPLE_CATALOGS = {
   point_whitmark: { artistId: 202777371, newCases: false },
   pater_brown: { artistId: 876466527, newCases: false },
   sherlock_titania: { artistId: 469372336, newCases: false },
+  sherlock_original: { artistId: 1553808878, newCases: false },
+  sherlock_reloaded: { artistId: 1553810025, newCases: false },
+  // This artist only contains new cases; some albums omit the series suffix.
+  sherlock_neue: { artistId: 1553809713, newCases: null },
 } as const;
 
 export type AppleCatalogKind = keyof typeof APPLE_CATALOGS;
@@ -39,10 +43,17 @@ export function parseAppleCatalog(input: string, kind: AppleCatalogKind): Parsed
     const name = typeof item.collectionName === "string" ? item.collectionName.trim() : "";
     if (kind === "sherlock_titania" && /(?:^Box\s+\d+\b|\(Box\s+\d+\))/i.test(name)) continue;
     // Collections repeat existing episodes and must never become separate draws.
-    if (/^(?:Die neuen Fälle:\s*)?Ultimative Sammlung\b|^Edition\s+\d+/i.test(name)) continue;
+    if (/^(?:(?:Die (?:alten|neuen) Fälle(?: \(Reloaded\))?|Die Originale)\s*[:,–-]\s*)?(?:Ultimative Sammlung\b|Edition\s+\d+|Collector['’]s Box\s+\d+|Box\s+\d+)/i.test(name)) continue;
+    if (kind === "sherlock_original" && /\(Live-Edition\)$/i.test(name)) continue;
     const newCases = /Die neuen Fälle/i.test(name);
-    if (newCases !== config.newCases) continue;
-    const cleaned = name.replace(/^Die neuen Fälle,\s*/i, "").replace(/\s*\((?:Die neuen Fälle|Ungekürzt)\)\s*$/i, "");
+    if (config.newCases !== null && newCases !== config.newCases) continue;
+    let cleaned = name.replace(/^Die neuen Fälle,\s*/i, "").replace(/\s*\((?:Die neuen Fälle|Ungekürzt)\)\s*$/i, "");
+    if (kind === "sherlock_original") {
+      cleaned = cleaned.replace(/^Die Originale\s*[-,]\s*/i, "").replace(/\s*\(Die Originale\)$/i, "");
+    } else if (kind === "sherlock_reloaded") {
+      cleaned = cleaned.replace(/^Die alten Fälle \(Reloaded\),\s*/i, "")
+        .replace(/\s*(?:\(Die alten Fälle\)\s*\[Reloaded\]|\(Die alten Fälle: Reloaded\)|\(Die alten Fälle \(Reloaded\)\))$/i, "");
+    }
     const match = cleaned.match(/^(?:(?:Folge|Fall)\s+)?0*(\d+)\s*[:/]\s*(.+)$/i);
     let url: URL;
     try { url = new URL(item.collectionViewUrl); } catch { url = new URL("https://invalid.example"); }
